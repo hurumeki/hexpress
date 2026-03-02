@@ -1,5 +1,89 @@
 import React, { useState, useEffect } from 'react';
 
+// --- 型定義 ---
+
+interface Piece {
+    id: string;
+    color: string;
+    pattern: string;
+    q: number;
+    r: number;
+}
+
+interface PieceTemplate {
+    id: string;
+    color: string;
+    pattern: string;
+}
+
+interface Target {
+    color: string;
+    pattern: string;
+}
+
+interface Tile {
+    q: number;
+    r: number;
+    target: Target | null;
+}
+
+interface Rail {
+    from: number;
+    to: number;
+}
+
+interface Level {
+    excellentMoves: number;
+    goodMoves: number;
+    layout: Tile[];
+    defaultRails: Rail[];
+    initialBoard: Record<string, PieceTemplate>;
+    initialHand: PieceTemplate[];
+}
+
+interface Point {
+    x: number;
+    y: number;
+}
+
+interface EdgeInfo extends Point {
+    angle: number;
+}
+
+interface PathStep {
+    q: number;
+    r: number;
+    exit?: boolean;
+}
+
+interface HighlightedPath {
+    color: string;
+    path: PathStep[];
+    originalEdge: number;
+    slotEdge: number;
+    targetTileQ: number;
+    targetTileR: number;
+}
+
+interface DragState {
+    active: boolean;
+    currentHex: (Tile & { type: 'board' }) | (OuterSlot & { type: 'slot' }) | null;
+}
+
+interface OuterSlot {
+    q: number;
+    r: number;
+    targetTileQ: number;
+    targetTileR: number;
+    originalEdge: number;
+}
+
+interface HistoryState {
+    board: Piece[];
+    hand: PieceTemplate[];
+    moves: number;
+}
+
 // --- 定数・定義 ---
 
 const COLORS = {
@@ -37,7 +121,7 @@ const DIRS = [
     { dq: 0, dr: -1 }
 ];
 
-const LEVEL_1 = {
+const LEVEL_1: Level = {
     excellentMoves: 5,
     goodMoves: 10,
     layout: [
@@ -67,13 +151,13 @@ const LEVEL_1 = {
 
 // --- ヘルパー関数 ---
 
-const hexToPixel = (q, r, size) => {
+const hexToPixel = (q: number, r: number, size: number): Point => {
     const x = size * Math.sqrt(3) * (q + r / 2);
     const y = size * (3 / 2) * r;
     return { x, y };
 };
 
-const getHexCorner = (centerX, centerY, size, j) => {
+const getHexCorner = (centerX: number, centerY: number, size: number, j: number): Point => {
     const angleRad = (Math.PI / 180) * (60 * j + 30);
     return {
         x: centerX + size * Math.cos(angleRad),
@@ -81,7 +165,7 @@ const getHexCorner = (centerX, centerY, size, j) => {
     };
 };
 
-const getEdgeInfo = (centerX, centerY, size, edgeIdx) => {
+const getEdgeInfo = (centerX: number, centerY: number, size: number, edgeIdx: number): EdgeInfo => {
     const p1 = getHexCorner(centerX, centerY, size, edgeIdx);
     const p2 = getHexCorner(centerX, centerY, size, (edgeIdx + 1) % 6);
     return {
@@ -93,7 +177,17 @@ const getEdgeInfo = (centerX, centerY, size, edgeIdx) => {
 
 // --- サブコンポーネント ---
 
-const Piece = ({ piece, x, y, size, isTarget = false, isPeek = false, ghost = false }) => {
+interface PieceProps {
+    piece: PieceTemplate | null;
+    x: number;
+    y: number;
+    size: number;
+    isTarget?: boolean;
+    isPeek?: boolean;
+    ghost?: boolean;
+}
+
+const Piece: React.FC<PieceProps> = ({ piece, x, y, size, isTarget = false, isPeek = false, ghost = false }) => {
     if (!piece) return null;
     let opacity = isTarget ? 0.3 : (isPeek ? 0.2 : 1);
     if (ghost) opacity = 0.5;
@@ -126,23 +220,23 @@ const Piece = ({ piece, x, y, size, isTarget = false, isPeek = false, ghost = fa
 // --- メインアプリ ---
 
 export default function App() {
-    const [board, setBoard] = useState(() =>
+    const [board, setBoard] = useState<Piece[]>(() =>
         Object.entries(LEVEL_1.initialBoard).map(([key, p]) => {
             const [q, r] = key.split(',').map(Number);
             return { ...p, q, r };
         })
     );
-    const [hand, setHand] = useState(LEVEL_1.initialHand);
-    const [selectedIdx, setSelectedIdx] = useState(0);
-    const [moves, setMoves] = useState(0);
-    const [history, setHistory] = useState([]);
-    const [isClear, setIsClear] = useState(false);
-    const [isPeek, setIsPeek] = useState(false);
-    const [animating, setAnimating] = useState(false);
+    const [hand, setHand] = useState<PieceTemplate[]>(LEVEL_1.initialHand);
+    const [selectedIdx, setSelectedIdx] = useState<number | null>(0);
+    const [moves, setMoves] = useState<number>(0);
+    const [history, setHistory] = useState<HistoryState[]>([]);
+    const [isClear, setIsClear] = useState<boolean>(false);
+    const [isPeek, setIsPeek] = useState<boolean>(false);
+    const [animating, setAnimating] = useState<boolean>(false);
 
-    const [readySlot, setReadySlot] = useState(null);
-    const [highlightedPaths, setHighlightedPaths] = useState([]);
-    const [dragState, setDragState] = useState({ active: false, currentHex: null });
+    const [readySlot, setReadySlot] = useState<OuterSlot | null>(null);
+    const [highlightedPaths, setHighlightedPaths] = useState<HighlightedPath[]>([]);
+    const [dragState, setDragState] = useState<DragState>({ active: false, currentHex: null });
 
     const hexSize = 44;
 
@@ -156,8 +250,8 @@ export default function App() {
         if (allMatch && moves > 0) setIsClear(true);
     }, [board, animating, moves]);
 
-    const calculatePath = (startTileQ, startTileR, edgeIndex) => {
-        const path = [];
+    const calculatePath = (startTileQ: number, startTileR: number, edgeIndex: number): PathStep[] => {
+        const path: PathStep[] = [];
         let curQ = startTileQ, curR = startTileR, curEdge = edgeIndex;
 
         while (true) {
@@ -183,7 +277,7 @@ export default function App() {
         return path;
     };
 
-    const outerSlots = [];
+    const outerSlots: OuterSlot[] = [];
     LEVEL_1.layout.forEach(tile => {
         for (let i = 0; i < 6; i++) {
             const hasRail = LEVEL_1.defaultRails.some(r => r.from === i || r.to === i);
@@ -200,7 +294,7 @@ export default function App() {
         }
     });
 
-    const getPathsForSlot = (slot) => {
+    const getPathsForSlot = (slot: OuterSlot): HighlightedPath[] => {
         const relevantEntries = outerSlots.filter(s => s.q === slot.q && s.r === slot.r);
         return relevantEntries.map((s, idx) => ({
             color: PATH_COLORS[idx % PATH_COLORS.length],
@@ -212,8 +306,8 @@ export default function App() {
         }));
     };
 
-    const findHexAt = (svgX, svgY) => {
-        let minTarget = null;
+    const findHexAt = (svgX: number, svgY: number): DragState['currentHex'] => {
+        let minTarget: DragState['currentHex'] = null;
         let minDist = hexSize;
         LEVEL_1.layout.forEach(tile => {
             const { x, y } = hexToPixel(tile.q, tile.r, hexSize);
@@ -228,12 +322,14 @@ export default function App() {
         return minTarget;
     };
 
-    const handlePointerDown = (e) => {
+    const handlePointerDown = (e: React.PointerEvent<SVGSVGElement>) => {
         if (animating || isClear) return;
         const svg = e.currentTarget;
         const pt = svg.createSVGPoint();
         pt.x = e.clientX; pt.y = e.clientY;
-        const { x: sx, y: sy } = pt.matrixTransform(svg.getScreenCTM().inverse());
+        const matrix = svg.getScreenCTM();
+        if (!matrix) return;
+        const { x: sx, y: sy } = pt.matrixTransform(matrix.inverse());
 
         const hit = findHexAt(sx, sy);
         if (hit && hit.type === 'slot' && selectedIdx !== null) {
@@ -246,12 +342,14 @@ export default function App() {
         }
     };
 
-    const handlePointerMove = (e) => {
+    const handlePointerMove = (e: React.PointerEvent<SVGSVGElement>) => {
         if (!dragState.active || animating) return;
         const svg = e.currentTarget;
         const pt = svg.createSVGPoint();
         pt.x = e.clientX; pt.y = e.clientY;
-        const { x: sx, y: sy } = pt.matrixTransform(svg.getScreenCTM().inverse());
+        const matrix = svg.getScreenCTM();
+        if (!matrix) return;
+        const { x: sx, y: sy } = pt.matrixTransform(matrix.inverse());
         const hit = findHexAt(sx, sy);
         if (!hit) return;
 
@@ -266,7 +364,8 @@ export default function App() {
         setDragState(prev => ({ ...prev, currentHex: hit }));
     };
 
-    const handleInsert = (tileQ, tileR, edgeIndex) => {
+    const handleInsert = (tileQ: number, tileR: number, edgeIndex: number) => {
+        if (selectedIdx === null) return;
         const piece = hand[selectedIdx];
         setAnimating(true);
         setReadySlot(null);
@@ -281,18 +380,18 @@ export default function App() {
         const entryDir = DIRS[edgeIndex];
         const startQ = tileQ + entryDir.dq;
         const startR = tileR + entryDir.dr;
-        const enteringPiece = { ...piece, q: startQ, r: startR };
+        const enteringPiece: Piece = { ...piece, q: startQ, r: startR };
         let currentBoard = [...board, enteringPiece];
         setBoard(currentBoard);
 
-        const movesMap = {};
+        const movesMap: Record<string, { q: number; r: number }> = {};
         let curQ = tileQ, curR = tileR, curEdge = edgeIndex;
         let pushId = enteringPiece.id;
-        let ejectedPiece = null;
+        let ejectedPieceId: string | null = null;
 
         while (true) {
             const tile = LEVEL_1.layout.find(t => t.q === curQ && t.r === curR);
-            if (!tile) { ejectedPiece = pushId; movesMap[pushId] = { q: curQ, r: curR }; break; }
+            if (!tile) { ejectedPieceId = pushId; movesMap[pushId] = { q: curQ, r: curR }; break; }
             movesMap[pushId] = { q: curQ, r: curR };
             const rail = LEVEL_1.defaultRails.find(r => r.from === curEdge || r.to === curEdge);
             if (!rail) break;
@@ -308,10 +407,13 @@ export default function App() {
         setTimeout(() => {
             setBoard(prev => prev.map(p => movesMap[p.id] ? { ...p, ...movesMap[p.id] } : p));
             setTimeout(() => {
-                if (ejectedPiece) {
-                    const p = currentBoard.find(x => x.id === ejectedPiece);
-                    setHand(prev => [...prev, { ...p, q: 0, r: 0 }]);
-                    setBoard(prev => prev.filter(x => x.id !== ejectedPiece));
+                if (ejectedPieceId) {
+                    const id = ejectedPieceId;
+                    const p = currentBoard.find(x => x.id === id);
+                    if (p) {
+                        setHand(prev => [...prev, { id: p.id, color: p.color, pattern: p.pattern }]);
+                        setBoard(prev => prev.filter(x => x.id !== id));
+                    }
                 }
                 setMoves(m => m + 1);
                 setAnimating(false);
@@ -387,7 +489,7 @@ export default function App() {
                                             </g>
                                         );
                                     })}
-                                    {tile.target && <Piece piece={tile.target} x={x} y={y} size={hexSize} isTarget={true} />}
+                                    {tile.target && <Piece piece={{ id: `target-${i}`, color: tile.target.color, pattern: tile.target.pattern }} x={x} y={y} size={hexSize} isTarget={true} />}
                                 </g>
                             );
                         })}
@@ -413,7 +515,7 @@ export default function App() {
 
                                     {/* Edges and Triangle Guides */}
                                     {Array.from({ length: 6 }).map((_, edgeIdx) => {
-                                        const hp = highlightedPaths.find(p => p.q === slot.q && p.r === slot.r && p.slotEdge === edgeIdx);
+                                        const hp = highlightedPaths.find(p => p.targetTileQ === slot.q && p.targetTileR === slot.r && p.slotEdge === edgeIdx);
                                         const p1 = getHexCorner(x, y, hexSize, edgeIdx);
                                         const p2 = getHexCorner(x, y, hexSize, (edgeIdx + 1) % 6);
                                         const info = getEdgeInfo(x, y, hexSize, edgeIdx);
@@ -478,5 +580,3 @@ export default function App() {
         </div>
     );
 }
-
-
