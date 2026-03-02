@@ -100,6 +100,7 @@ const PATH_COLORS = [
     '#3b82f6', // ブルー
     '#a855f7', // パープル
     '#22c55e', // グリーン
+    '#ef4444', // ルビーレッド  
 ];
 
 const PATTERNS = {
@@ -332,11 +333,25 @@ export default function App() {
         const { x: sx, y: sy } = pt.matrixTransform(matrix.inverse());
 
         const hit = findHexAt(sx, sy);
+
         if (hit && hit.type === 'slot' && selectedIdx !== null) {
+            // Virtual slot selection
             setReadySlot(hit);
             setHighlightedPaths(getPathsForSlot(hit));
             setDragState({ active: true, currentHex: hit });
+        } else if (readySlot && hit && hit.type === 'board') {
+            // Click-to-insert: Board tile clicked while a slot is selected
+            const matchingPath = highlightedPaths.find(hp => hp.targetTileQ === hit.q && hp.targetTileR === hit.r);
+            if (matchingPath) {
+                handleInsert(matchingPath.targetTileQ, matchingPath.targetTileR, matchingPath.originalEdge);
+            }
+            // Do not clear on invalid board click - let user try again or click inventory to cancel
+            setDragState({ active: false, currentHex: null });
+        } else if (!hit) {
+            // Clicked empty area on board: No longer clears selection (as per request)
+            setDragState({ active: false, currentHex: null });
         } else {
+            // Regular interaction (e.g., peeking or start of drag for something else)
             setIsPeek(true);
             setDragState({ active: true, currentHex: hit });
         }
@@ -563,14 +578,27 @@ export default function App() {
                 </div>
 
                 {/* Inventory */}
-                <div className="p-6 bg-stone-900 border-t border-stone-800 flex justify-center gap-5">
+                <div
+                    className="p-6 bg-stone-900 border-t border-stone-800 flex justify-center gap-5 cursor-pointer"
+                    onClick={(e) => {
+                        // Clear selection if clicking the container itself (empty space)
+                        if (e.target === e.currentTarget) {
+                            setReadySlot(null);
+                            setHighlightedPaths([]);
+                            setSelectedIdx(null);
+                        }
+                    }}
+                >
                     {hand.map((p, i) => (
                         <button
                             key={p.id}
-                            onClick={() => setSelectedIdx(selectedIdx === i ? null : i)}
+                            onClick={(e) => {
+                                e.stopPropagation(); // Prevent inventory container click
+                                setSelectedIdx(selectedIdx === i ? null : i);
+                            }}
                             className={`w-16 h-16 rounded-2xl border-2 transition-all flex items-center justify-center ${selectedIdx === i ? 'bg-stone-800 border-amber-500 ring-4 ring-amber-500/20' : 'bg-stone-800 border-stone-700'}`}
                         >
-                            <svg viewBox="-25 -25 50 50" className="w-12 h-12">
+                            <svg viewBox="-25 -25 50 50" className="w-12 h-12 pointer-events-none">
                                 <Piece piece={p} x={0} y={0} size={25} />
                             </svg>
                         </button>
