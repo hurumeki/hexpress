@@ -335,23 +335,16 @@ export default function App() {
         const hit = findHexAt(sx, sy);
 
         if (hit && hit.type === 'slot' && selectedIdx !== null) {
-            // Virtual slot selection
             setReadySlot(hit);
             setHighlightedPaths(getPathsForSlot(hit));
             setDragState({ active: true, currentHex: hit });
         } else if (readySlot && hit && hit.type === 'board') {
-            // Click-to-insert: Board tile clicked while a slot is selected
             const matchingPath = highlightedPaths.find(hp => hp.targetTileQ === hit.q && hp.targetTileR === hit.r);
             if (matchingPath) {
                 handleInsert(matchingPath.targetTileQ, matchingPath.targetTileR, matchingPath.originalEdge);
             }
-            // Do not clear on invalid board click - let user try again or click inventory to cancel
-            setDragState({ active: false, currentHex: null });
-        } else if (!hit) {
-            // Clicked empty area on board: No longer clears selection (as per request)
             setDragState({ active: false, currentHex: null });
         } else {
-            // Regular interaction (e.g., peeking or start of drag for something else)
             setIsPeek(true);
             setDragState({ active: true, currentHex: hit });
         }
@@ -433,9 +426,7 @@ export default function App() {
                 setMoves(m => m + 1);
                 setAnimating(false);
                 setHand(currentHand => {
-                    if (currentHand.length > 0) {
-                        setSelectedIdx(0);
-                    }
+                    if (currentHand.length > 0) setSelectedIdx(0);
                     return currentHand;
                 });
             }, 400);
@@ -458,8 +449,6 @@ export default function App() {
     return (
         <div className="min-h-screen bg-stone-700 flex flex-col items-center justify-center p-4 select-none touch-none">
             <div className="w-full max-w-md bg-stone-800 rounded-3xl shadow-2xl border border-stone-600 overflow-hidden">
-
-                {/* Header */}
                 <div className="p-5 bg-stone-900 flex justify-between items-center border-b border-stone-700">
                     <div className="flex flex-col">
                         <h1 className="text-white text-xl font-black italic tracking-tighter uppercase">Hexa Slide</h1>
@@ -476,7 +465,6 @@ export default function App() {
                     </div>
                 </div>
 
-                {/* Play Area */}
                 <div className="relative h-[380px] bg-stone-800 flex items-center justify-center overflow-visible">
                     <svg viewBox="-165 -180 330 360" className="w-full h-full" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp}>
                         <defs>
@@ -486,20 +474,16 @@ export default function App() {
                             </radialGradient>
                         </defs>
 
-                        {/* Board Tiles */}
                         {LEVEL_1.layout.map((tile, i) => {
                             const { x, y } = hexToPixel(tile.q, tile.r, hexSize);
                             const points = Array.from({ length: 6 }).map((_, j) => {
                                 const corner = getHexCorner(x, y, hexSize, j);
                                 return `${corner.x},${corner.y}`;
                             }).join(' ');
-
                             const activePath = highlightedPaths.find(hp => hp.path.some(p => p.q === tile.q && p.r === tile.r));
-
                             return (
                                 <g key={`tile-${i}`}>
                                     <polygon points={points} fill="#382c22" stroke={activePath ? activePath.color : "#282018"} strokeWidth={activePath ? 3 : 1} />
-                                    {/* Static Rails (No highlight) */}
                                     {LEVEL_1.defaultRails.map((r, j) => {
                                         const m1 = getEdgeInfo(x, y, hexSize, r.from);
                                         const m2 = getEdgeInfo(x, y, hexSize, r.to);
@@ -515,14 +499,11 @@ export default function App() {
                             );
                         })}
 
-                        {/* Virtual Slots & Guides */}
                         {outerSlots.map((slot, i) => {
                             const { x, y } = hexToPixel(slot.q, slot.r, hexSize);
                             const isReady = readySlot && readySlot.q === slot.q && readySlot.r === slot.r;
-
                             return (
                                 <g key={`slot-${i}`}>
-                                    {/* Base Slot Shape */}
                                     <polygon
                                         points={Array.from({ length: 6 }).map((_, j) => {
                                             const c = getHexCorner(x, y, hexSize, j);
@@ -533,31 +514,26 @@ export default function App() {
                                         strokeWidth={1}
                                         strokeDasharray={isReady ? "none" : "3 3"}
                                     />
-
-                                    {/* Edges and Triangle Guides */}
                                     {Array.from({ length: 6 }).map((_, edgeIdx) => {
-                                        const hp = highlightedPaths.find(p => p.targetTileQ === slot.q && p.targetTileR === slot.r && p.slotEdge === edgeIdx);
+                                        const hp = highlightedPaths.find(p => p.targetTileQ === slot.targetTileQ && p.targetTileR === slot.targetTileR && p.originalEdge === slot.originalEdge && p.slotEdge === edgeIdx);
                                         const p1 = getHexCorner(x, y, hexSize, edgeIdx);
                                         const p2 = getHexCorner(x, y, hexSize, (edgeIdx + 1) % 6);
                                         const info = getEdgeInfo(x, y, hexSize, edgeIdx);
-
                                         return (
                                             <g key={`edge-${edgeIdx}`}>
-                                                {/* Edge line: Show color if active, otherwise faint white if slot is active */}
                                                 <line
                                                     x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y}
                                                     stroke={hp ? hp.color : (isReady ? "rgba(255,255,255,0.4)" : "transparent")}
                                                     strokeWidth={hp ? 4 : 1}
                                                 />
-                                                {/* Navigation Triangle */}
                                                 {hp && (
                                                     <path
-                                                        d="M-10,8 L10,8 L0,-12 Z"
+                                                        d="M-5,4 L5,4 L0,-6 Z"
                                                         fill={hp.color}
                                                         stroke="white"
-                                                        strokeWidth="1.5"
+                                                        strokeWidth="1"
                                                         className="animate-pulse"
-                                                        transform={`translate(${info.x}, ${info.y}) rotate(${info.angle + 180})`}
+                                                        transform={`translate(${info.x}, ${info.y}) rotate(${info.angle + 90})`}
                                                     />
                                                 )}
                                             </g>
@@ -570,14 +546,11 @@ export default function App() {
                             );
                         })}
 
-                        {/* Game Pieces (No Highlights on Piece Body) */}
                         {board.map(p => {
                             const { x, y } = hexToPixel(p.q, p.r, hexSize);
                             return <Piece key={p.id} piece={p} x={x} y={y} size={hexSize} isPeek={isPeek} />;
                         })}
                     </svg>
-
-                    {/* Victory View */}
                     {isClear && (
                         <div className="absolute inset-0 bg-stone-900/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-500 z-50">
                             <h2 className="text-3xl font-black text-white italic tracking-tighter mb-8">MISSION CLEAR</h2>
@@ -586,11 +559,9 @@ export default function App() {
                     )}
                 </div>
 
-                {/* Inventory */}
                 <div
                     className="p-6 bg-stone-900 border-t border-stone-800 flex justify-center gap-5 cursor-pointer"
                     onClick={(e) => {
-                        // Clear selection if clicking the container itself (empty space)
                         if (e.target === e.currentTarget) {
                             setReadySlot(null);
                             setHighlightedPaths([]);
@@ -602,7 +573,7 @@ export default function App() {
                         <button
                             key={p.id}
                             onClick={(e) => {
-                                e.stopPropagation(); // Prevent inventory container click
+                                e.stopPropagation();
                                 setSelectedIdx(selectedIdx === i ? null : i);
                             }}
                             className={`w-16 h-16 rounded-2xl border-2 transition-all flex items-center justify-center ${selectedIdx === i ? 'bg-stone-800 border-amber-500 ring-4 ring-amber-500/20' : 'bg-stone-800 border-stone-700'}`}
