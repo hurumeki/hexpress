@@ -190,7 +190,7 @@ interface PieceProps {
 
 const Piece: React.FC<PieceProps> = ({ piece, x, y, size, isTarget = false, isPeek = false, ghost = false }) => {
     if (!piece) return null;
-    let opacity = isTarget ? 0.3 : (isPeek ? 0.2 : 1);
+    let opacity = isTarget ? 0.3 : (isPeek ? 0.05 : 1);
     if (ghost) opacity = 0.5;
     const scale = isTarget ? 0.75 : 1;
 
@@ -432,6 +432,12 @@ export default function App() {
                 }
                 setMoves(m => m + 1);
                 setAnimating(false);
+                setHand(currentHand => {
+                    if (currentHand.length > 0) {
+                        setSelectedIdx(0);
+                    }
+                    return currentHand;
+                });
             }, 400);
         }, 50);
     };
@@ -498,7 +504,7 @@ export default function App() {
                                         const m1 = getEdgeInfo(x, y, hexSize, r.from);
                                         const m2 = getEdgeInfo(x, y, hexSize, r.to);
                                         return (
-                                            <g key={`rail-${j}`} stroke="#1a120b" strokeWidth="2" opacity={isPeek ? 0.3 : 1}>
+                                            <g key={`rail-${j}`} stroke="#1a120b" strokeWidth="1" opacity={isPeek ? 0.3 : 1}>
                                                 <line x1={m1.x} y1={m1.y} x2={x} y2={y} />
                                                 <line x1={x} y1={y} x2={m2.x} y2={m2.y} />
                                             </g>
@@ -546,8 +552,11 @@ export default function App() {
                                                 {/* Navigation Triangle */}
                                                 {hp && (
                                                     <path
-                                                        d="M-8,6 L8,6 L0,-8 Z"
+                                                        d="M-10,8 L10,8 L0,-12 Z"
                                                         fill={hp.color}
+                                                        stroke="white"
+                                                        strokeWidth="1.5"
+                                                        className="animate-pulse"
                                                         transform={`translate(${info.x}, ${info.y}) rotate(${info.angle + 180})`}
                                                     />
                                                 )}
@@ -555,7 +564,7 @@ export default function App() {
                                         );
                                     })}
                                     {isReady && selectedIdx !== null && (
-                                        <Piece piece={hand[selectedIdx]} x={x} y={y} size={hexSize} ghost={true} />
+                                        <Piece piece={hand[selectedIdx]} x={x} y={y} size={hexSize} />
                                     )}
                                 </g>
                             );
