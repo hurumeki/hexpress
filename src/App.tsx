@@ -515,7 +515,7 @@ export default function App() {
                                         strokeDasharray={isReady ? "none" : "3 3"}
                                     />
                                     {Array.from({ length: 6 }).map((_, edgeIdx) => {
-                                        const hp = highlightedPaths.find(p => p.targetTileQ === slot.targetTileQ && p.targetTileR === slot.targetTileR && p.originalEdge === slot.originalEdge && p.slotEdge === edgeIdx);
+                                        const hp = highlightedPaths.find(p => p.targetTileQ === slot.targetTileQ && p.targetTileR === slot.targetTileR && p.originalEdge === slot.originalEdge && p.slotEdge === (edgeIdx + 2) % 6);
                                         const p1 = getHexCorner(x, y, hexSize, edgeIdx);
                                         const p2 = getHexCorner(x, y, hexSize, (edgeIdx + 1) % 6);
                                         const info = getEdgeInfo(x, y, hexSize, edgeIdx);
@@ -532,7 +532,7 @@ export default function App() {
                                                         fill={hp.color}
                                                         stroke="white"
                                                         strokeWidth="1"
-                                                        className="animate-pulse"
+                                                        className=""
                                                         transform={`translate(${info.x}, ${info.y}) rotate(${info.angle + 90})`}
                                                     />
                                                 )}
