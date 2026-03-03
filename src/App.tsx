@@ -1,19 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 
 // --- 型定義 ---
 
-interface Piece {
-    id: string;
-    color: string;
-    pattern: string;
-    q: number;
-    r: number;
-}
+type ScreenMode = 'TITLE' | 'SETTINGS' | 'STAGE_SELECT' | 'GAME';
 
 interface PieceTemplate {
     id: string;
     color: string;
     pattern: string;
+}
+
+interface Piece extends PieceTemplate {
+    q: number;
+    r: number;
 }
 
 interface Target {
@@ -33,12 +32,27 @@ interface Rail {
 }
 
 interface Level {
+    id: number;
+    name: string;
     excellentMoves: number;
     goodMoves: number;
     layout: Tile[];
     defaultRails: Rail[];
     initialBoard: Record<string, PieceTemplate>;
     initialHand: PieceTemplate[];
+    isTutorial?: boolean;
+}
+
+interface StageStatus {
+    cleared: boolean;
+    bestMoves: number | null;
+}
+
+interface UserData {
+    soundEnabled: boolean;
+    adsEnabled: boolean;
+    stageProgress: Record<number, StageStatus>;
+    lastActiveLevelId: number | null;
 }
 
 interface Point {
@@ -122,33 +136,82 @@ const DIRS = [
     { dq: 0, dr: -1 }
 ];
 
-const LEVEL_1: Level = {
-    excellentMoves: 5,
-    goodMoves: 10,
-    layout: [
-        { q: 0, r: 0, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE } },
-        { q: 1, r: -1, target: { color: COLORS.stone, pattern: PATTERNS.DIAMOND } },
-        { q: 1, r: 0, target: null },
-        { q: 0, r: 1, target: null },
-        { q: -1, r: 1, target: { color: COLORS.grass, pattern: PATTERNS.LINES } },
-        { q: -1, r: 0, target: null },
-        { q: 0, r: -1, target: null }
-    ],
-    defaultRails: [
-        { from: 0, to: 3 },
-        { from: 1, to: 4 },
-        { from: 2, to: 5 }
-    ],
-    initialBoard: {
-        '0,0': { id: 'p1', color: COLORS.neutral, pattern: PATTERNS.NONE },
-        '1,-1': { id: 'p2', color: COLORS.wood, pattern: PATTERNS.CIRCLE },
-        '0,1': { id: 'p3', color: COLORS.stone, pattern: PATTERNS.DIAMOND }
+const LEVELS: Level[] = [
+    {
+        id: 0,
+        name: "Tutorial",
+        isTutorial: true,
+        excellentMoves: 2,
+        goodMoves: 4,
+        layout: [
+            { q: 0, r: -1, target: { color: COLORS.wood, pattern: PATTERNS.NONE } },
+            { q: 0, r: 0, target: null },
+            { q: 0, r: 1, target: null }
+        ],
+        defaultRails: [
+            { from: 2, to: 5 }
+        ],
+        initialBoard: {
+            // '0,-1': { id: 't1', color: COLORS.neutral, pattern: PATTERNS.NONE },
+            // '0,0': { id: 't2', color: COLORS.neutral, pattern: PATTERNS.NONE },
+            '0,1': { id: 't3', color: COLORS.wood, pattern: PATTERNS.NONE }
+        },
+        initialHand: [
+            { id: 'th1', color: COLORS.neutral, pattern: PATTERNS.NONE },
+            { id: 'th2', color: COLORS.neutral, pattern: PATTERNS.NONE }
+        ]
     },
-    initialHand: [
-        { id: 'h1', color: COLORS.grass, pattern: PATTERNS.LINES },
-        { id: 'h2', color: COLORS.neutral, pattern: PATTERNS.NONE }
-    ]
-};
+    {
+        id: 1,
+        name: "Swap Triangle",
+        excellentMoves: 5,
+        goodMoves: 10,
+        layout: [
+            { q: 0, r: 0, target: { color: COLORS.stone, pattern: PATTERNS.DIAMOND } },
+            { q: 1, r: -1, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE } },
+            { q: 1, r: 0, target: { color: COLORS.grass, pattern: PATTERNS.LINES } }
+        ],
+        defaultRails: [
+            { from: 0, to: 3 },
+            { from: 1, to: 4 },
+            { from: 2, to: 5 }
+        ],
+        initialBoard: {
+            '0,0': { id: 'p1', color: COLORS.wood, pattern: PATTERNS.CIRCLE },
+            '1,-1': { id: 'p2', color: COLORS.stone, pattern: PATTERNS.DIAMOND },
+            '1,0': { id: 'p3', color: COLORS.grass, pattern: PATTERNS.LINES }
+        },
+        initialHand: [
+            { id: 'h1', color: COLORS.neutral, pattern: PATTERNS.NONE }
+        ]
+    },
+    {
+        id: 2,
+        name: "Square Shift",
+        excellentMoves: 8,
+        goodMoves: 15,
+        layout: [
+            { q: 0, r: 0, target: { color: COLORS.gold, pattern: PATTERNS.SQUARE } },
+            { q: 1, r: 0, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE } },
+            { q: 0, r: 1, target: { color: COLORS.stone, pattern: PATTERNS.DIAMOND } },
+            { q: 1, r: 1, target: { color: COLORS.grass, pattern: PATTERNS.LINES } }
+        ],
+        defaultRails: [
+            { from: 0, to: 3 },
+            { from: 1, to: 4 },
+            { from: 2, to: 5 }
+        ],
+        initialBoard: {
+            '0,0': { id: 'q1', color: COLORS.wood, pattern: PATTERNS.CIRCLE },
+            '1,0': { id: 'q2', color: COLORS.stone, pattern: PATTERNS.DIAMOND },
+            '0,1': { id: 'q3', color: COLORS.grass, pattern: PATTERNS.LINES },
+            '1,1': { id: 'q4', color: COLORS.gold, pattern: PATTERNS.SQUARE }
+        },
+        initialHand: [
+            { id: 'qh1', color: COLORS.neutral, pattern: PATTERNS.NONE }
+        ]
+    }
+];
 
 // --- ヘルパー関数 ---
 
@@ -174,6 +237,13 @@ const getEdgeInfo = (centerX: number, centerY: number, size: number, edgeIdx: nu
         y: (p1.y + p2.y) / 2,
         angle: edgeIdx * 60 + 60
     };
+};
+
+const getMedalColor = (bestMoves: number | null, excellent: number, good: number) => {
+    if (bestMoves === null) return null;
+    if (bestMoves <= excellent) return '#fbbf24'; // Gold
+    if (bestMoves <= good) return '#9ca3af';      // Silver
+    return '#b45309';                             // Bronze
 };
 
 // --- サブコンポーネント ---
@@ -218,17 +288,266 @@ const Piece: React.FC<PieceProps> = ({ piece, x, y, size, isTarget = false, isPe
     );
 };
 
+const HexMedal: React.FC<{ color: string | null; size: number }> = ({ color, size }) => {
+    const points = Array.from({ length: 6 }).map((_, i) => {
+        const angle = (Math.PI / 180) * (60 * i + 30);
+        return `${size * Math.cos(angle)},${size * Math.sin(angle)}`;
+    }).join(' ');
+
+    return (
+        <svg width={size * 2.2} height={size * 2.2} viewBox={`-${size * 1.1} -${size * 1.1} ${size * 2.2} ${size * 2.2}`}>
+            <polygon
+                points={points}
+                fill={color || 'transparent'}
+                stroke={color ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.2)'}
+                strokeWidth={2}
+            />
+        </svg>
+    );
+};
+
 // --- メインアプリ ---
 
+const STORAGE_KEY = 'hexa_slide_userdata';
+
 export default function App() {
+    const [screen, setScreen] = useState<ScreenMode>('TITLE');
+    const [userData, setUserData] = useState<UserData>(() => {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        return saved ? JSON.parse(saved) : {
+            soundEnabled: true,
+            adsEnabled: true,
+            stageProgress: {},
+            lastActiveLevelId: null
+        };
+    });
+
+    const [currentLevelId, setCurrentLevelId] = useState<number | null>(null);
+
+    useEffect(() => {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userData));
+    }, [userData]);
+
+    const activeLevel = useMemo(() => LEVELS.find(l => l.id === currentLevelId), [currentLevelId]);
+
+    const updateStageProgress = (levelId: number, moves: number) => {
+        setUserData(prev => {
+            const current = prev.stageProgress[levelId];
+            const best = (current && current.bestMoves !== null) ? Math.min(current.bestMoves, moves) : moves;
+            return {
+                ...prev,
+                stageProgress: {
+                    ...prev.stageProgress,
+                    [levelId]: { cleared: true, bestMoves: best }
+                },
+                lastActiveLevelId: levelId
+            };
+        });
+    };
+
+    const clearAllData = () => {
+        const fresh: UserData = {
+            soundEnabled: true,
+            adsEnabled: true,
+            stageProgress: {},
+            lastActiveLevelId: null
+        };
+        setUserData(fresh);
+    };
+
+    const handleContinue = () => {
+        const last = userData.lastActiveLevelId;
+        if (last === null) {
+            setCurrentLevelId(0);
+        } else {
+            // Find next level if last was cleared
+            const lastStatus = userData.stageProgress[last];
+            if (lastStatus && lastStatus.cleared && last < LEVELS.length - 1) {
+                setCurrentLevelId(last + 1);
+            } else {
+                setCurrentLevelId(last);
+            }
+        }
+        setScreen('GAME');
+    };
+
+    const selectLevel = (id: number) => {
+        setCurrentLevelId(id);
+        setScreen('GAME');
+    };
+
+    // --- 各画面のレンダリング ---
+
+    if (screen === 'TITLE') {
+        const hasData = Object.keys(userData.stageProgress).length > 0;
+        return (
+            <div className="min-h-screen bg-stone-700 flex flex-col items-center justify-center p-4 select-none touch-none text-white">
+                <div className="w-full max-w-md bg-stone-800 rounded-3xl shadow-2xl border border-stone-600 overflow-hidden p-8 flex flex-col items-center">
+                    <h1 className="text-5xl font-black italic tracking-tighter uppercase mb-2">HEXA SLIDE</h1>
+                    <p className="text-amber-500 font-bold uppercase tracking-widest text-sm mb-12">Puzzle Odyssey</p>
+
+                    <div className="flex flex-col gap-4 w-full">
+                        <button
+                            onClick={() => hasData ? handleContinue() : selectLevel(0)}
+                            className="w-full py-5 bg-amber-500 text-black font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic"
+                        >
+                            {hasData ? 'Continue' : 'Start'}
+                        </button>
+                        <button
+                            onClick={() => setScreen('STAGE_SELECT')}
+                            className="w-full py-5 bg-stone-700 text-white font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic border border-stone-600"
+                        >
+                            Stage Select
+                        </button>
+                        <button
+                            onClick={() => setScreen('SETTINGS')}
+                            className="w-full py-5 bg-stone-700 text-white font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic border border-stone-600"
+                        >
+                            Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (screen === 'SETTINGS') {
+        return (
+            <div className="min-h-screen bg-stone-700 flex flex-col items-center justify-center p-4 select-none touch-none text-white">
+                <div className="w-full max-w-md bg-stone-800 rounded-3xl shadow-2xl border border-stone-600 overflow-hidden flex flex-col">
+                    <div className="p-6 bg-stone-900 border-b border-stone-700 flex justify-between items-center">
+                        <h2 className="text-2xl font-black italic uppercase">Settings</h2>
+                        <button onClick={() => setScreen('TITLE')} className="w-10 h-10 flex items-center justify-center bg-stone-800 rounded-xl border border-stone-600 text-xl font-bold">×</button>
+                    </div>
+                    <div className="p-8 flex flex-col gap-8">
+                        <div className="flex justify-between items-center">
+                            <span className="text-xl font-bold uppercase italic tracking-tight">Sound Effects</span>
+                            <button
+                                onClick={() => setUserData(prev => ({ ...prev, soundEnabled: !prev.soundEnabled }))}
+                                className={`w-16 h-8 rounded-full relative transition-colors ${userData.soundEnabled ? 'bg-amber-500' : 'bg-stone-600'}`}
+                            >
+                                <div className={`absolute top-1 w-6 h-6 bg-white rounded-full transition-all ${userData.soundEnabled ? 'right-1' : 'left-1'}`} />
+                            </button>
+                        </div>
+                        <div className="flex justify-between items-center">
+                            <span className="text-xl font-bold uppercase italic tracking-tight">Show Ads</span>
+                            <button
+                                onClick={() => setUserData(prev => ({ ...prev, adsEnabled: !prev.adsEnabled }))}
+                                className={`w-16 h-8 rounded-full relative transition-colors ${userData.adsEnabled ? 'bg-amber-500' : 'bg-stone-600'}`}
+                            >
+                                <div className={`absolute top-1 w-6 h-6 bg-white rounded-full transition-all ${userData.adsEnabled ? 'right-1' : 'left-1'}`} />
+                            </button>
+                        </div>
+                        <div className="pt-8 border-t border-stone-700">
+                            <button
+                                onClick={() => { if (confirm('Clear all progress?')) clearAllData(); }}
+                                className="w-full py-4 bg-red-900/50 text-red-200 font-bold rounded-xl border border-red-800 hover:bg-red-900 active:scale-95 transition-all uppercase tracking-tighter"
+                            >
+                                Erase Play Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (screen === 'STAGE_SELECT') {
+        return <StageSelectScreen userData={userData} onSelect={selectLevel} onBack={() => setScreen('TITLE')} />;
+    }
+
+    if (screen === 'GAME' && activeLevel) {
+        return (
+            <GameScreen
+                level={activeLevel}
+                bestMoves={userData.stageProgress[activeLevel.id]?.bestMoves || null}
+                onClear={(moves) => updateStageProgress(activeLevel.id, moves)}
+                onExit={() => setScreen('STAGE_SELECT')}
+            />
+        );
+    }
+
+    return null;
+}
+
+// --- 画面パーツ ---
+
+const StageSelectScreen: React.FC<{ userData: UserData; onSelect: (id: number) => void; onBack: () => void }> = ({ userData, onSelect, onBack }) => {
+    const [page, setPage] = useState(0);
+    const stagesPerPage = 10;
+    const totalPages = Math.ceil(LEVELS.length / stagesPerPage);
+
+    const stages = LEVELS.slice(page * stagesPerPage, (page + 1) * stagesPerPage);
+
+    return (
+        <div className="min-h-screen bg-stone-700 flex flex-col items-center justify-center p-4 select-none touch-none text-white">
+            <div className="w-full max-w-md bg-stone-800 rounded-3xl shadow-2xl border border-stone-600 overflow-hidden flex flex-col h-[650px]">
+                <div className="p-6 bg-stone-900 border-b border-stone-700 flex justify-between items-center">
+                    <h2 className="text-2xl font-black italic uppercase">Stages</h2>
+                    <button onClick={onBack} className="w-10 h-10 flex items-center justify-center bg-stone-800 rounded-xl border border-stone-600 text-xl font-bold">×</button>
+                </div>
+
+                <div className="flex-1 p-6 relative flex flex-col overflow-hidden">
+                    <div className="grid grid-cols-2 grid-rows-5 gap-4 flex-1">
+                        {stages.map((level) => {
+                            const status = userData.stageProgress[level.id];
+                            const medalColor = getMedalColor(status?.bestMoves || null, level.excellentMoves, level.goodMoves);
+
+                            return (
+                                <button
+                                    key={level.id}
+                                    onClick={() => onSelect(level.id)}
+                                    className="bg-stone-900 rounded-2xl p-4 border border-stone-700 flex flex-col items-center justify-between hover:border-amber-500 transition-all active:scale-95"
+                                >
+                                    <div className="flex justify-between w-full items-start">
+                                        <span className="text-xl font-black italic text-stone-500">#{level.id + 1}</span>
+                                        <HexMedal color={medalColor} size={10} />
+                                    </div>
+
+                                    {/* Thumbnail Preview Area */}
+                                    <div className="w-full h-16 flex items-center justify-center opacity-40">
+                                        <svg viewBox="-40 -40 80 80" className="w-full h-full">
+                                            {level.layout.map((p, j) => {
+                                                const { x, y } = hexToPixel(p.q, p.r, 12);
+                                                const pts = Array.from({ length: 6 }).map((_, k) => {
+                                                    const a = (Math.PI / 180) * (60 * k + 30);
+                                                    return `${x + 12 * Math.cos(a)},${y + 12 * Math.sin(a)}`;
+                                                }).join(' ');
+                                                return <polygon key={j} points={pts} fill="#333" stroke="#555" strokeWidth={1} />;
+                                            })}
+                                        </svg>
+                                    </div>
+
+                                    <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mt-2 truncate w-full text-center">
+                                        {level.name}
+                                    </span>
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+
+                {totalPages > 1 && (
+                    <div className="p-4 bg-stone-900 flex justify-center gap-4">
+                        <button disabled={page === 0} onClick={() => setPage(p => p - 1)} className="px-4 py-2 bg-stone-800 rounded-lg disabled:opacity-30">←</button>
+                        <span className="flex items-center font-bold text-stone-500 tracking-widest">{page + 1} / {totalPages}</span>
+                        <button disabled={page >= totalPages - 1} onClick={() => setPage(p => p + 1)} className="px-4 py-2 bg-stone-800 rounded-lg disabled:opacity-30">→</button>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+};
+
+const GameScreen: React.FC<{ level: Level; bestMoves: number | null; onClear: (m: number) => void; onExit: () => void }> = ({ level, bestMoves, onClear, onExit }) => {
     const [board, setBoard] = useState<Piece[]>(() =>
-        Object.entries(LEVEL_1.initialBoard).map(([key, p]) => {
+        Object.entries(level.initialBoard).map(([key, p]) => {
             const [q, r] = key.split(',').map(Number);
             return { ...p, q, r };
         })
     );
-    const [hand, setHand] = useState<PieceTemplate[]>(LEVEL_1.initialHand);
-    const [selectedIdx, setSelectedIdx] = useState<number | null>(0);
+    const [hand, setHand] = useState<PieceTemplate[]>(level.initialHand);
+    const [selectedIdx, setSelectedIdx] = useState<number | null>(hand.length > 0 ? 0 : null);
     const [moves, setMoves] = useState<number>(0);
     const [history, setHistory] = useState<HistoryState[]>([]);
     const [isClear, setIsClear] = useState<boolean>(false);
@@ -243,27 +562,30 @@ export default function App() {
 
     useEffect(() => {
         if (animating) return;
-        const allMatch = LEVEL_1.layout.every(tile => {
+        const allMatch = level.layout.every(tile => {
             if (!tile.target) return true;
             const p = board.find(p => p.q === tile.q && p.r === tile.r);
             return p && p.color === tile.target.color && p.pattern === tile.target.pattern;
         });
-        if (allMatch && moves > 0) setIsClear(true);
-    }, [board, animating, moves]);
+        if (allMatch && moves > 0 && !isClear) {
+            setIsClear(true);
+            onClear(moves);
+        }
+    }, [board, animating, moves, level, isClear, onClear]);
 
     const calculatePath = (startTileQ: number, startTileR: number, edgeIndex: number): PathStep[] => {
         const path: PathStep[] = [];
         let curQ = startTileQ, curR = startTileR, curEdge = edgeIndex;
 
         while (true) {
-            const tile = LEVEL_1.layout.find(t => t.q === curQ && t.r === curR);
+            const tile = level.layout.find(t => t.q === curQ && t.r === curR);
             if (!tile) {
                 path.push({ q: curQ, r: curR, exit: true });
                 break;
             }
             path.push({ q: curQ, r: curR });
 
-            const rail = LEVEL_1.defaultRails.find(r => r.from === curEdge || r.to === curEdge);
+            const rail = level.defaultRails.find(r => r.from === curEdge || r.to === curEdge);
             if (!rail) break;
 
             const exitEdge = rail.from === curEdge ? rail.to : rail.from;
@@ -278,22 +600,25 @@ export default function App() {
         return path;
     };
 
-    const outerSlots: OuterSlot[] = [];
-    LEVEL_1.layout.forEach(tile => {
-        for (let i = 0; i < 6; i++) {
-            const hasRail = LEVEL_1.defaultRails.some(r => r.from === i || r.to === i);
-            const neighbor = LEVEL_1.layout.find(t => t.q === tile.q + DIRS[i].dq && t.r === tile.r + DIRS[i].dr);
-            if (hasRail && !neighbor) {
-                outerSlots.push({
-                    q: tile.q + DIRS[i].dq,
-                    r: tile.r + DIRS[i].dr,
-                    targetTileQ: tile.q,
-                    targetTileR: tile.r,
-                    originalEdge: i
-                });
+    const outerSlots: OuterSlot[] = useMemo(() => {
+        const slots: OuterSlot[] = [];
+        level.layout.forEach(tile => {
+            for (let i = 0; i < 6; i++) {
+                const hasRail = level.defaultRails.some(r => r.from === i || r.to === i);
+                const neighbor = level.layout.find(t => t.q === tile.q + DIRS[i].dq && t.r === tile.r + DIRS[i].dr);
+                if (hasRail && !neighbor) {
+                    slots.push({
+                        q: tile.q + DIRS[i].dq,
+                        r: tile.r + DIRS[i].dr,
+                        targetTileQ: tile.q,
+                        targetTileR: tile.r,
+                        originalEdge: i
+                    });
+                }
             }
-        }
-    });
+        });
+        return slots;
+    }, [level]);
 
     const getPathsForSlot = (slot: OuterSlot): HighlightedPath[] => {
         const relevantEntries = outerSlots.filter(s => s.q === slot.q && s.r === slot.r);
@@ -310,7 +635,7 @@ export default function App() {
     const findHexAt = (svgX: number, svgY: number): DragState['currentHex'] => {
         let minTarget: DragState['currentHex'] = null;
         let minDist = hexSize;
-        LEVEL_1.layout.forEach(tile => {
+        level.layout.forEach(tile => {
             const { x, y } = hexToPixel(tile.q, tile.r, hexSize);
             const d = Math.sqrt((x - svgX) ** 2 + (y - svgY) ** 2);
             if (d < minDist) { minDist = d; minTarget = { ...tile, type: 'board' }; }
@@ -374,7 +699,7 @@ export default function App() {
 
     const handleInsert = (tileQ: number, tileR: number, edgeIndex: number) => {
         if (selectedIdx === null) return;
-        const piece = hand[selectedIdx];
+        const pieceTemplate = hand[selectedIdx];
         setAnimating(true);
         setReadySlot(null);
         setHighlightedPaths([]);
@@ -388,7 +713,7 @@ export default function App() {
         const entryDir = DIRS[edgeIndex];
         const startQ = tileQ + entryDir.dq;
         const startR = tileR + entryDir.dr;
-        const enteringPiece: Piece = { ...piece, q: startQ, r: startR };
+        const enteringPiece: Piece = { ...pieceTemplate, q: startQ, r: startR };
         let currentBoard = [...board, enteringPiece];
         setBoard(currentBoard);
 
@@ -398,10 +723,10 @@ export default function App() {
         let ejectedPieceId: string | null = null;
 
         while (true) {
-            const tile = LEVEL_1.layout.find(t => t.q === curQ && t.r === curR);
+            const tile = level.layout.find(t => t.q === curQ && t.r === curR);
             if (!tile) { ejectedPieceId = pushId; movesMap[pushId] = { q: curQ, r: curR }; break; }
             movesMap[pushId] = { q: curQ, r: curR };
-            const rail = LEVEL_1.defaultRails.find(r => r.from === curEdge || r.to === curEdge);
+            const rail = level.defaultRails.find(r => r.from === curEdge || r.to === curEdge);
             if (!rail) break;
             const exitEdge = rail.from === curEdge ? rail.to : rail.from;
             const targetP = currentBoard.find(p => p.q === curQ && p.r === curR && p.id !== pushId);
@@ -446,21 +771,29 @@ export default function App() {
         setIsClear(false); setReadySlot(null); setHighlightedPaths([]);
     };
 
+    const currentMedalColor = getMedalColor(bestMoves, level.excellentMoves, level.goodMoves);
+
     return (
         <div className="min-h-screen bg-stone-700 flex flex-col items-center justify-center p-4 select-none touch-none">
-            <div className="w-full max-w-md bg-stone-800 rounded-3xl shadow-2xl border border-stone-600 overflow-hidden">
-                <div className="p-5 bg-stone-900 flex justify-between items-center border-b border-stone-700">
-                    <div className="flex flex-col">
-                        <h1 className="text-white text-xl font-black italic tracking-tighter uppercase">Hexa Slide</h1>
-                        <span className="text-[10px] text-amber-500 font-bold uppercase tracking-widest mt-0.5">Navigation System</span>
+            <div className="w-full max-w-md bg-stone-800 rounded-3xl shadow-2xl border border-stone-600 overflow-hidden flex flex-col">
+                <div className="p-5 bg-stone-900 flex justify-between items-center border-b border-stone-700 text-white">
+                    <div className="flex items-center gap-3">
+                        <button onClick={onExit} className="w-10 h-10 flex items-center justify-center bg-stone-800 rounded-xl border border-stone-600 hover:border-amber-500 transition-colors">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M15 18l-6-6 6-6" /></svg>
+                        </button>
+                        <div className="flex flex-col">
+                            <h1 className="text-xl font-black italic tracking-tighter uppercase leading-none">#{level.id + 1}</h1>
+                            <span className="text-[10px] text-stone-500 font-bold uppercase tracking-widest">{level.name}</span>
+                        </div>
                     </div>
                     <div className="flex items-center gap-4">
-                        <div className="text-right mr-2">
+                        <HexMedal color={currentMedalColor} size={12} />
+                        <div className="text-right">
                             <p className="text-[9px] text-stone-500 font-bold uppercase">Moves</p>
-                            <p className="text-2xl font-mono font-black text-white">{moves}</p>
+                            <p className="text-2xl font-mono font-black">{moves}</p>
                         </div>
-                        <button onClick={undo} disabled={history.length === 0 || animating} className="w-10 h-10 flex items-center justify-center bg-stone-800 hover:bg-stone-700 rounded-xl border border-stone-600 active:scale-90 transition-all">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5"><path d="M3 10h10a8 8 0 0 1 8 8v2M3 10l6-6m-6 6l6 6" /></svg>
+                        <button onClick={undo} disabled={history.length === 0 || animating} className="w-10 h-10 flex items-center justify-center bg-stone-800 hover:bg-stone-700 rounded-xl border border-stone-600 active:scale-90 transition-all disabled:opacity-30">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 10h10a8 8 0 0 1 8 8v2M3 10l6-6m-6 6l6 6" /></svg>
                         </button>
                     </div>
                 </div>
@@ -474,7 +807,7 @@ export default function App() {
                             </radialGradient>
                         </defs>
 
-                        {LEVEL_1.layout.map((tile, i) => {
+                        {level.layout.map((tile, i) => {
                             const { x, y } = hexToPixel(tile.q, tile.r, hexSize);
                             const points = Array.from({ length: 6 }).map((_, j) => {
                                 const corner = getHexCorner(x, y, hexSize, j);
@@ -484,7 +817,7 @@ export default function App() {
                             return (
                                 <g key={`tile-${i}`}>
                                     <polygon points={points} fill="#382c22" stroke={activePath ? activePath.color : "#282018"} strokeWidth={activePath ? 3 : 1} />
-                                    {LEVEL_1.defaultRails.map((r, j) => {
+                                    {level.defaultRails.map((r, j) => {
                                         const m1 = getEdgeInfo(x, y, hexSize, r.from);
                                         const m2 = getEdgeInfo(x, y, hexSize, r.to);
                                         return (
@@ -553,14 +886,20 @@ export default function App() {
                     </svg>
                     {isClear && (
                         <div className="absolute inset-0 bg-stone-900/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-500 z-50">
-                            <h2 className="text-3xl font-black text-white italic tracking-tighter mb-8">MISSION CLEAR</h2>
-                            <button onClick={() => window.location.reload()} className="px-12 py-4 bg-amber-500 text-black font-black rounded-2xl active:scale-95 transition-transform">NEXT LEVEL</button>
+                            <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter mb-4">MISSION CLEAR</h2>
+                            <div className="flex flex-col items-center gap-2 mb-8">
+                                <HexMedal color={getMedalColor(moves, level.excellentMoves, level.goodMoves)} size={30} />
+                                <span className="text-amber-500 font-black text-xl italic uppercase tracking-widest">
+                                    {moves <= level.excellentMoves ? 'EXCELLENT!' : moves <= level.goodMoves ? 'GOOD!' : 'CLEARED'}
+                                </span>
+                            </div>
+                            <button onClick={onExit} className="px-12 py-4 bg-amber-500 text-black font-black rounded-2xl active:scale-95 transition-transform uppercase italic">NEXT LEVEL</button>
                         </div>
                     )}
                 </div>
 
                 <div
-                    className="p-6 bg-stone-900 border-t border-stone-800 flex justify-center gap-5 cursor-pointer"
+                    className="p-6 bg-stone-900 border-t border-stone-800 flex justify-center gap-5 cursor-pointer h-28"
                     onClick={(e) => {
                         if (e.target === e.currentTarget) {
                             setReadySlot(null);
@@ -587,4 +926,4 @@ export default function App() {
             </div>
         </div>
     );
-}
+};
