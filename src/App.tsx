@@ -144,7 +144,7 @@ const LEVELS: Level[] = [
         excellentMoves: 2,
         goodMoves: 4,
         layout: [
-            { q: 0, r: -1, target: { color: COLORS.wood, pattern: PATTERNS.NONE } },
+            { q: 0, r: -1, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE } },
             { q: 0, r: 0, target: null },
             { q: 0, r: 1, target: null }
         ],
@@ -152,9 +152,7 @@ const LEVELS: Level[] = [
             { from: 2, to: 5 }
         ],
         initialBoard: {
-            // '0,-1': { id: 't1', color: COLORS.neutral, pattern: PATTERNS.NONE },
-            // '0,0': { id: 't2', color: COLORS.neutral, pattern: PATTERNS.NONE },
-            '0,1': { id: 't3', color: COLORS.wood, pattern: PATTERNS.NONE }
+            '0,1': { id: 't3', color: COLORS.wood, pattern: PATTERNS.CIRCLE }
         },
         initialHand: [
             { id: 'th1', color: COLORS.neutral, pattern: PATTERNS.NONE },
@@ -248,69 +246,109 @@ const getMedalColor = (bestMoves: number | null, excellent: number, good: number
 
 // --- サブコンポーネント ---
 
-interface PieceProps {
-    piece: PieceTemplate | null;
-    x: number;
-    y: number;
-    size: number;
-    isTarget?: boolean;
-    isPeek?: boolean;
-    ghost?: boolean;
-}
+const Piece: React.FC<{ piece: PieceTemplate; x: number; y: number; size: number; isTarget?: boolean; ghost?: boolean; isPeek?: boolean }> = ({ piece, x, y, size, isTarget, ghost, isPeek }) => {
+    // 色と模様を強制的に1対1対応させる
+    const getPatternFromColor = (color: string) => {
+        if (color === COLORS.wood) return PATTERNS.CIRCLE;
+        if (color === COLORS.stone) return PATTERNS.DIAMOND;
+        if (color === COLORS.grass) return PATTERNS.LINES;
+        if (color === COLORS.gold) return PATTERNS.SQUARE;
+        if (color === COLORS.ink) return PATTERNS.DOT;
+        return PATTERNS.NONE;
+    };
 
-const Piece: React.FC<PieceProps> = ({ piece, x, y, size, isTarget = false, isPeek = false, ghost = false }) => {
-    if (!piece) return null;
-    let opacity = isTarget ? 0.3 : (isPeek ? 0.05 : 1);
-    if (ghost) opacity = 0.5;
-    const scale = isTarget ? 0.75 : 1;
+    const pattern = getPatternFromColor(piece.color);
+    // isPeek の時は全体を大幅に透過させる
+    const baseOpacity = isTarget ? 0.4 : (isPeek ? 0.1 : 1);
+    // 模様も連動して薄くする
+    const patternOpacity = isPeek ? 0.3 : 1;
 
     return (
-        <g
-            style={{
-                transform: `translate(${x}px, ${y}px) scale(${scale})`,
-                transition: isTarget ? 'none' : 'transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.2s'
-            }}
-            opacity={opacity}
-        >
-            <circle r={size * 0.7} fill={piece.color} stroke="#000" strokeWidth={1} />
-            {piece.pattern === PATTERNS.CIRCLE && <circle r={size * 0.35} fill="none" stroke="#fff" strokeWidth="2" />}
-            {piece.pattern === PATTERNS.SQUARE && <rect x={-size * 0.3} y={-size * 0.3} width={size * 0.6} height={size * 0.6} fill="none" stroke="#fff" strokeWidth="2" />}
-            {piece.pattern === PATTERNS.DIAMOND && <path d={`M0,-${size * 0.4} L${size * 0.4},0 L0,${size * 0.4} L-${size * 0.4},0 Z`} fill="none" stroke="#fff" strokeWidth="2" />}
-            {piece.pattern === PATTERNS.LINES && (
-                <g stroke="#fff" strokeWidth="2">
-                    <line x1={-size * 0.4} y1={-size * 0.15} x2={size * 0.4} y2={-size * 0.15} />
-                    <line x1={-size * 0.4} y1={size * 0.15} x2={size * 0.4} y2={size * 0.15} />
-                </g>
+        <g transform={`translate(${x}, ${y})`} className="transition-transform duration-300 ease-out" opacity={baseOpacity}>
+            {!isTarget && !ghost && (
+                <circle
+                    r={size * 0.7}
+                    fill={piece.color}
+                    stroke="rgba(255,255,255,0.4)"
+                    strokeWidth={2}
+                />
             )}
-            {piece.pattern === PATTERNS.DOT && <circle r={size * 0.2} fill="#fff" />}
+            {isTarget && (
+                <circle
+                    r={size * 0.6}
+                    fill="none"
+                    stroke={piece.color}
+                    strokeWidth={2}
+                    strokeDasharray="4 2"
+                />
+            )}
+            <g opacity={patternOpacity}>
+                {pattern === PATTERNS.CIRCLE && <circle r={size * 0.4} fill="none" stroke="#fff" strokeWidth="2" />}
+                {pattern === PATTERNS.SQUARE && <rect x={-size * 0.3} y={-size * 0.3} width={size * 0.6} height={size * 0.6} fill="none" stroke="#fff" strokeWidth="2" />}
+                {pattern === PATTERNS.DIAMOND && (
+                    <polygon points={`0,${-size * 0.5} ${size * 0.4},0 0,${size * 0.5} ${-size * 0.4},0`} fill="none" stroke="#fff" strokeWidth="2" />
+                )}
+                {pattern === PATTERNS.LINES && (
+                    <g stroke="#fff" strokeWidth="2">
+                        <line x1={-size * 0.4} y1={-size * 0.15} x2={size * 0.4} y2={-size * 0.15} />
+                        <line x1={-size * 0.4} y1={size * 0.15} x2={size * 0.4} y2={size * 0.15} />
+                    </g>
+                )}
+                {pattern === PATTERNS.DOT && <circle r={size * 0.2} fill="#fff" />}
+            </g>
             {!isTarget && !ghost && <circle r={size * 0.7} fill="url(#gloss)" opacity="0.3" />}
         </g>
     );
 };
 
 const HexMedal: React.FC<{ color: string | null; size: number }> = ({ color, size }) => {
-    const points = Array.from({ length: 6 }).map((_, i) => {
+    const getHexPoints = (s: number) => Array.from({ length: 6 }).map((_, i) => {
         const angle = (Math.PI / 180) * (60 * i + 30);
-        return `${size * Math.cos(angle)},${size * Math.sin(angle)}`;
+        return `${s * Math.cos(angle)},${s * Math.sin(angle)}`;
     }).join(' ');
 
+    const outerPoints = getHexPoints(size);
+    const innerPoints = getHexPoints(size * 0.6);
+
     return (
-        <svg width={size * 2.2} height={size * 2.2} viewBox={`-${size * 1.1} -${size * 1.1} ${size * 2.2} ${size * 2.2}`}>
+        <svg width={size * 2.4} height={size * 2.4} viewBox={`-${size * 1.2} -${size * 1.2} ${size * 2.4} ${size * 2.4}`}>
+            <defs>
+                <filter id="medal-glow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="1" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+            </defs>
             <polygon
-                points={points}
+                points={outerPoints}
                 fill={color || 'transparent'}
-                stroke={color ? 'rgba(255,255,255,0.4)' : 'rgba(255,255,255,0.2)'}
-                strokeWidth={2}
+                stroke={color ? 'rgba(255,255,255,0.6)' : 'rgba(255,255,255,0.2)'}
+                strokeWidth={1.5}
+                filter={color ? "url(#medal-glow)" : "none"}
             />
+            {color && (
+                <polygon
+                    points={innerPoints}
+                    fill="none"
+                    stroke="rgba(255,255,255,0.4)"
+                    strokeWidth={1}
+                />
+            )}
         </svg>
     );
 };
+
+// --- ヘルパーコンポーネント ---
+const BackButton: React.FC<{ onClick: () => void }> = ({ onClick }) => (
+    <button onClick={onClick} className="w-10 h-10 flex items-center justify-center bg-stone-800 rounded-xl border border-stone-600 hover:border-amber-500 transition-colors">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M15 18l-6-6 6-6" /></svg>
+    </button>
+);
 
 // --- メインアプリ ---
 
 const STORAGE_KEY = 'hexa_slide_userdata';
 
-export default function App() {
+function App() {
     const [screen, setScreen] = useState<ScreenMode>('TITLE');
     const [userData, setUserData] = useState<UserData>(() => {
         const saved = localStorage.getItem(STORAGE_KEY);
@@ -378,6 +416,7 @@ export default function App() {
 
     // --- 各画面のレンダリング ---
 
+
     if (screen === 'TITLE') {
         const hasData = Object.keys(userData.stageProgress).length > 0;
         return (
@@ -416,8 +455,10 @@ export default function App() {
             <div className="min-h-screen bg-stone-700 flex flex-col items-center justify-center p-4 select-none touch-none text-white">
                 <div className="w-full max-w-md bg-stone-800 rounded-3xl shadow-2xl border border-stone-600 overflow-hidden flex flex-col">
                     <div className="p-6 bg-stone-900 border-b border-stone-700 flex justify-between items-center">
-                        <h2 className="text-2xl font-black italic uppercase">Settings</h2>
-                        <button onClick={() => setScreen('TITLE')} className="w-10 h-10 flex items-center justify-center bg-stone-800 rounded-xl border border-stone-600 text-xl font-bold">×</button>
+                        <div className="flex items-center gap-3">
+                            <BackButton onClick={() => setScreen('TITLE')} />
+                            <h2 className="text-2xl font-black italic uppercase">Settings</h2>
+                        </div>
                     </div>
                     <div className="p-8 flex flex-col gap-8">
                         <div className="flex justify-between items-center">
@@ -453,7 +494,7 @@ export default function App() {
     }
 
     if (screen === 'STAGE_SELECT') {
-        return <StageSelectScreen userData={userData} onSelect={selectLevel} onBack={() => setScreen('TITLE')} />;
+        return <StageSelectScreen userData={userData} onSelect={selectLevel} onBack={() => setScreen('TITLE')} BackButton={BackButton} />;
     }
 
     if (screen === 'GAME' && activeLevel) {
@@ -463,6 +504,7 @@ export default function App() {
                 bestMoves={userData.stageProgress[activeLevel.id]?.bestMoves || null}
                 onClear={(moves) => updateStageProgress(activeLevel.id, moves)}
                 onExit={() => setScreen('STAGE_SELECT')}
+                BackButton={BackButton}
             />
         );
     }
@@ -472,7 +514,7 @@ export default function App() {
 
 // --- 画面パーツ ---
 
-const StageSelectScreen: React.FC<{ userData: UserData; onSelect: (id: number) => void; onBack: () => void }> = ({ userData, onSelect, onBack }) => {
+const StageSelectScreen: React.FC<{ userData: UserData; onSelect: (id: number) => void; onBack: () => void; BackButton: React.FC<{ onClick: () => void }> }> = ({ userData, onSelect, onBack, BackButton }) => {
     const [page, setPage] = useState(0);
     const stagesPerPage = 10;
     const totalPages = Math.ceil(LEVELS.length / stagesPerPage);
@@ -483,8 +525,10 @@ const StageSelectScreen: React.FC<{ userData: UserData; onSelect: (id: number) =
         <div className="min-h-screen bg-stone-700 flex flex-col items-center justify-center p-4 select-none touch-none text-white">
             <div className="w-full max-w-md bg-stone-800 rounded-3xl shadow-2xl border border-stone-600 overflow-hidden flex flex-col h-[650px]">
                 <div className="p-6 bg-stone-900 border-b border-stone-700 flex justify-between items-center">
-                    <h2 className="text-2xl font-black italic uppercase">Stages</h2>
-                    <button onClick={onBack} className="w-10 h-10 flex items-center justify-center bg-stone-800 rounded-xl border border-stone-600 text-xl font-bold">×</button>
+                    <div className="flex items-center gap-3">
+                        <BackButton onClick={onBack} />
+                        <h2 className="text-2xl font-black italic uppercase">Stages</h2>
+                    </div>
                 </div>
 
                 <div className="flex-1 p-6 relative flex flex-col overflow-hidden">
@@ -539,7 +583,7 @@ const StageSelectScreen: React.FC<{ userData: UserData; onSelect: (id: number) =
     );
 };
 
-const GameScreen: React.FC<{ level: Level; bestMoves: number | null; onClear: (m: number) => void; onExit: () => void }> = ({ level, bestMoves, onClear, onExit }) => {
+const GameScreen: React.FC<{ level: Level; bestMoves: number | null; onClear: (m: number) => void; onExit: () => void; BackButton: React.FC<{ onClick: () => void }> }> = ({ level, bestMoves, onClear, onExit, BackButton }) => {
     const [board, setBoard] = useState<Piece[]>(() =>
         Object.entries(level.initialBoard).map(([key, p]) => {
             const [q, r] = key.split(',').map(Number);
@@ -778,9 +822,7 @@ const GameScreen: React.FC<{ level: Level; bestMoves: number | null; onClear: (m
             <div className="w-full max-w-md bg-stone-800 rounded-3xl shadow-2xl border border-stone-600 overflow-hidden flex flex-col">
                 <div className="p-5 bg-stone-900 flex justify-between items-center border-b border-stone-700 text-white">
                     <div className="flex items-center gap-3">
-                        <button onClick={onExit} className="w-10 h-10 flex items-center justify-center bg-stone-800 rounded-xl border border-stone-600 hover:border-amber-500 transition-colors">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M15 18l-6-6 6-6" /></svg>
-                        </button>
+                        <BackButton onClick={onExit} />
                         <div className="flex flex-col">
                             <h1 className="text-xl font-black italic tracking-tighter uppercase leading-none">#{level.id + 1}</h1>
                             <span className="text-[10px] text-stone-500 font-bold uppercase tracking-widest">{level.name}</span>
@@ -790,7 +832,7 @@ const GameScreen: React.FC<{ level: Level; bestMoves: number | null; onClear: (m
                         <HexMedal color={currentMedalColor} size={12} />
                         <div className="text-right">
                             <p className="text-[9px] text-stone-500 font-bold uppercase">Moves</p>
-                            <p className="text-2xl font-mono font-black">{moves}</p>
+                            <p className="text-2xl font-mono font-black">{moves}<span className="text-xs text-stone-500 font-bold ml-1">/ {level.goodMoves}</span></p>
                         </div>
                         <button onClick={undo} disabled={history.length === 0 || animating} className="w-10 h-10 flex items-center justify-center bg-stone-800 hover:bg-stone-700 rounded-xl border border-stone-600 active:scale-90 transition-all disabled:opacity-30">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 10h10a8 8 0 0 1 8 8v2M3 10l6-6m-6 6l6 6" /></svg>
@@ -927,3 +969,5 @@ const GameScreen: React.FC<{ level: Level; bestMoves: number | null; onClear: (m
         </div>
     );
 };
+
+export default App;
