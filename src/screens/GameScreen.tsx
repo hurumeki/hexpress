@@ -14,6 +14,7 @@ import { hexToPixel, getHexCorner, getEdgeInfo, getMedalColor, getBoardBoundingB
 import PieceSvg from '../components/PieceSvg';
 import HexMedal from '../components/HexMedal';
 import BackButton from '../components/BackButton';
+import { useLang } from '../i18n';
 
 interface GameScreenProps {
     level: Level;
@@ -23,6 +24,7 @@ interface GameScreenProps {
 }
 
 const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onExit }) => {
+    const { t } = useLang();
     const [board, setBoard] = useState<Piece[]>(() =>
         Object.entries(level.initialBoard).map(([key, p]) => {
             const [q, r] = key.split(',').map(Number);
@@ -268,23 +270,23 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
     const currentMedalColor = getMedalColor(bestMoves, level.excellentMoves, level.goodMoves);
 
     return (
-        <div className="min-h-screen bg-stone-700 flex flex-col items-center justify-center p-4 select-none touch-none">
-            <div className="w-full max-w-md bg-stone-800 rounded-3xl shadow-2xl border border-stone-600 overflow-hidden flex flex-col">
-                <div className="p-5 bg-stone-900 flex justify-between items-center border-b border-stone-700 text-white">
-                    <div className="flex items-center gap-3">
+        <div className="fixed inset-0 bg-stone-800 flex flex-col select-none touch-none overflow-hidden">
+            <div className="w-full flex flex-col h-full">
+                <div className="p-4 md:p-5 bg-stone-900 flex justify-between items-center border-b border-stone-700 text-white shadow-md shrink-0 z-10">
+                    <div className="flex items-center gap-2 md:gap-3">
                         <BackButton onClick={onExit} />
-                        <div className="flex flex-col">
-                            <h1 className="text-xl font-black italic tracking-tighter uppercase leading-none">#{level.id + 1}</h1>
+                        <div className="flex flex-col mt-0.5">
+                            <h1 className="text-lg md:text-xl font-black italic tracking-tighter uppercase leading-none">#{level.id + 1}</h1>
                             <span className="text-[10px] text-stone-500 font-bold uppercase tracking-widest">{level.name}</span>
                         </div>
                     </div>
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-3 md:gap-4">
                         <HexMedal color={currentMedalColor} size={12} />
-                        <div className="text-right">
-                            <p className="text-[9px] text-stone-500 font-bold uppercase">Moves</p>
-                            <p className="text-2xl font-mono font-black">{moves}<span className="text-xs text-stone-500 font-bold ml-1">/ {level.goodMoves}</span></p>
+                        <div className="text-right flex flex-col items-end justify-center">
+                            <p className="text-[9px] md:text-[10px] text-stone-500 font-bold uppercase leading-tight">{t('moves')}</p>
+                            <p className="text-xl md:text-2xl font-mono font-black leading-none">{moves}<span className="text-[10px] md:text-xs text-stone-500 font-bold ml-1">/ {level.goodMoves}</span></p>
                         </div>
-                        <button onClick={undo} disabled={history.length === 0 || animating} className="w-10 h-10 flex items-center justify-center bg-stone-800 hover:bg-stone-700 rounded-xl border border-stone-600 active:scale-90 transition-all disabled:opacity-30">
+                        <button onClick={undo} disabled={history.length === 0 || animating} className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-stone-800 hover:bg-stone-700 rounded-xl border border-stone-600 active:scale-95 transition-all text-white disabled:opacity-30">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 10h10a8 8 0 0 1 8 8v2M3 10l6-6m-6 6l6 6" /></svg>
                         </button>
                     </div>
@@ -378,20 +380,20 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                     </svg>
                     {isClear && (
                         <div className="absolute inset-0 bg-stone-900/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-500 z-50">
-                            <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter mb-4">MISSION CLEAR</h2>
-                            <div className="flex flex-col items-center gap-2 mb-8">
+                            <h2 className="text-3xl md:text-5xl font-black text-white italic uppercase tracking-tighter mb-4">{t('stageClear')}</h2>
+                            <div className="flex flex-col items-center gap-2 mb-10">
                                 <HexMedal color={getMedalColor(moves, level.excellentMoves, level.goodMoves)} size={30} />
                                 <span className="text-amber-500 font-black text-xl italic uppercase tracking-widest">
                                     {moves <= level.excellentMoves ? 'EXCELLENT!' : moves <= level.goodMoves ? 'GOOD!' : 'CLEARED'}
                                 </span>
                             </div>
-                            <button onClick={onExit} className="px-12 py-4 bg-amber-500 text-black font-black rounded-2xl active:scale-95 transition-transform uppercase italic">NEXT LEVEL</button>
+                            <button onClick={onExit} className="px-12 py-4 bg-amber-500 text-black font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic shadow-lg shadow-amber-500/20">{t('backToSelect')}</button>
                         </div>
                     )}
                 </div>
 
                 <div
-                    className="p-6 bg-stone-900 border-t border-stone-800 flex justify-center gap-5 cursor-pointer h-28"
+                    className="p-4 md:p-6 bg-stone-900 border-t border-stone-800 flex justify-center gap-3 md:gap-5 cursor-pointer h-24 md:h-28 shrink-0 z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] w-full overflow-x-auto"
                     onClick={(e) => {
                         if (e.target === e.currentTarget) {
                             setReadySlot(null);
@@ -407,9 +409,9 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                                 e.stopPropagation();
                                 setSelectedIdx(selectedIdx === i ? null : i);
                             }}
-                            className={`w-16 h-16 rounded-2xl border-2 transition-all flex items-center justify-center ${selectedIdx === i ? 'bg-stone-800 border-amber-500 ring-4 ring-amber-500/20' : 'bg-stone-800 border-stone-700'}`}
+                            className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl border-2 transition-all flex items-center justify-center shrink-0 ${selectedIdx === i ? 'bg-stone-800 border-amber-500 ring-4 ring-amber-500/20' : 'bg-stone-800 border-stone-700'}`}
                         >
-                            <svg viewBox="-25 -25 50 50" className="w-12 h-12 pointer-events-none">
+                            <svg viewBox="-25 -25 50 50" className="w-[85%] h-[85%] pointer-events-none">
                                 <PieceSvg piece={p} x={0} y={0} size={25} />
                             </svg>
                         </button>

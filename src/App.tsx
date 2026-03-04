@@ -26,15 +26,15 @@ function SettingsScreen({ userData, setUserData, onBack }: {
     );
 
     return (
-        <div className="min-h-screen bg-stone-700 flex flex-col items-center justify-center p-4 select-none touch-none text-white">
-            <div className="w-full max-w-md bg-stone-800 rounded-3xl shadow-2xl border border-stone-600 overflow-hidden flex flex-col">
-                <div className="p-6 bg-stone-900 border-b border-stone-700 flex justify-between items-center">
+        <div className="fixed inset-0 bg-stone-800 flex flex-col select-none touch-none text-white overflow-hidden">
+            <div className="w-full flex flex-col h-full">
+                <div className="p-4 md:p-6 bg-stone-900 border-b border-stone-700 flex justify-between items-center shadow-md z-10 shrink-0">
                     <div className="flex items-center gap-3">
                         <BackButton onClick={onBack} />
-                        <h2 className="text-2xl font-black italic uppercase">{t('settings')}</h2>
+                        <h2 className="text-xl md:text-2xl font-black italic uppercase">{t('settings')}</h2>
                     </div>
                 </div>
-                <div className="p-8 flex flex-col gap-8">
+                <div className="flex-1 overflow-y-auto p-4 md:p-8 flex flex-col gap-6 md:gap-8 max-w-2xl mx-auto w-full">
                     <ToggleRow label={t('soundEffects')} value={userData.soundEnabled}
                         onToggle={() => setUserData(prev => ({ ...prev, soundEnabled: !prev.soundEnabled }))} />
                     <ToggleRow label={t('showAds')} value={userData.adsEnabled}
@@ -158,21 +158,21 @@ function App() {
             {screen === 'TITLE' && (() => {
                 const hasData = Object.keys(userData.stageProgress).length > 0;
                 return (
-                    <div className="min-h-screen bg-stone-700 flex flex-col items-center justify-center p-4 select-none touch-none text-white">
-                        <div className="w-full max-w-md bg-stone-800 rounded-3xl shadow-2xl border border-stone-600 overflow-hidden p-8 flex flex-col items-center">
+                    <div className="fixed inset-0 bg-stone-800 flex flex-col items-center justify-center select-none touch-none text-white overflow-hidden">
+                        <div className="w-full h-full flex flex-col items-center justify-center p-6 sm:p-8 max-w-md mx-auto relative">
                             <h1 className="text-5xl font-black italic tracking-tighter uppercase mb-2">HEXA SLIDE</h1>
                             <p className="text-amber-500 font-bold uppercase tracking-widest text-sm mb-12">Puzzle Odyssey</p>
-                            <div className="flex flex-col gap-4 w-full">
+                            <div className="flex flex-col gap-4 w-full mt-auto mb-8">
                                 <button onClick={() => hasData ? handleContinue() : selectLevel(0)}
-                                    className="w-full py-5 bg-amber-500 text-black font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic">
+                                    className="w-full py-5 bg-amber-500 text-black font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic shadow-lg shadow-amber-500/20">
                                     {hasData ? t('continue') : t('start')}
                                 </button>
                                 <button onClick={() => setScreen('STAGE_SELECT')}
-                                    className="w-full py-5 bg-stone-700 text-white font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic border border-stone-600">
+                                    className="w-full py-5 bg-stone-700 text-white font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic border border-stone-600 shadow-lg shadow-stone-900/50">
                                     {t('stageSelect')}
                                 </button>
                                 <button onClick={() => setScreen('SETTINGS')}
-                                    className="w-full py-5 bg-stone-700 text-white font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic border border-stone-600">
+                                    className="w-full py-5 bg-stone-700 text-white font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic border border-stone-600 shadow-lg shadow-stone-900/50">
                                     {t('settings')}
                                 </button>
                             </div>
