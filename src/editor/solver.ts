@@ -23,8 +23,9 @@ const isGoal = (board: SState['board'], level: Level): boolean =>
 const computeSlots = (level: Level) => {
     const slots: { targetTileQ: number; targetTileR: number; originalEdge: number }[] = [];
     level.layout.forEach(tile => {
+        const tileRails = tile.rails ?? level.defaultRails ?? [];
         for (let i = 0; i < 6; i++) {
-            if (!level.defaultRails.some(r => r.from === i || r.to === i)) continue;
+            if (!tileRails.some(r => r.from === i || r.to === i)) continue;
             const neighbor = level.layout.find(
                 t => t.q === tile.q + DIRS[i].dq && t.r === tile.r + DIRS[i].dr
             );
@@ -63,7 +64,8 @@ const applyInsert = (
         const tile = level.layout.find(t => t.q === curQ && t.r === curR);
         if (!tile) { ejectedId = pushId; movesMap[pushId] = { q: curQ, r: curR }; break; }
         movesMap[pushId] = { q: curQ, r: curR };
-        const rail = level.defaultRails.find(r => r.from === curEdge || r.to === curEdge);
+        const tileRails = tile.rails ?? level.defaultRails ?? [];
+        const rail = tileRails.find(r => r.from === curEdge || r.to === curEdge);
         if (!rail) break;
         const exitEdge = rail.from === curEdge ? rail.to : rail.from;
         const targetP = board.find(p => p.q === curQ && p.r === curR && p.id !== pushId);

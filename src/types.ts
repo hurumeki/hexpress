@@ -22,6 +22,7 @@ export interface Tile {
     q: number;
     r: number;
     target: Target | null;
+    rails?: Rail[]; // タイルごとのレール（省略時は Level.defaultRails を使用）
 }
 
 export interface Rail {

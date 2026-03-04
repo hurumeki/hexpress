@@ -68,7 +68,8 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
             }
             path.push({ q: curQ, r: curR });
 
-            const rail = level.defaultRails.find(r => r.from === curEdge || r.to === curEdge);
+            const tileRails = tile.rails ?? level.defaultRails ?? [];
+            const rail = tileRails.find(r => r.from === curEdge || r.to === curEdge);
             if (!rail) break;
 
             const exitEdge = rail.from === curEdge ? rail.to : rail.from;
@@ -86,8 +87,9 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
     const outerSlots: OuterSlot[] = useMemo(() => {
         const slots: OuterSlot[] = [];
         level.layout.forEach(tile => {
+            const tileRails = tile.rails ?? level.defaultRails ?? [];
             for (let i = 0; i < 6; i++) {
-                const hasRail = level.defaultRails.some(r => r.from === i || r.to === i);
+                const hasRail = tileRails.some(r => r.from === i || r.to === i);
                 const neighbor = level.layout.find(t => t.q === tile.q + DIRS[i].dq && t.r === tile.r + DIRS[i].dr);
                 if (hasRail && !neighbor) {
                     slots.push({
@@ -209,7 +211,8 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
             const tile = level.layout.find(t => t.q === curQ && t.r === curR);
             if (!tile) { ejectedPieceId = pushId; movesMap[pushId] = { q: curQ, r: curR }; break; }
             movesMap[pushId] = { q: curQ, r: curR };
-            const rail = level.defaultRails.find(r => r.from === curEdge || r.to === curEdge);
+            const tileRails = tile.rails ?? level.defaultRails ?? [];
+            const rail = tileRails.find(r => r.from === curEdge || r.to === curEdge);
             if (!rail) break;
             const exitEdge = rail.from === curEdge ? rail.to : rail.from;
             const targetP = currentBoard.find(p => p.q === curQ && p.r === curR && p.id !== pushId);
@@ -298,9 +301,9 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                             return (
                                 <g key={`tile-${i}`}>
                                     <polygon points={points} fill="#382c22" stroke={activePath ? activePath.color : "#282018"} strokeWidth={activePath ? 3 : 1} />
-                                    {level.defaultRails.map((r, j) => {
-                                        const m1 = getEdgeInfo(x, y, hexSize, r.from);
-                                        const m2 = getEdgeInfo(x, y, hexSize, r.to);
+                                    {(tile.rails ?? level.defaultRails ?? []).map((r, j) => {
+                                        const m1 = getEdgeInfo(x, y, hexSize, (r.from + 4) % 6);
+                                        const m2 = getEdgeInfo(x, y, hexSize, (r.to + 4) % 6);
                                         return (
                                             <g key={`rail-${j}`} stroke="#1a120b" strokeWidth="1" opacity={isPeek ? 0.3 : 1}>
                                                 <line x1={m1.x} y1={m1.y} x2={x} y2={y} />

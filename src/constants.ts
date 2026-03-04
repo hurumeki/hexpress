@@ -38,6 +38,13 @@ export const DIRS = [
     { dq: 0, dr: -1 }
 ];
 
+// タイルごとのレール: 各レベルで全タイルに同じレールを適用（タイル別にも設定可能）
+const RAILS_3WAY = [
+    { from: 0, to: 3 },
+    { from: 1, to: 4 },
+    { from: 2, to: 5 }
+];
+
 export const LEVELS: Level[] = [
     {
         id: 0,
@@ -46,13 +53,11 @@ export const LEVELS: Level[] = [
         excellentMoves: 2,
         goodMoves: 4,
         layout: [
-            { q: 0, r: -1, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE } },
-            { q: 0, r: 0, target: null },
-            { q: 0, r: 1, target: null }
+            { q: 0, r: -1, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE }, rails: [{ from: 2, to: 5 }] },
+            { q: 0, r: 0, target: null, rails: [{ from: 2, to: 5 }] },
+            { q: 0, r: 1, target: null, rails: [{ from: 2, to: 5 }] }
         ],
-        defaultRails: [
-            { from: 2, to: 5 }
-        ],
+        defaultRails: [{ from: 2, to: 5 }],
         initialBoard: {
             '0,1': { id: 't3', color: COLORS.wood, pattern: PATTERNS.CIRCLE }
         },
@@ -67,15 +72,11 @@ export const LEVELS: Level[] = [
         excellentMoves: 5,
         goodMoves: 10,
         layout: [
-            { q: 0, r: 0, target: { color: COLORS.stone, pattern: PATTERNS.DIAMOND } },
-            { q: 1, r: -1, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE } },
-            { q: 1, r: 0, target: { color: COLORS.grass, pattern: PATTERNS.LINES } }
+            { q: 0, r: 0, target: { color: COLORS.stone, pattern: PATTERNS.DIAMOND }, rails: RAILS_3WAY },
+            { q: 1, r: -1, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE }, rails: RAILS_3WAY },
+            { q: 1, r: 0, target: { color: COLORS.grass, pattern: PATTERNS.LINES }, rails: RAILS_3WAY }
         ],
-        defaultRails: [
-            { from: 0, to: 3 },
-            { from: 1, to: 4 },
-            { from: 2, to: 5 }
-        ],
+        defaultRails: RAILS_3WAY,
         initialBoard: {
             '0,0': { id: 'p1', color: COLORS.wood, pattern: PATTERNS.CIRCLE },
             '1,-1': { id: 'p2', color: COLORS.stone, pattern: PATTERNS.DIAMOND },
@@ -91,16 +92,12 @@ export const LEVELS: Level[] = [
         excellentMoves: 8,
         goodMoves: 15,
         layout: [
-            { q: 0, r: 0, target: { color: COLORS.gold, pattern: PATTERNS.SQUARE } },
-            { q: 1, r: 0, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE } },
-            { q: 0, r: 1, target: { color: COLORS.stone, pattern: PATTERNS.DIAMOND } },
-            { q: 1, r: 1, target: { color: COLORS.grass, pattern: PATTERNS.LINES } }
+            { q: 0, r: 0, target: { color: COLORS.gold, pattern: PATTERNS.SQUARE }, rails: RAILS_3WAY },
+            { q: 1, r: 0, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE }, rails: RAILS_3WAY },
+            { q: 0, r: 1, target: { color: COLORS.stone, pattern: PATTERNS.DIAMOND }, rails: RAILS_3WAY },
+            { q: 1, r: 1, target: { color: COLORS.grass, pattern: PATTERNS.LINES }, rails: RAILS_3WAY }
         ],
-        defaultRails: [
-            { from: 0, to: 3 },
-            { from: 1, to: 4 },
-            { from: 2, to: 5 }
-        ],
+        defaultRails: RAILS_3WAY,
         initialBoard: {
             '0,0': { id: 'q1', color: COLORS.wood, pattern: PATTERNS.CIRCLE },
             '1,0': { id: 'q2', color: COLORS.stone, pattern: PATTERNS.DIAMOND },
@@ -109,6 +106,28 @@ export const LEVELS: Level[] = [
         },
         initialHand: [
             { id: 'qh1', color: COLORS.neutral, pattern: PATTERNS.NONE }
+        ]
+    },
+    {
+        id: 3,
+        name: "New Stage",
+        excellentMoves: 3,
+        goodMoves: 6,
+        layout: [
+            { q: 0, r: 0, target: { color: COLORS.stone, pattern: PATTERNS.DIAMOND }, rails: RAILS_3WAY },
+            { q: 1, r: -1, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE }, rails: RAILS_3WAY },
+            { q: 1, r: 0, target: { color: COLORS.grass, pattern: PATTERNS.LINES }, rails: RAILS_3WAY },
+            { q: 0, r: 1, target: { color: COLORS.gold, pattern: PATTERNS.SQUARE }, rails: RAILS_3WAY }
+        ],
+        defaultRails: RAILS_3WAY,
+        initialBoard: {
+            '1,-1': { id: 'p_1_-1', color: COLORS.stone, pattern: PATTERNS.DIAMOND },
+            '1,0': { id: 'p_1_0', color: COLORS.wood, pattern: PATTERNS.CIRCLE },
+            '0,1': { id: 'p_0_1', color: COLORS.grass, pattern: PATTERNS.LINES },
+            '0,0': { id: 'p_0_0', color: COLORS.gold, pattern: PATTERNS.SQUARE }
+        },
+        initialHand: [
+            { id: 'h_neutral_0', color: COLORS.neutral, pattern: PATTERNS.NONE }
         ]
     }
 ];
