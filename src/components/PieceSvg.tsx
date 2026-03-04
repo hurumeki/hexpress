@@ -1,16 +1,7 @@
 import React from 'react';
 import type { PieceTemplate } from '../types';
-import { COLORS, PATTERNS } from '../constants';
-
-// 色と模様を強制的に1対1対応させる
-const getPatternFromColor = (color: string): string => {
-    if (color === COLORS.wood) return PATTERNS.CIRCLE;
-    if (color === COLORS.stone) return PATTERNS.DIAMOND;
-    if (color === COLORS.grass) return PATTERNS.LINES;
-    if (color === COLORS.gold) return PATTERNS.SQUARE;
-    if (color === COLORS.ink) return PATTERNS.DOT;
-    return PATTERNS.NONE;
-};
+import { PATTERNS } from '../constants';
+import { getPatternFromColor } from '../utils';
 
 interface PieceSvgProps {
     piece: PieceTemplate;
