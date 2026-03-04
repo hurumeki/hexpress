@@ -284,7 +284,11 @@ function StageEditor() {
                                         )}
 
                                         {tile.target && <PieceSvg piece={{ id: `tgt-${i}`, ...tile.target }} x={x} y={y} size={hexSize} isTarget />}
-                                        {piece && <PieceSvg piece={piece} x={x} y={y} size={hexSize} />}
+                                        {piece && (
+                                            <g opacity={['BOARD', 'GOAL', 'RAILS'].includes(editMode) ? 0.3 : 1}>
+                                                <PieceSvg piece={piece} x={x} y={y} size={hexSize} />
+                                            </g>
+                                        )}
                                     </g>
                                 );
                             })}
