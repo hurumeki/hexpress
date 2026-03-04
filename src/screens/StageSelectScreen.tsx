@@ -92,10 +92,18 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, onSelec
                 </div>
 
                 {totalPages > 1 && (
-                    <div className="p-4 md:p-6 bg-stone-900 border-t border-stone-800 flex justify-center gap-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] shrink-0 z-10">
-                        <button disabled={page === 0} onClick={() => setPage(p => p - 1)} className="px-6 py-3 bg-stone-800 rounded-xl disabled:opacity-30 border border-stone-700 active:scale-95 transition-all text-xl font-black">←</button>
-                        <span className="flex items-center font-black text-stone-500 tracking-widest text-lg px-4">{page + 1} / {totalPages}</span>
-                        <button disabled={page >= totalPages - 1} onClick={() => setPage(p => p + 1)} className="px-6 py-3 bg-stone-800 rounded-xl disabled:opacity-30 border border-stone-700 active:scale-95 transition-all text-xl font-black">→</button>
+                    <div className="p-4 bg-stone-900 border-t border-stone-800 flex flex-col items-center justify-center gap-2 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] shrink-0 z-10">
+                        <div className="flex gap-3">
+                            {Array.from({ length: totalPages }).map((_, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => setPage(i)}
+                                    className={`w-3 h-3 rounded-full transition-all cursor-pointer ${i === page ? 'bg-amber-500 scale-125' : 'bg-stone-600 hover:bg-stone-500'}`}
+                                    aria-label={`Go to page ${i + 1}`}
+                                />
+                            ))}
+                        </div>
+                        <span className="text-[10px] text-stone-500 font-bold uppercase tracking-widest">{t('stages')} {page + 1} / {totalPages} - Swipe to change</span>
                     </div>
                 )}
             </div>
