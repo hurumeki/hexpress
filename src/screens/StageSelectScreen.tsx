@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import type { UserData } from '../types';
 import { LEVELS } from '../constants';
-import { hexToPixel, getMedalColor } from '../utils';
+import { hexToPixel, getMedalColor, getBoardBoundingBox } from '../utils';
 import { useLang } from '../i18n';
 import HexMedal from '../components/HexMedal';
 import BackButton from '../components/BackButton';
@@ -20,9 +20,24 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, onSelec
 
     const stages = LEVELS.slice(page * stagesPerPage, (page + 1) * stagesPerPage);
 
+    const [touchStart, setTouchStart] = useState<number | null>(null);
+
+    const handleTouchStart = (e: React.TouchEvent) => setTouchStart(e.targetTouches[0].clientX);
+    const handleTouchEnd = (e: React.TouchEvent) => {
+        if (touchStart === null) return;
+        const touchEnd = e.changedTouches[0].clientX;
+        const diff = touchStart - touchEnd;
+        if (diff > 50 && page < totalPages - 1) {
+            setPage(p => p + 1);
+        } else if (diff < -50 && page > 0) {
+            setPage(p => p - 1);
+        }
+        setTouchStart(null);
+    };
+
     return (
         <div className="min-h-screen bg-stone-700 flex flex-col items-center justify-center p-4 select-none touch-none text-white">
-            <div className="w-full max-w-md bg-stone-800 rounded-3xl shadow-2xl border border-stone-600 overflow-hidden flex flex-col h-[650px]">
+            <div className="w-full max-w-md bg-stone-800 rounded-3xl shadow-2xl border border-stone-600 overflow-hidden flex flex-col max-h-[85vh]">
                 <div className="p-6 bg-stone-900 border-b border-stone-700 flex justify-between items-center">
                     <div className="flex items-center gap-3">
                         <BackButton onClick={onBack} />
@@ -30,8 +45,12 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, onSelec
                     </div>
                 </div>
 
-                <div className="flex-1 p-6 relative flex flex-col overflow-hidden">
-                    <div className="grid grid-cols-2 grid-rows-5 gap-4 flex-1">
+                <div
+                    className="flex-1 p-6 relative flex flex-col overflow-y-auto"
+                    onTouchStart={handleTouchStart}
+                    onTouchEnd={handleTouchEnd}
+                >
+                    <div className="grid grid-cols-2 auto-rows-fr gap-4 pb-4">
                         {stages.map((level) => {
                             const status = userData.stageProgress[level.id];
                             const medalColor = getMedalColor(status?.bestMoves || null, level.excellentMoves, level.goodMoves);
@@ -49,7 +68,7 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, onSelec
 
                                     {/* Thumbnail Preview Area */}
                                     <div className="w-full h-16 flex items-center justify-center opacity-40">
-                                        <svg viewBox="-40 -40 80 80" className="w-full h-full">
+                                        <svg viewBox={getBoardBoundingBox(level.layout, 12, 4).viewBox} className="w-full h-full max-w-[80%] max-h-[100%]">
                                             {level.layout.map((p, j) => {
                                                 const { x, y } = hexToPixel(p.q, p.r, 12);
                                                 const pts = Array.from({ length: 6 }).map((_, k) => {

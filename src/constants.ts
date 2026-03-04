@@ -109,27 +109,1734 @@ export const LEVELS: Level[] = [
         ]
     },
     {
-        id: 3,
-        name: "New Stage",
-        excellentMoves: 3,
-        goodMoves: 6,
-        layout: [
-            { q: 0, r: 0, target: { color: COLORS.stone, pattern: PATTERNS.DIAMOND }, rails: RAILS_3WAY },
-            { q: 1, r: -1, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE }, rails: RAILS_3WAY },
-            { q: 1, r: 0, target: { color: COLORS.grass, pattern: PATTERNS.LINES }, rails: RAILS_3WAY },
-            { q: 0, r: 1, target: { color: COLORS.gold, pattern: PATTERNS.SQUARE }, rails: RAILS_3WAY }
+        "id": 3,
+        "name": "Stage 4",
+        "excellentMoves": 3,
+        "goodMoves": 5,
+        "layout": [
+            {
+                "q": 0,
+                "r": 0,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 1,
+                "r": -1,
+                "target": {
+                    "color": "#483d8b",
+                    "pattern": "diamond"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 0,
+                "r": -1,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 0,
+                "r": 1,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 0,
+                "r": 2,
+                "target": {
+                    "color": "#556b2f",
+                    "pattern": "lines"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 1,
+                "r": 2,
+                "target": {
+                    "color": "#a0522d",
+                    "pattern": "circle"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            }
         ],
-        defaultRails: RAILS_3WAY,
-        initialBoard: {
-            '1,-1': { id: 'p_1_-1', color: COLORS.stone, pattern: PATTERNS.DIAMOND },
-            '1,0': { id: 'p_1_0', color: COLORS.wood, pattern: PATTERNS.CIRCLE },
-            '0,1': { id: 'p_0_1', color: COLORS.grass, pattern: PATTERNS.LINES },
-            '0,0': { id: 'p_0_0', color: COLORS.gold, pattern: PATTERNS.SQUARE }
+        "defaultRails": [
+            {
+                "from": 0,
+                "to": 3
+            },
+            {
+                "from": 1,
+                "to": 4
+            },
+            {
+                "from": 2,
+                "to": 5
+            }
+        ],
+        "initialBoard": {
+            "0,-1": {
+                "id": "p0",
+                "color": "#a0522d",
+                "pattern": "circle"
+            },
+            "1,-1": {
+                "id": "p1",
+                "color": "#483d8b",
+                "pattern": "diamond"
+            }
         },
-        initialHand: [
-            { id: 'h_neutral_0', color: COLORS.neutral, pattern: PATTERNS.NONE }
+        "initialHand": [
+            {
+                "id": "h2",
+                "color": "#556b2f",
+                "pattern": "lines"
+            },
+            {
+                "id": "hn",
+                "color": "#d2b48c",
+                "pattern": "none"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "name": "Stage 5",
+        "excellentMoves": 4,
+        "goodMoves": 6,
+        "layout": [
+            {
+                "q": 0,
+                "r": 0,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 1,
+                "r": 0,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 2,
+                "r": -1,
+                "target": {
+                    "color": "#a0522d",
+                    "pattern": "circle"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -1,
+                "r": 0,
+                "target": {
+                    "color": "#483d8b",
+                    "pattern": "diamond"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 2,
+                "r": 0,
+                "target": {
+                    "color": "#556b2f",
+                    "pattern": "lines"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 0,
+                "r": 1,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            }
+        ],
+        "defaultRails": [
+            {
+                "from": 0,
+                "to": 3
+            },
+            {
+                "from": 1,
+                "to": 4
+            },
+            {
+                "from": 2,
+                "to": 5
+            }
+        ],
+        "initialBoard": {
+            "-1,0": {
+                "id": "p0",
+                "color": "#a0522d",
+                "pattern": "circle"
+            },
+            "0,0": {
+                "id": "p1",
+                "color": "#483d8b",
+                "pattern": "diamond"
+            }
+        },
+        "initialHand": [
+            {
+                "id": "h2",
+                "color": "#556b2f",
+                "pattern": "lines"
+            },
+            {
+                "id": "hn",
+                "color": "#d2b48c",
+                "pattern": "none"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "name": "Stage 6",
+        "excellentMoves": 4,
+        "goodMoves": 6,
+        "layout": [
+            {
+                "q": 0,
+                "r": 0,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 0,
+                "r": -1,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -1,
+                "r": -1,
+                "target": {
+                    "color": "#a0522d",
+                    "pattern": "circle"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -1,
+                "r": -2,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -1,
+                "r": 0,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 0,
+                "r": -2,
+                "target": {
+                    "color": "#483d8b",
+                    "pattern": "diamond"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 1,
+                "r": -2,
+                "target": {
+                    "color": "#556b2f",
+                    "pattern": "lines"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            }
+        ],
+        "defaultRails": [
+            {
+                "from": 0,
+                "to": 3
+            },
+            {
+                "from": 1,
+                "to": 4
+            },
+            {
+                "from": 2,
+                "to": 5
+            }
+        ],
+        "initialBoard": {
+            "0,-2": {
+                "id": "p0",
+                "color": "#a0522d",
+                "pattern": "circle"
+            },
+            "0,-1": {
+                "id": "p1",
+                "color": "#483d8b",
+                "pattern": "diamond"
+            }
+        },
+        "initialHand": [
+            {
+                "id": "h2",
+                "color": "#556b2f",
+                "pattern": "lines"
+            },
+            {
+                "id": "hn",
+                "color": "#d2b48c",
+                "pattern": "none"
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "name": "Stage 7",
+        "excellentMoves": 5,
+        "goodMoves": 8,
+        "layout": [
+            {
+                "q": 0,
+                "r": 0,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 0,
+                "r": 1,
+                "target": {
+                    "color": "#483d8b",
+                    "pattern": "diamond"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -1,
+                "r": 0,
+                "target": {
+                    "color": "#a0522d",
+                    "pattern": "circle"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 0,
+                "r": -1,
+                "target": {
+                    "color": "#556b2f",
+                    "pattern": "lines"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -1,
+                "r": 1,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -2,
+                "r": 1,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            }
+        ],
+        "defaultRails": [
+            {
+                "from": 0,
+                "to": 3
+            },
+            {
+                "from": 1,
+                "to": 4
+            },
+            {
+                "from": 2,
+                "to": 5
+            }
+        ],
+        "initialBoard": {
+            "0,1": {
+                "id": "p0",
+                "color": "#a0522d",
+                "pattern": "circle"
+            },
+            "-1,1": {
+                "id": "p1",
+                "color": "#483d8b",
+                "pattern": "diamond"
+            }
+        },
+        "initialHand": [
+            {
+                "id": "h2",
+                "color": "#556b2f",
+                "pattern": "lines"
+            },
+            {
+                "id": "hn",
+                "color": "#d2b48c",
+                "pattern": "none"
+            }
+        ]
+    },
+    {
+        "id": 7,
+        "name": "Stage 8",
+        "excellentMoves": 4,
+        "goodMoves": 6,
+        "layout": [
+            {
+                "q": 0,
+                "r": 0,
+                "target": {
+                    "color": "#483d8b",
+                    "pattern": "diamond"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -1,
+                "r": 1,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -1,
+                "r": 2,
+                "target": {
+                    "color": "#a0522d",
+                    "pattern": "circle"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -1,
+                "r": 3,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -2,
+                "r": 2,
+                "target": {
+                    "color": "#556b2f",
+                    "pattern": "lines"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            }
+        ],
+        "defaultRails": [
+            {
+                "from": 0,
+                "to": 3
+            },
+            {
+                "from": 1,
+                "to": 4
+            },
+            {
+                "from": 2,
+                "to": 5
+            }
+        ],
+        "initialBoard": {
+            "0,0": {
+                "id": "p0",
+                "color": "#a0522d",
+                "pattern": "circle"
+            },
+            "-1,3": {
+                "id": "p1",
+                "color": "#483d8b",
+                "pattern": "diamond"
+            }
+        },
+        "initialHand": [
+            {
+                "id": "h2",
+                "color": "#556b2f",
+                "pattern": "lines"
+            },
+            {
+                "id": "hn",
+                "color": "#d2b48c",
+                "pattern": "none"
+            }
+        ]
+    },
+    {
+        "id": 8,
+        "name": "Stage 9",
+        "excellentMoves": 5,
+        "goodMoves": 8,
+        "layout": [
+            {
+                "q": 0,
+                "r": 0,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 0,
+                "r": 1,
+                "target": {
+                    "color": "#483d8b",
+                    "pattern": "diamond"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 1,
+                "r": -1,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 1,
+                "r": 0,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 2,
+                "r": -1,
+                "target": {
+                    "color": "#a0522d",
+                    "pattern": "circle"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 0,
+                "r": 2,
+                "target": {
+                    "color": "#556b2f",
+                    "pattern": "lines"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            }
+        ],
+        "defaultRails": [
+            {
+                "from": 0,
+                "to": 3
+            },
+            {
+                "from": 1,
+                "to": 4
+            },
+            {
+                "from": 2,
+                "to": 5
+            }
+        ],
+        "initialBoard": {
+            "0,1": {
+                "id": "p0",
+                "color": "#a0522d",
+                "pattern": "circle"
+            },
+            "1,-1": {
+                "id": "p1",
+                "color": "#483d8b",
+                "pattern": "diamond"
+            }
+        },
+        "initialHand": [
+            {
+                "id": "h2",
+                "color": "#556b2f",
+                "pattern": "lines"
+            },
+            {
+                "id": "hn",
+                "color": "#d2b48c",
+                "pattern": "none"
+            }
+        ]
+    },
+    {
+        "id": 9,
+        "name": "Stage 10",
+        "excellentMoves": 5,
+        "goodMoves": 8,
+        "layout": [
+            {
+                "q": 0,
+                "r": 0,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -1,
+                "r": 0,
+                "target": {
+                    "color": "#483d8b",
+                    "pattern": "diamond"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 0,
+                "r": -1,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 0,
+                "r": -2,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 1,
+                "r": -1,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 1,
+                "r": -2,
+                "target": {
+                    "color": "#a0522d",
+                    "pattern": "circle"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 2,
+                "r": -2,
+                "target": {
+                    "color": "#556b2f",
+                    "pattern": "lines"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            }
+        ],
+        "defaultRails": [
+            {
+                "from": 0,
+                "to": 3
+            },
+            {
+                "from": 1,
+                "to": 4
+            },
+            {
+                "from": 2,
+                "to": 5
+            }
+        ],
+        "initialBoard": {
+            "-1,0": {
+                "id": "p0",
+                "color": "#a0522d",
+                "pattern": "circle"
+            },
+            "1,-1": {
+                "id": "p1",
+                "color": "#483d8b",
+                "pattern": "diamond"
+            }
+        },
+        "initialHand": [
+            {
+                "id": "h2",
+                "color": "#556b2f",
+                "pattern": "lines"
+            },
+            {
+                "id": "hn",
+                "color": "#d2b48c",
+                "pattern": "none"
+            }
+        ]
+    },
+    {
+        "id": 10,
+        "name": "Stage 11",
+        "excellentMoves": 5,
+        "goodMoves": 8,
+        "layout": [
+            {
+                "q": 0,
+                "r": 0,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 0,
+                "r": -1,
+                "target": {
+                    "color": "#483d8b",
+                    "pattern": "diamond"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 1,
+                "r": -2,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 1,
+                "r": -1,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 1,
+                "r": 0,
+                "target": {
+                    "color": "#a0522d",
+                    "pattern": "circle"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 2,
+                "r": 0,
+                "target": {
+                    "color": "#556b2f",
+                    "pattern": "lines"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            }
+        ],
+        "defaultRails": [
+            {
+                "from": 0,
+                "to": 3
+            },
+            {
+                "from": 1,
+                "to": 4
+            },
+            {
+                "from": 2,
+                "to": 5
+            }
+        ],
+        "initialBoard": {
+            "1,-1": {
+                "id": "p0",
+                "color": "#a0522d",
+                "pattern": "circle"
+            },
+            "1,0": {
+                "id": "p1",
+                "color": "#483d8b",
+                "pattern": "diamond"
+            }
+        },
+        "initialHand": [
+            {
+                "id": "h2",
+                "color": "#556b2f",
+                "pattern": "lines"
+            },
+            {
+                "id": "hn",
+                "color": "#d2b48c",
+                "pattern": "none"
+            }
+        ]
+    },
+    {
+        "id": 11,
+        "name": "Stage 12",
+        "excellentMoves": 5,
+        "goodMoves": 8,
+        "layout": [
+            {
+                "q": 0,
+                "r": 0,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 0,
+                "r": 1,
+                "target": {
+                    "color": "#483d8b",
+                    "pattern": "diamond"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -1,
+                "r": 1,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 1,
+                "r": 0,
+                "target": {
+                    "color": "#556b2f",
+                    "pattern": "lines"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 1,
+                "r": 1,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -2,
+                "r": 2,
+                "target": {
+                    "color": "#a0522d",
+                    "pattern": "circle"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -1,
+                "r": 2,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            }
+        ],
+        "defaultRails": [
+            {
+                "from": 0,
+                "to": 3
+            },
+            {
+                "from": 1,
+                "to": 4
+            },
+            {
+                "from": 2,
+                "to": 5
+            }
+        ],
+        "initialBoard": {
+            "0,1": {
+                "id": "p0",
+                "color": "#a0522d",
+                "pattern": "circle"
+            },
+            "-2,2": {
+                "id": "p1",
+                "color": "#483d8b",
+                "pattern": "diamond"
+            }
+        },
+        "initialHand": [
+            {
+                "id": "h2",
+                "color": "#556b2f",
+                "pattern": "lines"
+            },
+            {
+                "id": "hn",
+                "color": "#d2b48c",
+                "pattern": "none"
+            }
+        ]
+    },
+    {
+        "id": 12,
+        "name": "Stage 13",
+        "excellentMoves": 4,
+        "goodMoves": 6,
+        "layout": [
+            {
+                "q": 0,
+                "r": 0,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -1,
+                "r": 1,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -2,
+                "r": 2,
+                "target": {
+                    "color": "#483d8b",
+                    "pattern": "diamond"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": -3,
+                "r": 2,
+                "target": {
+                    "color": "#556b2f",
+                    "pattern": "lines"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 0,
+                "r": 1,
+                "target": null,
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            },
+            {
+                "q": 1,
+                "r": 1,
+                "target": {
+                    "color": "#a0522d",
+                    "pattern": "circle"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
+            }
+        ],
+        "defaultRails": [
+            {
+                "from": 0,
+                "to": 3
+            },
+            {
+                "from": 1,
+                "to": 4
+            },
+            {
+                "from": 2,
+                "to": 5
+            }
+        ],
+        "initialBoard": {
+            "0,0": {
+                "id": "p0",
+                "color": "#a0522d",
+                "pattern": "circle"
+            },
+            "1,1": {
+                "id": "p1",
+                "color": "#483d8b",
+                "pattern": "diamond"
+            }
+        },
+        "initialHand": [
+            {
+                "id": "h2",
+                "color": "#556b2f",
+                "pattern": "lines"
+            },
+            {
+                "id": "hn",
+                "color": "#d2b48c",
+                "pattern": "none"
+            }
         ]
     }
+
 ];
 
 export const STORAGE_KEY = 'hexa_slide_userdata';

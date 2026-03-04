@@ -43,3 +43,30 @@ export const getMedalColor = (bestMoves: number | null, excellent: number, good:
     if (bestMoves <= good) return '#9ca3af';      // Silver
     return '#b45309';                             // Bronze
 };
+
+export const getBoardBoundingBox = (hexes: { q: number; r: number }[], size: number, padding: number = 0) => {
+    if (hexes.length === 0) return { x: -size, y: -size, width: size * 2, height: size * 2, viewBox: `-${size} -${size} ${size * 2} ${size * 2}` };
+
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+
+    hexes.forEach(h => {
+        const { x, y } = hexToPixel(h.q, h.r, size);
+        minX = Math.min(minX, x - size);
+        maxX = Math.max(maxX, x + size);
+        minY = Math.min(minY, y - size);
+        maxY = Math.max(maxY, y + size);
+    });
+
+    minX -= padding;
+    maxX += padding;
+    minY -= padding;
+    maxY += padding;
+
+    const width = maxX - minX;
+    const height = maxY - minY;
+
+    return {
+        x: minX, y: minY, width, height,
+        viewBox: `${minX} ${minY} ${width} ${height}`
+    };
+};

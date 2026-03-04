@@ -10,7 +10,7 @@ import type {
     PathStep,
 } from '../types';
 import { DIRS, PATH_COLORS } from '../constants';
-import { hexToPixel, getHexCorner, getEdgeInfo, getMedalColor } from '../utils';
+import { hexToPixel, getHexCorner, getEdgeInfo, getMedalColor, getBoardBoundingBox } from '../utils';
 import PieceSvg from '../components/PieceSvg';
 import HexMedal from '../components/HexMedal';
 import BackButton from '../components/BackButton';
@@ -116,6 +116,14 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
             targetTileR: s.targetTileR
         }));
     };
+
+    const boardBox = useMemo(() => {
+        const allHexes = [
+            ...level.layout.map(t => ({ q: t.q, r: t.r })),
+            ...outerSlots.map(s => ({ q: s.q, r: s.r }))
+        ];
+        return getBoardBoundingBox(allHexes, hexSize, 30);
+    }, [level.layout, outerSlots, hexSize]);
 
     const findHexAt = (svgX: number, svgY: number): DragState['currentHex'] => {
         let minTarget: DragState['currentHex'] = null;
@@ -282,8 +290,8 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                     </div>
                 </div>
 
-                <div className="relative h-[380px] bg-stone-800 flex items-center justify-center overflow-visible">
-                    <svg viewBox="-165 -180 330 360" className="w-full h-full" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp}>
+                <div className="relative flex-1 bg-stone-800 flex items-center justify-center overflow-hidden min-h-[300px]">
+                    <svg viewBox={boardBox.viewBox} className="w-full h-full max-w-full max-h-full" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp}>
                         <defs>
                             <radialGradient id="gloss" cx="30%" cy="30%" r="50%">
                                 <stop offset="0%" stopColor="white" />
