@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { UserData } from '../types';
 import { LEVELS } from '../constants';
 import { hexToPixel, getMedalColor } from '../utils';
+import { useLang } from '../i18n';
 import HexMedal from '../components/HexMedal';
 import BackButton from '../components/BackButton';
 
@@ -12,6 +13,7 @@ interface StageSelectScreenProps {
 }
 
 const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, onSelect, onBack }) => {
+    const { t } = useLang();
     const [page, setPage] = useState(0);
     const stagesPerPage = 10;
     const totalPages = Math.ceil(LEVELS.length / stagesPerPage);
@@ -24,7 +26,7 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, onSelec
                 <div className="p-6 bg-stone-900 border-b border-stone-700 flex justify-between items-center">
                     <div className="flex items-center gap-3">
                         <BackButton onClick={onBack} />
-                        <h2 className="text-2xl font-black italic uppercase">Stages</h2>
+                        <h2 className="text-2xl font-black italic uppercase">{t('stages')}</h2>
                     </div>
                 </div>
 

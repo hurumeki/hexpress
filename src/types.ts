@@ -52,6 +52,7 @@ export interface UserData {
     adsEnabled: boolean;
     stageProgress: Record<number, StageStatus>;
     lastActiveLevelId: number | null;
+    language: 'ja' | 'en';
 }
 
 export interface Point {
