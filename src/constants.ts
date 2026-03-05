@@ -52,7 +52,7 @@ export const LEVELS: Level[] = [
         id: 0,
         name: "Tutorial 1",
         isTutorial: true,
-        excellentMoves: 1,
+        excellentMoves: 2,
         goodMoves: 2,
         layout: [
             { q: 0, r: -1, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE }, rails: [{ from: 2, to: 5 }] },
@@ -73,7 +73,7 @@ export const LEVELS: Level[] = [
         name: "Tutorial 2",
         isTutorial: true,
         excellentMoves: 2,
-        goodMoves: 3,
+        goodMoves: 2,
         layout: [
             { q: 0, r: 0, target: null, rails: [{ from: 2, to: 5 }] },
             { q: 0, r: -1, target: null, rails: [{ from: 1, to: 4 }, { from: 2, to: 5 }] },
@@ -93,11 +93,13 @@ export const LEVELS: Level[] = [
         name: "Tutorial 3",
         isTutorial: true,
         excellentMoves: 2,
-        goodMoves: 4,
+        goodMoves: 2,
         layout: [
             { q: 0, r: 0, target: null, rails: [{ from: 1, to: 4 }] },
             { q: 1, r: 0, target: null, rails: [{ from: 1, to: 4 }, { from: 0, to: 3 }] },
-            { q: 2, r: 0, target: { color: COLORS.ruby, pattern: PATTERNS.SQUARE }, rails: [{ from: 1, to: 4 }] },
+            { q: 2, r: 0, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE }, rails: [{ from: 1, to: 4 }] },
+            { q: 3, r: 0, target: null, rails: [{ from: 1, to: 4 }] },
+            { q: 4, r: 0, target: null, rails: [{ from: 1, to: 4 }] },
         ],
         defaultRails: [{ from: 1, to: 4 }],
         initialBoard: {
@@ -105,7 +107,7 @@ export const LEVELS: Level[] = [
         },
         initialHand: [
             { id: 'qh1', color: COLORS.neutral, pattern: PATTERNS.NONE },
-            { id: 'qh2', color: COLORS.ruby, pattern: PATTERNS.SQUARE }
+            { id: 'qh2', color: COLORS.wood, pattern: PATTERNS.CIRCLE }
         ]
     },
     {
