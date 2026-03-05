@@ -34,6 +34,15 @@ export const translations = {
         excellent: 'Excellent',
         good: 'Good',
         clear: 'Clear',
+
+        // チュートリアル
+        tut1_msg1: '下の手駒をタップして選択し、\n上の盤面の手前のマスを\nタップして挿入しましょう。',
+        tut2_msg1: '盤面を長押し（タップしたまま）に\nすると、ルートが表示されます。',
+        tut2_msg2: '溝の方向に押し出すことができます\n下のマスに駒を入れて押し出しましょう。',
+        tut2_msg3: '次は左上のマスに駒を入れて、\n駒を目標まで運びましょう。',
+        tut3_msg1: '赤い手駒をタップして\n選択状態にしましょう。',
+        tut3_msg2: '真ん中のマスに赤い駒を\n挿入しましょう。',
+        tut3_msg3: '白い駒を選択し、手前のマスに\n挿入して押し出しましょう。',
     },
     en: {
         // Title
@@ -63,6 +72,15 @@ export const translations = {
         excellent: 'Excellent',
         good: 'Good',
         clear: 'Clear',
+
+        // Tutorial
+        tut1_msg1: 'Tap the piece below to select it,\nthen tap the bottom slot\non the board to insert it.',
+        tut2_msg1: 'Tap and hold on the board\nto see the paths.',
+        tut2_msg2: 'You can push in the direction of the groove.\nInsert a piece in the bottom slot to push out.',
+        tut2_msg3: 'Next, insert a piece into the top-left slot\nand carry the piece to the target.',
+        tut3_msg1: 'Tap the red piece\nto select it.',
+        tut3_msg2: 'Insert the red piece\ninto the middle slot.',
+        tut3_msg3: 'Select the white piece and insert it\ninto the bottom slot to push.',
     },
 } as const;
 
