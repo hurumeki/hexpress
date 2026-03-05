@@ -392,20 +392,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                                         <PieceSvg piece={hand[selectedIdx]} x={x} y={y} size={hexSize} />
                                     )}
 
-                                    {/* チュートリアルの手のアイコン (盤面挿入指示) */}
-                                    {level.isTutorial && (
-                                        (level.id === 0 && tutorialStep === 0 && slot.q === 0 && slot.r === 1) ||
-                                        (level.id === 1 && tutorialStep === 1 && slot.q === -1 && slot.r === 1) ||
-                                        (level.id === 1 && tutorialStep === 2 && slot.q === 0 && slot.r === 1) ||
-                                        (level.id === 2 && tutorialStep === 1 && slot.q === 1 && slot.r === 0) ||
-                                        (level.id === 2 && tutorialStep === 2 && slot.q === 0 && slot.r === 0)
-                                    ) && (
-                                            <g className="animate-bounce pointer-events-none" style={{ transformOrigin: `${x}px ${y}px` }}>
-                                                <svg x={x - 24} y={y + hexSize / 2} width="48" height="48" viewBox="0 0 24 24" fill="white" className="drop-shadow-lg">
-                                                    <path d="M9 11.24V7.5a2.5 2.5 0 015 0v1.64h.5a2.5 2.5 0 012.5 2.5v1.86h.5a2.5 2.5 0 012.5 2.5v2.5c0 3.03-2.47 5.5-5.5 5.5H10c-3.03 0-5.5-2.47-5.5-5.5v-3.48a2.5 2.5 0 011.6-2.33l2.9-1.07z" />
-                                                </svg>
-                                            </g>
-                                        )}
+
                                 </g>
                             );
                         })}
@@ -452,17 +439,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                                 <PieceSvg piece={p} x={0} y={0} size={25} />
                             </svg>
 
-                            {/* チュートリアルの手のアイコン (手駒選択指示) */}
-                            {level.isTutorial && (
-                                (level.id === 2 && tutorialStep === 0 && i === 1) ||
-                                (level.id === 2 && tutorialStep === 2 && i === 0 && selectedIdx !== 0)
-                            ) && (
-                                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 animate-bounce flex flex-col items-center pointer-events-none z-50">
-                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="white" className="drop-shadow-md">
-                                            <path d="M9 11.24V7.5a2.5 2.5 0 015 0v1.64h.5a2.5 2.5 0 012.5 2.5v1.86h.5a2.5 2.5 0 012.5 2.5v2.5c0 3.03-2.47 5.5-5.5 5.5H10c-3.03 0-5.5-2.47-5.5-5.5v-3.48a2.5 2.5 0 011.6-2.33l2.9-1.07z" />
-                                        </svg>
-                                    </div>
-                                )}
+
                         </button>
                     ))}
                 </div>
