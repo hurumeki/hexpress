@@ -14,6 +14,7 @@ import { hexToPixel, getHexCorner, getEdgeInfo, getMedalColor, getBoardBoundingB
 import PieceSvg from '../components/PieceSvg';
 import HexMedal from '../components/HexMedal';
 import BackButton from '../components/BackButton';
+import TutorialOverlay from '../components/TutorialOverlay';
 import { useLang } from '../i18n';
 
 interface GameScreenProps {
@@ -42,6 +43,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
     const [readySlot, setReadySlot] = useState<OuterSlot | null>(null);
     const [highlightedPaths, setHighlightedPaths] = useState<HighlightedPath[]>([]);
     const [dragState, setDragState] = useState<DragState>({ active: false, currentHex: null });
+    const [tutorialStep, setTutorialStep] = useState<number>(0);
 
     const hexSize = 44;
 
@@ -57,6 +59,26 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
             onClear(moves);
         }
     }, [board, animating, moves, level, isClear, onClear]);
+
+    // チュートリアルの進行管理
+    useEffect(() => {
+        if (!level.isTutorial) return;
+        if (level.id === 1) { // チュートリアル2
+            if (tutorialStep === 0 && isPeek) {
+                setTutorialStep(1);
+            } else if (tutorialStep === 1 && moves === 1) {
+                setTutorialStep(2);
+            }
+        } else if (level.id === 2) { // チュートリアル3
+            if (tutorialStep === 0 && selectedIdx === 1) {
+                setTutorialStep(1);
+            } else if (tutorialStep === 1 && moves === 1) {
+                setTutorialStep(2);
+                // チュートリアル3で手がリセットされた時、白コマ(インデックス0)を選択させる
+                if (hand.length > 0) setSelectedIdx(0);
+            }
+        }
+    }, [level.id, level.isTutorial, tutorialStep, isPeek, moves, selectedIdx, hand.length]);
 
     const calculatePath = (startTileQ: number, startTileR: number, edgeIndex: number): PathStep[] => {
         const path: PathStep[] = [];
@@ -369,6 +391,21 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                                     {isReady && selectedIdx !== null && (
                                         <PieceSvg piece={hand[selectedIdx]} x={x} y={y} size={hexSize} />
                                     )}
+
+                                    {/* チュートリアルの手のアイコン (盤面挿入指示) */}
+                                    {level.isTutorial && (
+                                        (level.id === 0 && tutorialStep === 0 && slot.q === 0 && slot.r === 1) ||
+                                        (level.id === 1 && tutorialStep === 1 && slot.q === -1 && slot.r === 1) ||
+                                        (level.id === 1 && tutorialStep === 2 && slot.q === 0 && slot.r === 1) ||
+                                        (level.id === 2 && tutorialStep === 1 && slot.q === 1 && slot.r === 0) ||
+                                        (level.id === 2 && tutorialStep === 2 && slot.q === 0 && slot.r === 0)
+                                    ) && (
+                                            <g className="animate-bounce pointer-events-none" style={{ transformOrigin: `${x}px ${y}px` }}>
+                                                <svg x={x - 24} y={y + hexSize / 2} width="48" height="48" viewBox="0 0 24 24" fill="white" className="drop-shadow-lg">
+                                                    <path d="M9 11.24V7.5a2.5 2.5 0 015 0v1.64h.5a2.5 2.5 0 012.5 2.5v1.86h.5a2.5 2.5 0 012.5 2.5v2.5c0 3.03-2.47 5.5-5.5 5.5H10c-3.03 0-5.5-2.47-5.5-5.5v-3.48a2.5 2.5 0 011.6-2.33l2.9-1.07z" />
+                                                </svg>
+                                            </g>
+                                        )}
                                 </g>
                             );
                         })}
@@ -409,15 +446,30 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                                 e.stopPropagation();
                                 setSelectedIdx(i);
                             }}
-                            className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl border-2 transition-all flex items-center justify-center shrink-0 ${selectedIdx === i ? 'bg-stone-800 border-amber-500 ring-4 ring-amber-500/20' : 'bg-stone-800 border-stone-700'}`}
+                            className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl border-2 transition-all flex items-center justify-center shrink-0 ${selectedIdx === i ? 'bg-stone-800 border-amber-500 ring-4 ring-amber-500/20' : 'bg-stone-800 border-stone-700'} relative`}
                         >
                             <svg viewBox="-25 -25 50 50" className="w-[85%] h-[85%] pointer-events-none">
                                 <PieceSvg piece={p} x={0} y={0} size={25} />
                             </svg>
+
+                            {/* チュートリアルの手のアイコン (手駒選択指示) */}
+                            {level.isTutorial && (
+                                (level.id === 2 && tutorialStep === 0 && i === 1) ||
+                                (level.id === 2 && tutorialStep === 2 && i === 0 && selectedIdx !== 0)
+                            ) && (
+                                    <div className="absolute -top-10 left-1/2 -translate-x-1/2 animate-bounce flex flex-col items-center pointer-events-none z-50">
+                                        <svg width="40" height="40" viewBox="0 0 24 24" fill="white" className="drop-shadow-md">
+                                            <path d="M9 11.24V7.5a2.5 2.5 0 015 0v1.64h.5a2.5 2.5 0 012.5 2.5v1.86h.5a2.5 2.5 0 012.5 2.5v2.5c0 3.03-2.47 5.5-5.5 5.5H10c-3.03 0-5.5-2.47-5.5-5.5v-3.48a2.5 2.5 0 011.6-2.33l2.9-1.07z" />
+                                        </svg>
+                                    </div>
+                                )}
                         </button>
                     ))}
                 </div>
             </div>
+
+            {/* Tutorial Element */}
+            <TutorialOverlay isVisible={level.isTutorial ?? false} step={tutorialStep} levelId={level.id} />
         </div>
     );
 };

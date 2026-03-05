@@ -2,15 +2,6 @@ import type { Level } from './types';
 
 // --- 定数 ---
 
-export const COLORS = {
-    wood: '#a0522d',
-    stone: '#483d8b',
-    grass: '#556b2f',
-    gold: '#b8860b',
-    ink: '#2f4f4f',
-    neutral: '#d2b48c'
-};
-
 export const PATH_COLORS = [
     '#fbbf24', // ゴールド
     '#3b82f6', // ブルー
@@ -18,6 +9,17 @@ export const PATH_COLORS = [
     '#22c55e', // グリーン
     '#ef4444', // ルビーレッド
 ];
+
+// COLORSにCOLORS.rubyがあるか確認するため追加
+export const COLORS = {
+    wood: '#a0522d',
+    stone: '#483d8b',
+    grass: '#556b2f',
+    gold: '#b8860b',
+    ruby: '#ef4444',
+    ink: '#2f4f4f',
+    neutral: '#d2b48c'
+};
 
 export const PATTERNS = {
     CIRCLE: 'circle',
@@ -48,10 +50,10 @@ const RAILS_3WAY = [
 export const LEVELS: Level[] = [
     {
         id: 0,
-        name: "Tutorial",
+        name: "Tutorial 1",
         isTutorial: true,
-        excellentMoves: 2,
-        goodMoves: 4,
+        excellentMoves: 1,
+        goodMoves: 2,
         layout: [
             { q: 0, r: -1, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE }, rails: [{ from: 2, to: 5 }] },
             { q: 0, r: 0, target: null, rails: [{ from: 2, to: 5 }] },
@@ -68,44 +70,42 @@ export const LEVELS: Level[] = [
     },
     {
         id: 1,
-        name: "Swap Triangle",
-        excellentMoves: 5,
-        goodMoves: 10,
+        name: "Tutorial 2",
+        isTutorial: true,
+        excellentMoves: 2,
+        goodMoves: 3,
         layout: [
-            { q: 0, r: 0, target: { color: COLORS.stone, pattern: PATTERNS.DIAMOND }, rails: RAILS_3WAY },
-            { q: 1, r: -1, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE }, rails: RAILS_3WAY },
-            { q: 1, r: 0, target: { color: COLORS.grass, pattern: PATTERNS.LINES }, rails: RAILS_3WAY }
+            { q: 0, r: 0, target: null, rails: [{ from: 2, to: 5 }] },
+            { q: 0, r: -1, target: null, rails: [{ from: 1, to: 4 }, { from: 2, to: 5 }] },
+            { q: 1, r: -1, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE }, rails: [{ from: 1, to: 4 }] }
         ],
         defaultRails: RAILS_3WAY,
         initialBoard: {
             '0,0': { id: 'p1', color: COLORS.wood, pattern: PATTERNS.CIRCLE },
-            '1,-1': { id: 'p2', color: COLORS.stone, pattern: PATTERNS.DIAMOND },
-            '1,0': { id: 'p3', color: COLORS.grass, pattern: PATTERNS.LINES }
         },
         initialHand: [
-            { id: 'h1', color: COLORS.neutral, pattern: PATTERNS.NONE }
+            { id: 'h1', color: COLORS.neutral, pattern: PATTERNS.NONE },
+            { id: 'h2', color: COLORS.neutral, pattern: PATTERNS.NONE }
         ]
     },
     {
         id: 2,
-        name: "Square Shift",
-        excellentMoves: 8,
-        goodMoves: 15,
+        name: "Tutorial 3",
+        isTutorial: true,
+        excellentMoves: 2,
+        goodMoves: 4,
         layout: [
-            { q: 0, r: 0, target: { color: COLORS.gold, pattern: PATTERNS.SQUARE }, rails: RAILS_3WAY },
-            { q: 1, r: 0, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE }, rails: RAILS_3WAY },
-            { q: 0, r: 1, target: { color: COLORS.stone, pattern: PATTERNS.DIAMOND }, rails: RAILS_3WAY },
-            { q: 1, r: 1, target: { color: COLORS.grass, pattern: PATTERNS.LINES }, rails: RAILS_3WAY }
+            { q: 0, r: 0, target: null, rails: [{ from: 1, to: 4 }] },
+            { q: 1, r: 0, target: null, rails: [{ from: 1, to: 4 }, { from: 0, to: 3 }] },
+            { q: 2, r: 0, target: { color: COLORS.ruby, pattern: PATTERNS.SQUARE }, rails: [{ from: 1, to: 4 }] },
         ],
-        defaultRails: RAILS_3WAY,
+        defaultRails: [{ from: 1, to: 4 }],
         initialBoard: {
-            '0,0': { id: 'q1', color: COLORS.wood, pattern: PATTERNS.CIRCLE },
-            '1,0': { id: 'q2', color: COLORS.stone, pattern: PATTERNS.DIAMOND },
-            '0,1': { id: 'q3', color: COLORS.grass, pattern: PATTERNS.LINES },
-            '1,1': { id: 'q4', color: COLORS.gold, pattern: PATTERNS.SQUARE }
+            '0,0': { id: 'q1', color: COLORS.neutral, pattern: PATTERNS.NONE }
         },
         initialHand: [
-            { id: 'qh1', color: COLORS.neutral, pattern: PATTERNS.NONE }
+            { id: 'qh1', color: COLORS.neutral, pattern: PATTERNS.NONE },
+            { id: 'qh2', color: COLORS.ruby, pattern: PATTERNS.SQUARE }
         ]
     },
     {
