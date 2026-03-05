@@ -1,7 +1,13 @@
 import type { Point, EdgeInfo } from './types';
-import { COLORS, PATTERNS } from './constants';
+import { COLORS, PATTERNS, PATTERN_COLORS } from './constants';
 
-// 色と模様の1対1対応
+// 模様から色を取得
+export const getColorFromPattern = (pattern: string, color?: string): string => {
+    if (color) return color; // 明示的に色が指定されている場合はそれを使用（主にニュートラル用）
+    return (PATTERN_COLORS as any)[pattern] || COLORS.neutral;
+};
+
+// 色から模様を取得（後方互換性のため残すが、基本的には使わない）
 export const getPatternFromColor = (color: string): string => {
     if (color === COLORS.wood) return PATTERNS.CIRCLE;
     if (color === COLORS.stone) return PATTERNS.DIAMOND;

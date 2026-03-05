@@ -4,7 +4,7 @@ export type ScreenMode = 'TITLE' | 'SETTINGS' | 'STAGE_SELECT' | 'GAME';
 
 export interface PieceTemplate {
     id: string;
-    color: string;
+    color?: string;
     pattern: string;
 }
 
@@ -14,7 +14,7 @@ export interface Piece extends PieceTemplate {
 }
 
 export interface Target {
-    color: string;
+    color?: string;
     pattern: string;
 }
 

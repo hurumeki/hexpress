@@ -3,12 +3,12 @@ import { DIRS } from '../constants';
 
 // --- Solver State ---
 interface SState {
-    board: { q: number; r: number; color: string; id: string }[];
-    hand: string[]; // colors only
+    board: { q: number; r: number; pattern: string; id: string }[];
+    hand: string[]; // patterns only
 }
 
 const stateKey = ({ board, hand }: SState): string => {
-    const b = board.map(p => `${p.q},${p.r},${p.color}`).sort().join(';');
+    const b = board.map(p => `${p.q},${p.r},${p.pattern}`).sort().join(';');
     const h = [...hand].sort().join(',');
     return `${b}|${h}`;
 };
@@ -17,7 +17,7 @@ const isGoal = (board: SState['board'], level: Level): boolean =>
     level.layout.every(tile => {
         if (!tile.target) return true;
         const p = board.find(p => p.q === tile.q && p.r === tile.r);
-        return p?.color === tile.target!.color;
+        return p?.pattern === tile.target!.pattern;
     });
 
 const computeSlots = (level: Level) => {
@@ -40,10 +40,10 @@ const computeSlots = (level: Level) => {
 const applyInsert = (
     state: SState,
     level: Level,
-    color: string,
+    pattern: string,
     slot: { targetTileQ: number; targetTileR: number; originalEdge: number }
 ): SState => {
-    const handIdx = state.hand.indexOf(color);
+    const handIdx = state.hand.indexOf(pattern);
     if (handIdx === -1) return state;
 
     const newHand = [...state.hand];
@@ -52,7 +52,7 @@ const applyInsert = (
     const entryDir = DIRS[slot.originalEdge];
     const startQ = slot.targetTileQ + entryDir.dq;
     const startR = slot.targetTileR + entryDir.dr;
-    const entering = { q: startQ, r: startR, color, id: `s_${startQ}_${startR}_${color}` };
+    const entering = { q: startQ, r: startR, pattern, id: `s_${startQ}_${startR}_${pattern}` };
     let board = [...state.board, entering];
 
     const movesMap: Record<string, { q: number; r: number }> = {};
@@ -81,7 +81,7 @@ const applyInsert = (
     if (ejectedId) {
         const ejected = board.find(p => p.id === ejectedId);
         if (ejected) {
-            newHand.push(ejected.color);
+            newHand.push(ejected.pattern);
             board = board.filter(p => p.id !== ejectedId);
         }
     }
@@ -96,9 +96,9 @@ export const solve = (level: Level): number | null => {
 
     const initialBoard = Object.entries(level.initialBoard).map(([key, p]) => {
         const [q, r] = key.split(',').map(Number);
-        return { q, r, color: p.color, id: `i_${q}_${r}` };
+        return { q, r, pattern: p.pattern, id: `i_${q}_${r}` };
     });
-    const initialHand = level.initialHand.map(p => p.color);
+    const initialHand = level.initialHand.map(p => p.pattern);
     const initial: SState = { board: initialBoard, hand: initialHand };
 
     if (isGoal(initial.board, level)) return 0;
@@ -112,10 +112,10 @@ export const solve = (level: Level): number | null => {
         const { state, moves } = queue.shift()!;
         if (moves >= MAX_MOVES) continue;
 
-        const uniqueColors = [...new Set(state.hand)];
-        for (const color of uniqueColors) {
+        const uniquePatterns = [...new Set(state.hand)];
+        for (const pattern of uniquePatterns) {
             for (const slot of slots) {
-                const next = applyInsert(state, level, color, slot);
+                const next = applyInsert(state, level, pattern, slot);
                 if (isGoal(next.board, level)) return moves + 1;
                 const key = stateKey(next);
                 if (!visited.has(key)) {

@@ -1,7 +1,7 @@
 import React from 'react';
 import type { PieceTemplate } from '../types';
 import { PATTERNS } from '../constants';
-import { getPatternFromColor } from '../utils';
+import { getColorFromPattern } from '../utils';
 
 interface PieceSvgProps {
     piece: PieceTemplate;
@@ -14,7 +14,8 @@ interface PieceSvgProps {
 }
 
 const PieceSvg: React.FC<PieceSvgProps> = ({ piece, x, y, size, isTarget, ghost, isPeek }) => {
-    const pattern = getPatternFromColor(piece.color);
+    const color = getColorFromPattern(piece.pattern, piece.color);
+    const pattern = piece.pattern;
     // isPeek の時は全体を大幅に透過させる
     const baseOpacity = isTarget ? 0.4 : (isPeek ? 0.1 : 1);
     // 模様も連動して薄くする
@@ -25,7 +26,7 @@ const PieceSvg: React.FC<PieceSvgProps> = ({ piece, x, y, size, isTarget, ghost,
             {!isTarget && !ghost && (
                 <circle
                     r={size * 0.7}
-                    fill={piece.color}
+                    fill={color}
                     stroke="rgba(255,255,255,0.4)"
                     strokeWidth={2}
                 />
@@ -34,7 +35,7 @@ const PieceSvg: React.FC<PieceSvgProps> = ({ piece, x, y, size, isTarget, ghost,
                 <circle
                     r={size * 0.6}
                     fill="none"
-                    stroke={piece.color}
+                    stroke={color}
                     strokeWidth={2}
                     strokeDasharray="4 2"
                 />

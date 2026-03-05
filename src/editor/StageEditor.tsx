@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import type { Level, Tile, Rail } from '../types';
-import { COLORS, DIRS } from '../constants';
-import { hexToPixel, getHexCorner, getEdgeInfo, getPatternFromColor } from '../utils';
+import { DIRS, PATTERNS } from '../constants';
+import { hexToPixel, getHexCorner, getEdgeInfo } from '../utils';
 import PieceSvg from '../components/PieceSvg';
 import GameScreen from '../screens/GameScreen';
 import { solve } from './solver';
@@ -9,15 +9,15 @@ import { solve } from './solver';
 // --- 型・定数 ---
 type EditMode = 'BOARD' | 'GOAL' | 'PIECES' | 'RAILS' | 'HAND' | 'PLAY';
 
-const COLOR_OPTIONS = [
-    { color: COLORS.wood, name: 'Wood' },
-    { color: COLORS.stone, name: 'Stone' },
-    { color: COLORS.grass, name: 'Grass' },
-    { color: COLORS.gold, name: 'Gold' },
-    { color: COLORS.ink, name: 'Ink' },
+const PATTERN_OPTIONS = [
+    { pattern: PATTERNS.CIRCLE, name: 'Circle' },
+    { pattern: PATTERNS.SQUARE, name: 'Square' },
+    { pattern: PATTERNS.DIAMOND, name: 'Diamond' },
+    { pattern: PATTERNS.LINES, name: 'Lines' },
+    { pattern: PATTERNS.DOT, name: 'Dot' },
 ];
-const GOAL_CYCLE = [null, ...COLOR_OPTIONS.map(c => c.color)];
-const PIECE_CYCLE = [null, ...COLOR_OPTIONS.map(c => c.color), COLORS.neutral];
+const GOAL_CYCLE = [null, ...PATTERN_OPTIONS.map(p => p.pattern)];
+const PIECE_CYCLE = [null, ...PATTERN_OPTIONS.map(p => p.pattern), PATTERNS.NONE];
 const EDGE_NAMES = ['右上(0)', '右(1)', '右下(2)', '左下(3)', '左(4)', '左上(5)'];
 
 const DEFAULT_LEVEL: Level = {
@@ -32,7 +32,7 @@ const DEFAULT_LEVEL: Level = {
 };
 
 const makePieceId = (q: number, r: number) => `p_${q}_${r}_${Date.now()}`;
-const makeHandId = (color: string, idx: number) => `h_${color}_${idx}_${Date.now()}`;
+const makeHandId = (pattern: string, idx: number) => `h_${pattern}_${idx}_${Date.now()}`;
 
 const getSvgCoords = (e: React.MouseEvent<SVGSVGElement>) => {
     const svg = e.currentTarget;
@@ -140,14 +140,14 @@ function StageEditor() {
             }
         } else if (editMode === 'GOAL' && !isGhost) {
             setLevelData(prev => {
-                const current = prev.layout.find(t => t.q === hq && t.r === hr)?.target?.color ?? null;
-                const idx = GOAL_CYCLE.indexOf(current);
+                const current = prev.layout.find(t => t.q === hq && t.r === hr)?.target?.pattern ?? null;
+                const idx = GOAL_CYCLE.indexOf(current as any);
                 const next = GOAL_CYCLE[(idx + 1) % GOAL_CYCLE.length];
                 return {
                     ...prev,
                     layout: prev.layout.map(t =>
                         t.q === hq && t.r === hr
-                            ? { ...t, target: next ? { color: next, pattern: getPatternFromColor(next) } : null }
+                            ? { ...t, target: next ? { pattern: next } : null }
                             : t
                     ),
                 };
@@ -155,12 +155,12 @@ function StageEditor() {
         } else if (editMode === 'PIECES' && !isGhost) {
             setLevelData(prev => {
                 const key = `${hq},${hr}`;
-                const current = prev.initialBoard[key]?.color ?? null;
-                const idx = PIECE_CYCLE.indexOf(current);
+                const current = prev.initialBoard[key]?.pattern ?? null;
+                const idx = PIECE_CYCLE.indexOf(current as any);
                 const next = PIECE_CYCLE[(idx + 1) % PIECE_CYCLE.length];
                 const nb = { ...prev.initialBoard };
                 if (next === null) { delete nb[key]; }
-                else { nb[key] = { id: makePieceId(hq, hr), color: next, pattern: getPatternFromColor(next) }; }
+                else { nb[key] = { id: makePieceId(hq, hr), pattern: next }; }
                 return { ...prev, initialBoard: nb };
             });
         } else if (editMode === 'RAILS' && !isGhost) {
@@ -322,10 +322,10 @@ function StageEditor() {
                             {levelData.initialHand.length === 0 && <span className="text-xs text-stone-600 italic self-center">なし</span>}
                         </div>
                         <div className="flex flex-wrap gap-1">
-                            {[...COLOR_OPTIONS, { color: COLORS.neutral, name: 'Neutral' }].map(({ color, name }) => (
-                                <button key={color} onClick={() => setLevelData(prev => ({
+                            {[...PATTERN_OPTIONS, { pattern: PATTERNS.NONE, name: 'Neutral' }].map(({ pattern, name }) => (
+                                <button key={pattern} onClick={() => setLevelData(prev => ({
                                     ...prev,
-                                    initialHand: [...prev.initialHand, { id: makeHandId(color, prev.initialHand.length), color, pattern: getPatternFromColor(color) }]
+                                    initialHand: [...prev.initialHand, { id: makeHandId(pattern, prev.initialHand.length), pattern }]
                                 }))}
                                     className="px-2 py-1 text-xs font-bold rounded-lg bg-stone-700 hover:bg-stone-600 border border-stone-600 transition-colors">
                                     +{name}

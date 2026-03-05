@@ -28,7 +28,16 @@ export const PATTERNS = {
     LINES: 'lines',
     DOT: 'dot',
     NONE: 'none'
-};
+} as const;
+
+export const PATTERN_COLORS = {
+    [PATTERNS.CIRCLE]: COLORS.wood,
+    [PATTERNS.DIAMOND]: COLORS.stone,
+    [PATTERNS.LINES]: COLORS.grass,
+    [PATTERNS.SQUARE]: COLORS.gold,
+    [PATTERNS.DOT]: COLORS.ink,
+    [PATTERNS.NONE]: COLORS.neutral
+} as const;
 
 // 0: 右上, 1: 右, 2: 右下, 3: 左下, 4: 左, 5: 左上
 export const DIRS = [
@@ -55,17 +64,17 @@ export const LEVELS: Level[] = [
         excellentMoves: 2,
         goodMoves: 2,
         layout: [
-            { q: 0, r: -1, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE }, rails: [{ from: 2, to: 5 }] },
+            { q: 0, r: -1, target: { pattern: PATTERNS.CIRCLE }, rails: [{ from: 2, to: 5 }] },
             { q: 0, r: 0, target: null, rails: [{ from: 2, to: 5 }] },
             { q: 0, r: 1, target: null, rails: [{ from: 2, to: 5 }] }
         ],
         defaultRails: [{ from: 2, to: 5 }],
         initialBoard: {
-            '0,1': { id: 't3', color: COLORS.wood, pattern: PATTERNS.CIRCLE }
+            '0,1': { id: 't3', pattern: PATTERNS.CIRCLE }
         },
         initialHand: [
-            { id: 'th1', color: COLORS.neutral, pattern: PATTERNS.NONE },
-            { id: 'th2', color: COLORS.neutral, pattern: PATTERNS.NONE }
+            { id: 'th1', pattern: PATTERNS.NONE },
+            { id: 'th2', pattern: PATTERNS.NONE }
         ]
     },
     {
@@ -77,15 +86,15 @@ export const LEVELS: Level[] = [
         layout: [
             { q: 0, r: 0, target: null, rails: [{ from: 2, to: 5 }] },
             { q: 0, r: -1, target: null, rails: [{ from: 1, to: 4 }, { from: 2, to: 5 }] },
-            { q: 1, r: -1, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE }, rails: [{ from: 1, to: 4 }] }
+            { q: 1, r: -1, target: { pattern: PATTERNS.CIRCLE }, rails: [{ from: 1, to: 4 }] }
         ],
         defaultRails: RAILS_3WAY,
         initialBoard: {
-            '0,0': { id: 'p1', color: COLORS.wood, pattern: PATTERNS.CIRCLE },
+            '0,0': { id: 'p1', pattern: PATTERNS.CIRCLE },
         },
         initialHand: [
-            { id: 'h1', color: COLORS.neutral, pattern: PATTERNS.NONE },
-            { id: 'h2', color: COLORS.neutral, pattern: PATTERNS.NONE }
+            { id: 'h1', pattern: PATTERNS.NONE },
+            { id: 'h2', pattern: PATTERNS.NONE }
         ]
     },
     {
@@ -97,17 +106,17 @@ export const LEVELS: Level[] = [
         layout: [
             { q: 0, r: 0, target: null, rails: [{ from: 1, to: 4 }] },
             { q: 1, r: 0, target: null, rails: [{ from: 1, to: 4 }, { from: 0, to: 3 }] },
-            { q: 2, r: 0, target: { color: COLORS.wood, pattern: PATTERNS.CIRCLE }, rails: [{ from: 1, to: 4 }] },
+            { q: 2, r: 0, target: { pattern: PATTERNS.CIRCLE }, rails: [{ from: 1, to: 4 }] },
             { q: 3, r: 0, target: null, rails: [{ from: 1, to: 4 }] },
             { q: 4, r: 0, target: null, rails: [{ from: 1, to: 4 }] },
         ],
         defaultRails: [{ from: 1, to: 4 }],
         initialBoard: {
-            '0,0': { id: 'q1', color: COLORS.neutral, pattern: PATTERNS.NONE }
+            '0,0': { id: 'q1', pattern: PATTERNS.NONE }
         },
         initialHand: [
-            { id: 'qh1', color: COLORS.neutral, pattern: PATTERNS.NONE },
-            { id: 'qh2', color: COLORS.wood, pattern: PATTERNS.CIRCLE }
+            { id: 'qh1', pattern: PATTERNS.NONE },
+            { id: 'qh2', pattern: PATTERNS.CIRCLE }
         ]
     },
     {
@@ -139,7 +148,7 @@ export const LEVELS: Level[] = [
                 "q": 1,
                 "r": -1,
                 "target": {
-                    "color": "#483d8b",
+                    
                     "pattern": "diamond"
                 },
                 "rails": [
@@ -199,7 +208,7 @@ export const LEVELS: Level[] = [
                 "q": 0,
                 "r": 2,
                 "target": {
-                    "color": "#556b2f",
+                    
                     "pattern": "lines"
                 },
                 "rails": [
@@ -221,7 +230,7 @@ export const LEVELS: Level[] = [
                 "q": 1,
                 "r": 2,
                 "target": {
-                    "color": "#a0522d",
+                    
                     "pattern": "circle"
                 },
                 "rails": [
@@ -257,24 +266,24 @@ export const LEVELS: Level[] = [
         "initialBoard": {
             "0,-1": {
                 "id": "p0",
-                "color": "#a0522d",
+                
                 "pattern": "circle"
             },
             "1,-1": {
                 "id": "p1",
-                "color": "#483d8b",
+                
                 "pattern": "diamond"
             }
         },
         "initialHand": [
             {
                 "id": "h2",
-                "color": "#556b2f",
+                
                 "pattern": "lines"
             },
             {
                 "id": "hn",
-                "color": "#d2b48c",
+                
                 "pattern": "none"
             }
         ]
@@ -327,7 +336,7 @@ export const LEVELS: Level[] = [
                 "q": 2,
                 "r": -1,
                 "target": {
-                    "color": "#a0522d",
+                    
                     "pattern": "circle"
                 },
                 "rails": [
@@ -349,7 +358,7 @@ export const LEVELS: Level[] = [
                 "q": -1,
                 "r": 0,
                 "target": {
-                    "color": "#483d8b",
+                    
                     "pattern": "diamond"
                 },
                 "rails": [
@@ -371,7 +380,7 @@ export const LEVELS: Level[] = [
                 "q": 2,
                 "r": 0,
                 "target": {
-                    "color": "#556b2f",
+                    
                     "pattern": "lines"
                 },
                 "rails": [
@@ -426,24 +435,24 @@ export const LEVELS: Level[] = [
         "initialBoard": {
             "-1,0": {
                 "id": "p0",
-                "color": "#a0522d",
+                
                 "pattern": "circle"
             },
             "0,0": {
                 "id": "p1",
-                "color": "#483d8b",
+                
                 "pattern": "diamond"
             }
         },
         "initialHand": [
             {
                 "id": "h2",
-                "color": "#556b2f",
+                
                 "pattern": "lines"
             },
             {
                 "id": "hn",
-                "color": "#d2b48c",
+                
                 "pattern": "none"
             }
         ]
@@ -496,7 +505,7 @@ export const LEVELS: Level[] = [
                 "q": -1,
                 "r": -1,
                 "target": {
-                    "color": "#a0522d",
+                    
                     "pattern": "circle"
                 },
                 "rails": [
@@ -556,7 +565,7 @@ export const LEVELS: Level[] = [
                 "q": 0,
                 "r": -2,
                 "target": {
-                    "color": "#483d8b",
+                    
                     "pattern": "diamond"
                 },
                 "rails": [
@@ -578,7 +587,7 @@ export const LEVELS: Level[] = [
                 "q": 1,
                 "r": -2,
                 "target": {
-                    "color": "#556b2f",
+                    
                     "pattern": "lines"
                 },
                 "rails": [
@@ -614,24 +623,24 @@ export const LEVELS: Level[] = [
         "initialBoard": {
             "0,-2": {
                 "id": "p0",
-                "color": "#a0522d",
+                
                 "pattern": "circle"
             },
             "0,-1": {
                 "id": "p1",
-                "color": "#483d8b",
+                
                 "pattern": "diamond"
             }
         },
         "initialHand": [
             {
                 "id": "h2",
-                "color": "#556b2f",
+                
                 "pattern": "lines"
             },
             {
                 "id": "hn",
-                "color": "#d2b48c",
+                
                 "pattern": "none"
             }
         ]
@@ -665,7 +674,7 @@ export const LEVELS: Level[] = [
                 "q": 0,
                 "r": 1,
                 "target": {
-                    "color": "#483d8b",
+                    
                     "pattern": "diamond"
                 },
                 "rails": [
@@ -687,7 +696,7 @@ export const LEVELS: Level[] = [
                 "q": -1,
                 "r": 0,
                 "target": {
-                    "color": "#a0522d",
+                    
                     "pattern": "circle"
                 },
                 "rails": [
@@ -709,7 +718,7 @@ export const LEVELS: Level[] = [
                 "q": 0,
                 "r": -1,
                 "target": {
-                    "color": "#556b2f",
+                    
                     "pattern": "lines"
                 },
                 "rails": [
@@ -783,24 +792,24 @@ export const LEVELS: Level[] = [
         "initialBoard": {
             "0,1": {
                 "id": "p0",
-                "color": "#a0522d",
+                
                 "pattern": "circle"
             },
             "-1,1": {
                 "id": "p1",
-                "color": "#483d8b",
+                
                 "pattern": "diamond"
             }
         },
         "initialHand": [
             {
                 "id": "h2",
-                "color": "#556b2f",
+                
                 "pattern": "lines"
             },
             {
                 "id": "hn",
-                "color": "#d2b48c",
+                
                 "pattern": "none"
             }
         ]
@@ -815,7 +824,7 @@ export const LEVELS: Level[] = [
                 "q": 0,
                 "r": 0,
                 "target": {
-                    "color": "#483d8b",
+                    
                     "pattern": "diamond"
                 },
                 "rails": [
@@ -856,7 +865,7 @@ export const LEVELS: Level[] = [
                 "q": -1,
                 "r": 2,
                 "target": {
-                    "color": "#a0522d",
+                    
                     "pattern": "circle"
                 },
                 "rails": [
@@ -897,7 +906,7 @@ export const LEVELS: Level[] = [
                 "q": -2,
                 "r": 2,
                 "target": {
-                    "color": "#556b2f",
+                    
                     "pattern": "lines"
                 },
                 "rails": [
@@ -933,24 +942,24 @@ export const LEVELS: Level[] = [
         "initialBoard": {
             "0,0": {
                 "id": "p0",
-                "color": "#a0522d",
+                
                 "pattern": "circle"
             },
             "-1,3": {
                 "id": "p1",
-                "color": "#483d8b",
+                
                 "pattern": "diamond"
             }
         },
         "initialHand": [
             {
                 "id": "h2",
-                "color": "#556b2f",
+                
                 "pattern": "lines"
             },
             {
                 "id": "hn",
-                "color": "#d2b48c",
+                
                 "pattern": "none"
             }
         ]
@@ -984,7 +993,7 @@ export const LEVELS: Level[] = [
                 "q": 0,
                 "r": 1,
                 "target": {
-                    "color": "#483d8b",
+                    
                     "pattern": "diamond"
                 },
                 "rails": [
@@ -1044,7 +1053,7 @@ export const LEVELS: Level[] = [
                 "q": 2,
                 "r": -1,
                 "target": {
-                    "color": "#a0522d",
+                    
                     "pattern": "circle"
                 },
                 "rails": [
@@ -1066,7 +1075,7 @@ export const LEVELS: Level[] = [
                 "q": 0,
                 "r": 2,
                 "target": {
-                    "color": "#556b2f",
+                    
                     "pattern": "lines"
                 },
                 "rails": [
@@ -1102,24 +1111,24 @@ export const LEVELS: Level[] = [
         "initialBoard": {
             "0,1": {
                 "id": "p0",
-                "color": "#a0522d",
+                
                 "pattern": "circle"
             },
             "1,-1": {
                 "id": "p1",
-                "color": "#483d8b",
+                
                 "pattern": "diamond"
             }
         },
         "initialHand": [
             {
                 "id": "h2",
-                "color": "#556b2f",
+                
                 "pattern": "lines"
             },
             {
                 "id": "hn",
-                "color": "#d2b48c",
+                
                 "pattern": "none"
             }
         ]
@@ -1153,7 +1162,7 @@ export const LEVELS: Level[] = [
                 "q": -1,
                 "r": 0,
                 "target": {
-                    "color": "#483d8b",
+                    
                     "pattern": "diamond"
                 },
                 "rails": [
@@ -1232,7 +1241,7 @@ export const LEVELS: Level[] = [
                 "q": 1,
                 "r": -2,
                 "target": {
-                    "color": "#a0522d",
+                    
                     "pattern": "circle"
                 },
                 "rails": [
@@ -1254,7 +1263,7 @@ export const LEVELS: Level[] = [
                 "q": 2,
                 "r": -2,
                 "target": {
-                    "color": "#556b2f",
+                    
                     "pattern": "lines"
                 },
                 "rails": [
@@ -1290,24 +1299,24 @@ export const LEVELS: Level[] = [
         "initialBoard": {
             "-1,0": {
                 "id": "p0",
-                "color": "#a0522d",
+                
                 "pattern": "circle"
             },
             "1,-1": {
                 "id": "p1",
-                "color": "#483d8b",
+                
                 "pattern": "diamond"
             }
         },
         "initialHand": [
             {
                 "id": "h2",
-                "color": "#556b2f",
+                
                 "pattern": "lines"
             },
             {
                 "id": "hn",
-                "color": "#d2b48c",
+                
                 "pattern": "none"
             }
         ]
@@ -1341,7 +1350,7 @@ export const LEVELS: Level[] = [
                 "q": 0,
                 "r": -1,
                 "target": {
-                    "color": "#483d8b",
+                    
                     "pattern": "diamond"
                 },
                 "rails": [
@@ -1401,7 +1410,7 @@ export const LEVELS: Level[] = [
                 "q": 1,
                 "r": 0,
                 "target": {
-                    "color": "#a0522d",
+                    
                     "pattern": "circle"
                 },
                 "rails": [
@@ -1423,7 +1432,7 @@ export const LEVELS: Level[] = [
                 "q": 2,
                 "r": 0,
                 "target": {
-                    "color": "#556b2f",
+                    
                     "pattern": "lines"
                 },
                 "rails": [
@@ -1459,24 +1468,24 @@ export const LEVELS: Level[] = [
         "initialBoard": {
             "1,-1": {
                 "id": "p0",
-                "color": "#a0522d",
+                
                 "pattern": "circle"
             },
             "1,0": {
                 "id": "p1",
-                "color": "#483d8b",
+                
                 "pattern": "diamond"
             }
         },
         "initialHand": [
             {
                 "id": "h2",
-                "color": "#556b2f",
+                
                 "pattern": "lines"
             },
             {
                 "id": "hn",
-                "color": "#d2b48c",
+                
                 "pattern": "none"
             }
         ]
@@ -1510,7 +1519,7 @@ export const LEVELS: Level[] = [
                 "q": 0,
                 "r": 1,
                 "target": {
-                    "color": "#483d8b",
+                    
                     "pattern": "diamond"
                 },
                 "rails": [
@@ -1551,7 +1560,7 @@ export const LEVELS: Level[] = [
                 "q": 1,
                 "r": 0,
                 "target": {
-                    "color": "#556b2f",
+                    
                     "pattern": "lines"
                 },
                 "rails": [
@@ -1592,7 +1601,7 @@ export const LEVELS: Level[] = [
                 "q": -2,
                 "r": 2,
                 "target": {
-                    "color": "#a0522d",
+                    
                     "pattern": "circle"
                 },
                 "rails": [
@@ -1647,24 +1656,24 @@ export const LEVELS: Level[] = [
         "initialBoard": {
             "0,1": {
                 "id": "p0",
-                "color": "#a0522d",
+                
                 "pattern": "circle"
             },
             "-2,2": {
                 "id": "p1",
-                "color": "#483d8b",
+                
                 "pattern": "diamond"
             }
         },
         "initialHand": [
             {
                 "id": "h2",
-                "color": "#556b2f",
+                
                 "pattern": "lines"
             },
             {
                 "id": "hn",
-                "color": "#d2b48c",
+                
                 "pattern": "none"
             }
         ]
@@ -1717,7 +1726,7 @@ export const LEVELS: Level[] = [
                 "q": -2,
                 "r": 2,
                 "target": {
-                    "color": "#483d8b",
+                    
                     "pattern": "diamond"
                 },
                 "rails": [
@@ -1739,7 +1748,7 @@ export const LEVELS: Level[] = [
                 "q": -3,
                 "r": 2,
                 "target": {
-                    "color": "#556b2f",
+                    
                     "pattern": "lines"
                 },
                 "rails": [
@@ -1780,7 +1789,7 @@ export const LEVELS: Level[] = [
                 "q": 1,
                 "r": 1,
                 "target": {
-                    "color": "#a0522d",
+                    
                     "pattern": "circle"
                 },
                 "rails": [
@@ -1816,24 +1825,24 @@ export const LEVELS: Level[] = [
         "initialBoard": {
             "0,0": {
                 "id": "p0",
-                "color": "#a0522d",
+                
                 "pattern": "circle"
             },
             "1,1": {
                 "id": "p1",
-                "color": "#483d8b",
+                
                 "pattern": "diamond"
             }
         },
         "initialHand": [
             {
                 "id": "h2",
-                "color": "#556b2f",
+                
                 "pattern": "lines"
             },
             {
                 "id": "hn",
-                "color": "#d2b48c",
+                
                 "pattern": "none"
             }
         ]
