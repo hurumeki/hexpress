@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import type { Level, Tile, Rail } from '../types';
-import { DIRS, PATTERNS } from '../constants';
+import { DIRS, PATTERNS, RAILS_3WAY } from '../constants';
 import { hexToPixel, getHexCorner, getEdgeInfo } from '../utils';
 import PieceSvg from '../components/PieceSvg';
 import GameScreen from '../screens/GameScreen';
@@ -129,7 +129,7 @@ function StageEditor() {
 
         if (editMode === 'BOARD') {
             if (isGhost) {
-                setLevelData(prev => ({ ...prev, layout: [...prev.layout, { q: hq, r: hr, target: null, rails: [] }] }));
+                setLevelData(prev => ({ ...prev, layout: [...prev.layout, { q: hq, r: hr, target: null, rails: RAILS_3WAY }] }));
             } else {
                 setLevelData(prev => {
                     const key = `${hq},${hr}`;
