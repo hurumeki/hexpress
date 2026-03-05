@@ -393,7 +393,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                 </div>
 
                 <div
-                    className="p-4 md:p-6 bg-stone-900 border-t border-stone-800 flex justify-center gap-3 md:gap-5 cursor-pointer h-24 md:h-28 shrink-0 z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] w-full overflow-x-auto"
+                    className="p-4 md:p-6 bg-stone-900 border-t border-stone-800 flex justify-center gap-3 md:gap-5 cursor-pointer h-28 md:h-32 shrink-0 z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] w-full overflow-x-auto no-scrollbar"
                     onClick={(e) => {
                         if (e.target === e.currentTarget) {
                             setReadySlot(null);
