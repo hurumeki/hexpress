@@ -21,19 +21,19 @@ export const translations = {
         eraseConfirm: 'プレイデータをすべて削除してもよろしいですか？\nこの操作は取り消せません。',
 
         // ステージ選択
-        stages: 'ステージ',
+        stages: 'ステージ選択',
 
         // ゲーム画面
-        moves: '手',
+        moves: '手数',
         best: 'ベスト',
         undo: '戻す',
         peek: '確認',
         stageClear: 'ステージクリア！',
         nextStage: '次のステージ',
         backToSelect: '選択に戻る',
-        excellent: 'エクセレント',
-        good: 'グッド',
-        clear: 'クリア',
+        excellent: 'Excellent',
+        good: 'Good',
+        clear: 'Clear',
     },
     en: {
         // Title

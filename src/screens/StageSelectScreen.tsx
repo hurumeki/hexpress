@@ -103,7 +103,7 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, onSelec
                                 />
                             ))}
                         </div>
-                        <span className="text-[10px] text-stone-500 font-bold uppercase tracking-widest">{t('stages')} {page + 1} / {totalPages} - Swipe to change</span>
+                        <span className="text-[10px] text-stone-500 font-bold uppercase tracking-widest">{t('stages')} {page + 1} / {totalPages}</span>
                     </div>
                 )}
             </div>
