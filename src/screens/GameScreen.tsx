@@ -407,7 +407,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                             key={p.id}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                setSelectedIdx(selectedIdx === i ? null : i);
+                                setSelectedIdx(i);
                             }}
                             className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl border-2 transition-all flex items-center justify-center shrink-0 ${selectedIdx === i ? 'bg-stone-800 border-amber-500 ring-4 ring-amber-500/20' : 'bg-stone-800 border-stone-700'}`}
                         >
