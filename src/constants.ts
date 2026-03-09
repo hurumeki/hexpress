@@ -121,116 +121,14 @@ export const LEVELS: Level[] = [
     },
     {
         "id": 3,
-        "name": "Stage 4",
-        "excellentMoves": 3,
+        "name": "Rotate Triangle",
+        "excellentMoves": 2,
         "goodMoves": 5,
         "layout": [
             {
-                "q": 0,
-                "r": 0,
-                "target": null,
-                "rails": [
-                    {
-                        "from": 0,
-                        "to": 3
-                    },
-                    {
-                        "from": 1,
-                        "to": 4
-                    },
-                    {
-                        "from": 2,
-                        "to": 5
-                    }
-                ]
-            },
-            {
                 "q": 1,
                 "r": -1,
                 "target": {
-
-                    "pattern": "diamond"
-                },
-                "rails": [
-                    {
-                        "from": 0,
-                        "to": 3
-                    },
-                    {
-                        "from": 1,
-                        "to": 4
-                    },
-                    {
-                        "from": 2,
-                        "to": 5
-                    }
-                ]
-            },
-            {
-                "q": 0,
-                "r": -1,
-                "target": null,
-                "rails": [
-                    {
-                        "from": 0,
-                        "to": 3
-                    },
-                    {
-                        "from": 1,
-                        "to": 4
-                    },
-                    {
-                        "from": 2,
-                        "to": 5
-                    }
-                ]
-            },
-            {
-                "q": 0,
-                "r": 1,
-                "target": null,
-                "rails": [
-                    {
-                        "from": 0,
-                        "to": 3
-                    },
-                    {
-                        "from": 1,
-                        "to": 4
-                    },
-                    {
-                        "from": 2,
-                        "to": 5
-                    }
-                ]
-            },
-            {
-                "q": 0,
-                "r": 2,
-                "target": {
-
-                    "pattern": "lines"
-                },
-                "rails": [
-                    {
-                        "from": 0,
-                        "to": 3
-                    },
-                    {
-                        "from": 1,
-                        "to": 4
-                    },
-                    {
-                        "from": 2,
-                        "to": 5
-                    }
-                ]
-            },
-            {
-                "q": 1,
-                "r": 2,
-                "target": {
-
                     "pattern": "circle"
                 },
                 "rails": [
@@ -247,43 +145,64 @@ export const LEVELS: Level[] = [
                         "to": 5
                     }
                 ]
-            }
-        ],
-        "defaultRails": [
-            {
-                "from": 0,
-                "to": 3
             },
             {
-                "from": 1,
-                "to": 4
+                "q": 0,
+                "r": 0,
+                "target": {
+                    "pattern": "square"
+                },
+                "rails": [
+                    {
+                        "from": 4,
+                        "to": 1
+                    },
+                    {
+                        "from": 0,
+                        "to": 3
+                    }
+                ]
             },
             {
-                "from": 2,
-                "to": 5
+                "q": 1,
+                "r": 0,
+                "target": {
+                    "pattern": "diamond"
+                },
+                "rails": [
+                    {
+                        "from": 0,
+                        "to": 3
+                    },
+                    {
+                        "from": 1,
+                        "to": 4
+                    },
+                    {
+                        "from": 2,
+                        "to": 5
+                    }
+                ]
             }
         ],
+        "defaultRails": [],
         "initialBoard": {
-            "0,-1": {
-                "id": "p0",
-
-                "pattern": "circle"
+            "0,0": {
+                "id": "p_0_0_1772707228151",
+                "pattern": "diamond"
             },
             "1,-1": {
-                "id": "p1",
-
-                "pattern": "diamond"
+                "id": "p_1_-1_1772707523296",
+                "pattern": "square"
+            },
+            "1,0": {
+                "id": "p_1_0_1772707555346",
+                "pattern": "circle"
             }
         },
         "initialHand": [
             {
-                "id": "h2",
-
-                "pattern": "lines"
-            },
-            {
-                "id": "hn",
-
+                "id": "h_none_0_1772706969075",
                 "pattern": "none"
             }
         ]
