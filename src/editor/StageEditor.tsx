@@ -333,6 +333,7 @@ function StageEditor() {
                             ))}
                         </div>
                     </div>
+
                 </div>
 
                 {/* === 右カラム: 設定パネル === */}
@@ -419,11 +420,30 @@ function StageEditor() {
                         )}
                     </div>
 
+
                     {/* Level JSON */}
-                    <div className="bg-stone-800 rounded-2xl border border-stone-700 p-4 flex flex-col gap-2">
+                    <div className="bg-stone-800 rounded-2xl border border-stone-700 p-4 mt-4 flex flex-col gap-2">
                         <div className="flex items-center justify-between">
                             <div className="text-xs font-black uppercase text-stone-400">Level JSON</div>
-                            {jsonError && <span className="text-xs text-red-400 font-bold">{jsonError}</span>}
+                            <div className="flex items-center gap-2">
+                                {jsonError && <span className="text-xs text-red-400 font-bold">{jsonError}</span>}
+                                <button onClick={() => {
+                                    navigator.clipboard.writeText(jsonText);
+                                    const btn = document.getElementById('copy-json-btn');
+                                    if (btn) {
+                                        const original = btn.innerText;
+                                        btn.innerText = 'Copied!';
+                                        btn.classList.add('bg-emerald-600');
+                                        setTimeout(() => {
+                                            btn.innerText = original;
+                                            btn.classList.remove('bg-emerald-600');
+                                        }, 2000);
+                                    }
+                                }} id="copy-json-btn"
+                                    className="px-2 py-1 bg-stone-700 text-[10px] font-black uppercase rounded border border-stone-600 hover:bg-stone-600 transition-colors">
+                                    Copy JSON
+                                </button>
+                            </div>
                         </div>
                         <textarea value={jsonText} onChange={e => handleJsonChange(e.target.value)} spellCheck={false}
                             className={`w-full h-64 bg-stone-900 rounded-xl p-3 text-xs font-mono resize-y focus:outline-none border transition-colors ${jsonError ? 'border-red-600' : 'border-stone-600 focus:border-amber-500'}`} />
