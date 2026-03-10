@@ -17,7 +17,7 @@ const PATTERN_OPTIONS = [
     { pattern: PATTERNS.DOT, name: 'Dot' },
 ];
 const GOAL_CYCLE = [null, ...PATTERN_OPTIONS.map(p => p.pattern)];
-const PIECE_CYCLE = [null, ...PATTERN_OPTIONS.map(p => p.pattern), PATTERNS.NONE];
+const PIECE_CYCLE = [null, PATTERNS.NONE, ...PATTERN_OPTIONS.map(p => p.pattern)];
 const EDGE_NAMES = ['右上(0)', '右(1)', '右下(2)', '左下(3)', '左(4)', '左上(5)'];
 
 const DEFAULT_LEVEL: Level = {
