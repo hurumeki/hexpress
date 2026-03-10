@@ -15,7 +15,7 @@ interface StageSelectScreenProps {
 const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, onSelect, onBack }) => {
     const { t } = useLang();
     const [page, setPage] = useState(0);
-    const stagesPerPage = 10;
+    const stagesPerPage = 12; // 3x4 or 4x3 works better for grid
     const totalPages = Math.ceil(LEVELS.length / stagesPerPage);
 
     const stages = LEVELS.slice(page * stagesPerPage, (page + 1) * stagesPerPage);
@@ -37,7 +37,7 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, onSelec
 
     return (
         <div className="fixed inset-0 bg-stone-800 flex flex-col select-none touch-none text-white overflow-hidden">
-            <div className="w-full flex flex-col h-full">
+            <div className="w-full flex flex-col h-full relative">
                 <div className="p-4 md:p-6 bg-stone-900 border-b border-stone-700 flex justify-between items-center shadow-md z-10 shrink-0">
                     <div className="flex items-center gap-3">
                         <BackButton onClick={onBack} />
@@ -46,29 +46,54 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, onSelec
                 </div>
 
                 <div
-                    className="flex-1 overflow-y-auto w-full"
+                    className="flex-1 overflow-y-auto w-full relative group"
                     onTouchStart={handleTouchStart}
                     onTouchEnd={handleTouchEnd}
                 >
-                    <div className="p-4 md:p-8 max-w-4xl mx-auto w-full">
-                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-fr gap-4 pb-4">
+                    {/* Desktop Navigation Arrows */}
+                    {page > 0 && (
+                        <button
+                            onClick={() => setPage(p => p - 1)}
+                            className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center bg-stone-900/50 hover:bg-stone-900/80 border border-stone-700 rounded-full transition-all text-white/50 hover:text-white"
+                            aria-label="Previous page"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                    )}
+                    {page < totalPages - 1 && (
+                        <button
+                            onClick={() => setPage(p => p + 1)}
+                            className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center bg-stone-900/50 hover:bg-stone-900/80 border border-stone-700 rounded-full transition-all text-white/50 hover:text-white"
+                            aria-label="Next page"
+                        >
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    )}
+
+                    <div className="p-4 md:p-8 max-w-5xl mx-auto w-full px-12 md:px-16">
+                        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-fr gap-4 pb-4">
                             {stages.map((level) => {
                                 const status = userData.stageProgress[level.id];
+                                const isCleared = !!status?.cleared;
                                 const medalColor = getMedalColor(status?.bestMoves || null, level.excellentMoves, level.goodMoves);
 
                                 return (
                                     <button
                                         key={level.id}
                                         onClick={() => onSelect(level.id)}
-                                        className="bg-stone-900 rounded-2xl p-4 border border-stone-700 flex flex-col items-center justify-between hover:border-amber-500 transition-all active:scale-95"
+                                        className={`bg-stone-900 rounded-2xl p-4 border border-stone-700 flex flex-col items-center justify-between hover:border-amber-500 transition-all hover:-translate-y-1 active:scale-95 group/btn ${!isCleared ? 'opacity-90' : 'shadow-[0_0_15px_rgba(0,0,0,0.3)]'}`}
                                     >
                                         <div className="flex justify-between w-full items-start">
-                                            <span className="text-xl font-black italic text-stone-500">#{level.id + 1}</span>
+                                            <span className={`text-xl font-black italic transition-colors ${isCleared ? 'text-amber-500/50' : 'text-stone-600'}`}>#{level.id + 1}</span>
                                             <HexMedal color={medalColor} size={10} />
                                         </div>
 
                                         {/* Thumbnail Preview Area */}
-                                        <div className="w-full h-16 flex items-center justify-center opacity-40">
+                                        <div className={`w-full h-16 flex items-center justify-center transition-all duration-300 ${isCleared ? 'opacity-60 grayscale-0 brightness-110' : 'opacity-40 grayscale brightness-75 group-hover/btn:opacity-100 group-hover/btn:grayscale-0 group-hover/btn:brightness-110'}`}>
                                             <svg viewBox={getBoardBoundingBox(level.layout, 12, 4).viewBox} className="w-full h-full max-w-[80%] max-h-[100%]">
                                                 {level.layout.map((p, j) => {
                                                     const { x, y } = hexToPixel(p.q, p.r, 12);
@@ -76,12 +101,12 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, onSelec
                                                         const a = (Math.PI / 180) * (60 * k + 30);
                                                         return `${x + 12 * Math.cos(a)},${y + 12 * Math.sin(a)}`;
                                                     }).join(' ');
-                                                    return <polygon key={j} points={pts} fill="#333" stroke="#555" strokeWidth={1} />;
+                                                    return <polygon key={j} points={pts} fill={isCleared ? "#444" : "#333"} stroke={isCleared ? "#666" : "#444"} strokeWidth={1} />;
                                                 })}
                                             </svg>
                                         </div>
 
-                                        <span className="text-[10px] font-bold uppercase tracking-widest text-stone-400 mt-2 truncate w-full text-center">
+                                        <span className={`text-[10px] font-bold uppercase tracking-widest mt-2 truncate w-full text-center transition-colors ${isCleared ? 'text-stone-300' : 'text-stone-500'}`}>
                                             {level.name}
                                         </span>
                                     </button>
