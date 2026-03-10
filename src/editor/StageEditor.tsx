@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import type { Level, Tile, Rail } from '../types';
 import { DIRS, PATTERNS, RAILS_3WAY } from '../constants';
-import { hexToPixel, getHexCorner, getEdgeInfo } from '../utils';
+import { hexToPixel, getHexCorner, getEdgeInfo, getBoardBoundingBox } from '../utils';
 import PieceSvg from '../components/PieceSvg';
 import GameScreen from '../screens/GameScreen';
 import { solve } from './solver';
@@ -70,11 +70,24 @@ function StageEditor() {
     const [newRailFrom, setNewRailFrom] = useState(0);
     const [newRailTo, setNewRailTo] = useState(3);
     const [playKey, setPlayKey] = useState(0);
+    const [zoom, setZoom] = useState(1.0);
     const jsonSourceRef = useRef<'ui' | 'json'>('ui');
 
     const hexSize = 44;
     const { layout } = levelData;
     const ghostHexes = useMemo(() => editMode === 'BOARD' ? computeGhostHexes(layout) : [], [layout, editMode]);
+
+    const boardBox = useMemo(() => {
+        const allHexes = [...layout, ...ghostHexes];
+        const base = getBoardBoundingBox(allHexes, hexSize, 40);
+        const centerX = base.x + base.width / 2;
+        const centerY = base.y + base.height / 2;
+        const w = base.width / zoom;
+        const h = base.height / zoom;
+        return {
+            viewBox: `${centerX - w / 2} ${centerY - h / 2} ${w} ${h}`
+        };
+    }, [layout, ghostHexes, zoom]);
 
     // selectedTile の rails
     const selectedTileData = selectedTile
@@ -264,7 +277,7 @@ function StageEditor() {
 
                     {/* SVGキャンバス (ゲーム画面と同じ 380px 高さ) */}
                     <div className="bg-stone-800 rounded-2xl overflow-hidden border border-stone-700 relative h-[380px]">
-                        <svg viewBox="-165 -180 330 360" className="w-full h-full" onClick={handleSvgClick}>
+                        <svg viewBox={boardBox.viewBox} className="w-full h-full" onClick={handleSvgClick}>
                             <defs>
                                 <radialGradient id="gloss" cx="30%" cy="30%" r="50%">
                                     <stop offset="0%" stopColor="white" />
@@ -346,6 +359,13 @@ function StageEditor() {
                                 );
                             })}
                         </svg>
+
+                        {/* ズームコントロール */}
+                        <div className="absolute top-2 right-2 flex flex-col gap-1">
+                            <button onClick={() => setZoom(z => Math.min(z * 1.2, 5))} className="w-8 h-8 bg-stone-900/80 border border-stone-600 rounded-lg flex items-center justify-center hover:bg-stone-700 transition-colors">＋</button>
+                            <button onClick={() => setZoom(z => Math.max(z / 1.2, 0.2))} className="w-8 h-8 bg-stone-900/80 border border-stone-600 rounded-lg flex items-center justify-center hover:bg-stone-700 transition-colors">－</button>
+                            <button onClick={() => setZoom(1.0)} className="w-8 h-8 bg-stone-900/80 border border-stone-600 rounded-lg flex items-center justify-center hover:bg-stone-700 transition-colors text-[10px] font-bold">1:1</button>
+                        </div>
 
                         {/* モードのヒント */}
                         <div className="absolute bottom-2 left-0 right-0 text-center text-[10px] text-stone-500 font-bold pointer-events-none">
