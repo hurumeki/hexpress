@@ -66,6 +66,7 @@ function StageEditor() {
     const [solving, setSolving] = useState(false);
     const [solverResult, setSolverResult] = useState<number | null | 'none'>(null);
     const [selectedTile, setSelectedTile] = useState<{ q: number; r: number } | null>(null);
+    const [firstEdge, setFirstEdge] = useState<number | null>(null);
     const [newRailFrom, setNewRailFrom] = useState(0);
     const [newRailTo, setNewRailTo] = useState(3);
     const [playKey, setPlayKey] = useState(0);
@@ -124,7 +125,14 @@ function StageEditor() {
         const coords = getSvgCoords(e);
         if (!coords) return;
         const hit = findNearestHex(coords.x, coords.y, editMode === 'BOARD');
-        if (!hit) return;
+
+        if (!hit) {
+            if (editMode === 'RAILS') {
+                setSelectedTile(null);
+                setFirstEdge(null);
+            }
+            return;
+        }
         const { q: hq, r: hr, isGhost } = hit;
 
         if (editMode === 'BOARD') {
@@ -165,21 +173,38 @@ function StageEditor() {
             });
         } else if (editMode === 'RAILS' && !isGhost) {
             setSelectedTile({ q: hq, r: hr });
+            setFirstEdge(null); // タイル選択時は辺選択をリセット
         }
     };
 
     // タイル別レール操作
-    const addRailToSelected = () => {
-        if (!selectedTile || newRailFrom === newRailTo) return;
+    const toggleRail = (q: number, r: number, from: number, to: number) => {
         setLevelData(prev => ({
             ...prev,
             layout: prev.layout.map(t => {
-                if (t.q !== selectedTile.q || t.r !== selectedTile.r) return t;
+                if (t.q !== q || t.r !== r) return t;
                 const rails = t.rails ?? prev.defaultRails ?? [];
-                if (rails.some(r => (r.from === newRailFrom && r.to === newRailTo) || (r.from === newRailTo && r.to === newRailFrom))) return t;
-                return { ...t, rails: [...rails, { from: newRailFrom, to: newRailTo }] };
+                // 既存のレールがあるかチェック(双方向)
+                const existingIdx = rails.findIndex(rail =>
+                    (rail.from === from && rail.to === to) || (rail.from === to && rail.to === from)
+                );
+
+                if (existingIdx !== -1) {
+                    // 削除
+                    const nextRails = [...rails];
+                    nextRails.splice(existingIdx, 1);
+                    return { ...t, rails: nextRails };
+                } else {
+                    // 追加
+                    return { ...t, rails: [...rails, { from, to }] };
+                }
             }),
         }));
+    };
+
+    const addRailToSelected = () => {
+        if (!selectedTile || newRailFrom === newRailTo) return;
+        toggleRail(selectedTile.q, selectedTile.r, newRailFrom, newRailTo);
     };
 
     const removeRailFromSelected = (idx: number) => {
@@ -248,13 +273,13 @@ function StageEditor() {
                             </defs>
 
                             {/* Ghost hexes */}
-                            {editMode === 'BOARD' && ghostHexes.map((g, i) => {
+                            {editMode === 'BOARD' && ghostHexes.map((g: { q: number; r: number }, i: number) => {
                                 const { x, y } = hexToPixel(g.q, g.r, hexSize);
                                 return <polygon key={`g-${i}`} points={hexPoints(x, y)} fill="transparent" stroke="rgba(255,255,255,0.15)" strokeWidth={1.5} strokeDasharray="4 3" />;
                             })}
 
                             {/* タイル */}
-                            {layout.map((tile, i) => {
+                            {layout.map((tile: Tile, i: number) => {
                                 const { x, y } = hexToPixel(tile.q, tile.r, hexSize);
                                 const piece = levelData.initialBoard[`${tile.q},${tile.r}`];
                                 const tileRails = tile.rails ?? levelData.defaultRails ?? [];
@@ -267,7 +292,7 @@ function StageEditor() {
                                             strokeWidth={isSelected ? 2.5 : 1} />
 
                                         {/* レール (修正済み: +4)%6 で正しい辺に描画) */}
-                                        {tileRails.map((r, j) => {
+                                        {tileRails.map((r: Rail, j: number) => {
                                             const m1 = getEdgeInfo(x, y, hexSize, (r.from + 4) % 6);
                                             const m2 = getEdgeInfo(x, y, hexSize, (r.to + 4) % 6);
                                             return (
@@ -289,6 +314,34 @@ function StageEditor() {
                                                 <PieceSvg piece={piece} x={x} y={y} size={hexSize} />
                                             </g>
                                         )}
+
+                                        {isSelected && [0, 1, 2, 3, 4, 5].map(edgeIdx => {
+                                            const edge = getEdgeInfo(x, y, hexSize, (edgeIdx + 4) % 6);
+                                            const isMatched = firstEdge === edgeIdx;
+                                            return (
+                                                <g key={`edge-btn-${edgeIdx}`} cursor="pointer"
+                                                    onClick={(e: React.MouseEvent) => {
+                                                        e.stopPropagation();
+                                                        if (firstEdge === null) {
+                                                            setFirstEdge(edgeIdx);
+                                                        } else if (firstEdge === edgeIdx) {
+                                                            setFirstEdge(null);
+                                                        } else {
+                                                            toggleRail(tile.q, tile.r, firstEdge, edgeIdx);
+                                                            setFirstEdge(null);
+                                                        }
+                                                    }}>
+                                                    <circle cx={edge.x} cy={edge.y} r="8"
+                                                        fill={isMatched ? '#f59e0b' : '#282018'}
+                                                        stroke="#f59e0b" strokeWidth="1" />
+                                                    <text x={edge.x} y={edge.y} dy="3" textAnchor="middle"
+                                                        fill={isMatched ? 'black' : 'white'}
+                                                        fontSize="10" fontWeight="bold" pointerEvents="none">
+                                                        {edgeIdx}
+                                                    </text>
+                                                </g>
+                                            );
+                                        })}
                                     </g>
                                 );
                             })}
@@ -299,7 +352,7 @@ function StageEditor() {
                             {editMode === 'BOARD' && '▲クリック: タイル追加 ／ 既存タイルクリック: 削除'}
                             {editMode === 'GOAL' && '▲クリック: ゴール駒をサイクル変更'}
                             {editMode === 'PIECES' && '▲クリック: 初期駒をサイクル変更'}
-                            {editMode === 'RAILS' && '▲タイルをクリックして選択 → 右パネルでレールを編集'}
+                            {editMode === 'RAILS' && '▲タイルを選択 → 辺の数字(0-5)を2箇所クリックしてレール設定'}
                             {editMode === 'HAND' && '▼下の手持ちエリアで駒を管理'}
                         </div>
                     </div>
