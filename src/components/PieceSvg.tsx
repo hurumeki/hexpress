@@ -16,10 +16,10 @@ interface PieceSvgProps {
 const PieceSvg: React.FC<PieceSvgProps> = ({ piece, x, y, size, isTarget, ghost, isPeek }) => {
     const color = getColorFromPattern(piece.pattern, piece.color);
     const pattern = piece.pattern;
-    // isPeek の時は全体を大幅に透過させる
-    const baseOpacity = isTarget ? 0.4 : (isPeek ? 0.1 : 1);
-    // 模様も連動して薄くする
-    const patternOpacity = isPeek ? 0.3 : 1;
+    // isPeek の時は全体を完全に透過させる（駒を隠す）
+    const baseOpacity = isTarget ? 0.4 : (isPeek ? 0 : 1);
+    // 模様も連動して隠す
+    const patternOpacity = isPeek ? 0 : 1;
 
     return (
         <g transform={`translate(${x}, ${y})`} className="transition-transform duration-300 ease-out" opacity={baseOpacity}>

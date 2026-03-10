@@ -337,7 +337,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                                         const m1 = getEdgeInfo(x, y, hexSize, (r.from + 4) % 6);
                                         const m2 = getEdgeInfo(x, y, hexSize, (r.to + 4) % 6);
                                         return (
-                                            <g key={`rail-${j}`} stroke="#1a120b" strokeWidth="1" opacity={isPeek ? 0.3 : 1}>
+                                            <g key={`rail-${j}`} stroke="#1a120b" strokeWidth="1">
                                                 <line x1={m1.x} y1={m1.y} x2={x} y2={y} />
                                                 <line x1={x} y1={y} x2={m2.x} y2={m2.y} />
                                             </g>
