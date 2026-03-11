@@ -405,7 +405,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                     {isClear && (
                         <div className="absolute inset-0 bg-stone-900/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center animate-in fade-in duration-500 z-50">
                             <h2 className="text-3xl md:text-5xl font-black text-white italic uppercase tracking-tighter mb-4">{t('stageClear')}</h2>
-                            <div className="flex flex-col items-center gap-2 mb-10">
+                            <div className="flex flex-col items-center gap-2 mb-10 animate-pop-in animation-delay-300 opacity-0">
                                 <HexMedal color={getMedalColor(moves, level.excellentMoves, level.goodMoves)} size={30} />
                                 <span className="text-amber-500 font-black text-xl italic uppercase tracking-widest">
                                     {moves <= level.excellentMoves ? 'EXCELLENT!' : moves <= level.goodMoves ? 'GOOD!' : 'CLEARED'}
@@ -416,32 +416,36 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                     )}
                 </div>
 
-                <div
-                    className="p-4 md:p-6 bg-stone-900 border-t border-stone-800 flex justify-center gap-3 md:gap-5 cursor-pointer h-28 md:h-32 shrink-0 z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] w-full overflow-x-auto no-scrollbar"
-                    onClick={(e) => {
-                        if (e.target === e.currentTarget) {
-                            setReadySlot(null);
-                            setHighlightedPaths([]);
-                            setSelectedIdx(null);
-                        }
-                    }}
-                >
-                    {hand.map((p, i) => (
-                        <button
-                            key={p.id}
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                setSelectedIdx(i);
-                            }}
-                            className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl border-2 transition-all flex items-center justify-center shrink-0 ${selectedIdx === i ? 'bg-stone-800 border-amber-500 ring-4 ring-amber-500/20' : 'bg-stone-800 border-stone-700'} relative`}
-                        >
-                            <svg viewBox="-25 -25 50 50" className="w-[85%] h-[85%] pointer-events-none">
-                                <PieceSvg piece={p} x={0} y={0} size={25} />
-                            </svg>
+                <div className="relative w-full shrink-0 z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+                    {/* Hand Scroller with Fade Hints */}
+                    <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-stone-900 to-transparent z-20 pointer-events-none opacity-60"></div>
+                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-stone-900 to-transparent z-20 pointer-events-none opacity-60"></div>
 
-
-                        </button>
-                    ))}
+                    <div
+                        className="p-4 md:p-6 bg-stone-900 border-t border-stone-800 flex justify-center gap-3 md:gap-5 cursor-pointer h-28 md:h-32 w-full overflow-x-auto no-scrollbar scroll-smooth"
+                        onClick={(e) => {
+                            if (e.target === e.currentTarget) {
+                                setReadySlot(null);
+                                setHighlightedPaths([]);
+                                setSelectedIdx(null);
+                            }
+                        }}
+                    >
+                        {hand.map((p, i) => (
+                            <button
+                                key={p.id}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setSelectedIdx(i);
+                                }}
+                                className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl border-2 transition-all flex items-center justify-center shrink-0 ${selectedIdx === i ? 'bg-stone-800 border-amber-500 ring-4 ring-amber-500/20 scale-110 z-10 animate-pulse-ring' : 'bg-stone-800 border-stone-700'} relative`}
+                            >
+                                <svg viewBox="-25 -25 50 50" className="w-[85%] h-[85%] pointer-events-none">
+                                    <PieceSvg piece={p} x={0} y={0} size={25} />
+                                </svg>
+                            </button>
+                        ))}
+                    </div>
                 </div>
             </div>
 
