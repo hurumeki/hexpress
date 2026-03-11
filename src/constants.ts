@@ -112,4 +112,4 @@ export const LEVELS: Level[] = [
     level25 as Level
 ];
 
-export const STORAGE_KEY = 'hexa_slide_userdata';
+export const STORAGE_KEY = 'hexpress_userdata';
