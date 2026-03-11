@@ -1,12 +1,14 @@
 import { useState, useEffect, useMemo } from 'react';
-import type { ScreenMode, UserData } from './types';
+import type { ScreenMode, UserData, GlobalAchievement } from './types';
 import { LEVELS, STORAGE_KEY } from './constants';
 import { DEFAULT_LANG, LangContext, translations, useLang, type Lang } from './i18n';
 import BackButton from './components/BackButton';
 import ConfirmPopup from './components/ConfirmPopup';
+import { getGlobalAchievementStatus } from './utils';
 import StageSelectScreen from './screens/StageSelectScreen';
 import GameScreen from './screens/GameScreen';
 import TitleScreen from './screens/TitleScreen';
+import GlobalAchievementOverlay from './components/GlobalAchievementOverlay';
 
 // --- 設定画面 ---
 function SettingsScreen({ userData, setUserData, onBack }: {
@@ -121,6 +123,9 @@ function App() {
 
     const [currentLevelId, setCurrentLevelId] = useState<number | null>(null);
     const [lang, setLangState] = useState<Lang>(userData.language);
+    const [justAchievedGlobalStatus, setJustAchievedGlobalStatus] = useState<GlobalAchievement>(null);
+
+    const currentGlobalStatus = useMemo(() => getGlobalAchievementStatus(userData.stageProgress, LEVELS), [userData.stageProgress]);
 
     const setLang = (l: Lang) => setLangState(l);
 
@@ -144,12 +149,25 @@ function App() {
     const activeLevel = useMemo(() => LEVELS.find(l => l.id === currentLevelId), [currentLevelId]);
 
     const updateStageProgress = (levelId: number, moves: number) => {
+        const oldStatus = getGlobalAchievementStatus(userData.stageProgress, LEVELS);
+
         setUserData(prev => {
             const current = prev.stageProgress[levelId];
             const best = (current && current.bestMoves !== null) ? Math.min(current.bestMoves, moves) : moves;
+            const newProgress = { ...prev.stageProgress, [levelId]: { cleared: true, bestMoves: best } };
+            
+            const newStatus = getGlobalAchievementStatus(newProgress, LEVELS);
+            const rank = { gold: 3, silver: 2, bronze: 1, 'null': 0 };
+            const oldRank = oldStatus ? rank[oldStatus] : 0;
+            const newRank = newStatus ? rank[newStatus] : 0;
+            
+            if (newRank > oldRank) {
+                setJustAchievedGlobalStatus(newStatus);
+            }
+
             return {
                 ...prev,
-                stageProgress: { ...prev.stageProgress, [levelId]: { cleared: true, bestMoves: best } },
+                stageProgress: newProgress,
                 lastActiveLevelId: levelId
             };
         });
@@ -177,6 +195,7 @@ function App() {
             {screen === 'TITLE' && (
                 <TitleScreen
                     userData={userData}
+                    globalStatus={currentGlobalStatus}
                     onContinue={handleContinue}
                     onStart={() => selectLevel(0)}
                     onStageSelect={() => setScreen('STAGE_SELECT')}
@@ -189,7 +208,7 @@ function App() {
             )}
 
             {screen === 'STAGE_SELECT' && (
-                <StageSelectScreen userData={userData} onSelect={selectLevel} onBack={() => setScreen('TITLE')} />
+                <StageSelectScreen userData={userData} globalStatus={currentGlobalStatus} onSelect={selectLevel} onBack={() => setScreen('TITLE')} />
             )}
 
             {screen === 'GAME' && activeLevel && (
@@ -200,6 +219,13 @@ function App() {
                     onClear={(moves) => updateStageProgress(activeLevel.id, moves)}
                     onExit={() => setScreen('STAGE_SELECT')}
                     onNext={activeLevel.id < LEVELS.length - 1 ? () => selectLevel(activeLevel.id + 1) : undefined}
+                />
+            )}
+
+            {justAchievedGlobalStatus && (
+                <GlobalAchievementOverlay 
+                    status={justAchievedGlobalStatus} 
+                    onClose={() => setJustAchievedGlobalStatus(null)} 
                 />
             )}
         </LangContext.Provider>

@@ -2,6 +2,8 @@
 
 export type ScreenMode = 'TITLE' | 'SETTINGS' | 'STAGE_SELECT' | 'GAME';
 
+export type GlobalAchievement = 'gold' | 'silver' | 'bronze' | null;
+
 export interface PieceTemplate {
     id: string;
     color?: string;

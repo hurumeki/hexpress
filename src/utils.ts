@@ -50,6 +50,41 @@ export const getMedalColor = (bestMoves: number | null, excellent: number, good:
     return '#b45309';                             // Bronze
 };
 
+import type { UserData, Level, GlobalAchievement } from './types';
+
+export const getGlobalAchievementStatus = (
+    progress: UserData['stageProgress'],
+    levels: Level[]
+): GlobalAchievement => {
+    if (levels.length === 0) return null;
+
+    let allCleared = true;
+    let allSilver = true;
+    let allGold = true;
+
+    for (const level of levels) {
+        const p = progress[level.id];
+        if (!p || !p.cleared || p.bestMoves === null) {
+            allCleared = false;
+            allSilver = false;
+            allGold = false;
+            break;
+        }
+        if (p.bestMoves > level.goodMoves) {
+            allSilver = false;
+            allGold = false;
+        }
+        if (p.bestMoves > level.excellentMoves) {
+            allGold = false;
+        }
+    }
+
+    if (allGold) return 'gold';
+    if (allSilver) return 'silver';
+    if (allCleared) return 'bronze';
+    return null;
+};
+
 export const getBoardBoundingBox = (hexes: { q: number; r: number }[], size: number, padding: number = 0) => {
     if (hexes.length === 0) return { x: -size, y: -size, width: size * 2, height: size * 2, viewBox: `-${size} -${size} ${size * 2} ${size * 2}` };
 

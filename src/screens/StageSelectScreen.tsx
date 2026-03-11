@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import type { UserData } from '../types';
+import type { UserData, GlobalAchievement } from '../types';
 import { LEVELS } from '../constants';
 import { hexToPixel, getMedalColor, getBoardBoundingBox } from '../utils';
 import { useLang } from '../i18n';
 import HexMedal from '../components/HexMedal';
+import CrownSvg from '../components/CrownSvg';
 import BackButton from '../components/BackButton';
 
 interface StageSelectScreenProps {
     userData: UserData;
+    globalStatus: GlobalAchievement;
     onSelect: (id: number) => void;
     onBack: () => void;
 }
 
-const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, onSelect, onBack }) => {
+const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, globalStatus, onSelect, onBack }) => {
     const { t } = useLang();
     const [page, setPage] = useState(0);
     const stagesPerPage = 12; // 3x4 or 4x3 works better for grid
@@ -41,7 +43,10 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, onSelec
                 <div className="p-4 md:p-6 bg-stone-900 border-b border-stone-700 flex justify-between items-center shadow-md z-10 shrink-0">
                     <div className="flex items-center gap-3">
                         <BackButton onClick={onBack} />
-                        <h2 className="text-xl md:text-2xl font-black italic uppercase">{t('stages')}</h2>
+                        <h2 className="text-xl md:text-2xl font-black italic uppercase flex items-center gap-2">
+                            {globalStatus && <CrownSvg status={globalStatus} size={24} className="animate-pulse-glow" />}
+                            {t('stages')}
+                        </h2>
                     </div>
                 </div>
 

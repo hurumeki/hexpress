@@ -1,9 +1,11 @@
 import React, { useMemo } from 'react';
 import { useLang } from '../i18n';
-import type { UserData } from '../types';
+import type { UserData, GlobalAchievement } from '../types';
+import CrownSvg from '../components/CrownSvg';
 
 interface TitleScreenProps {
     userData: UserData;
+    globalStatus: GlobalAchievement;
     onContinue: () => void;
     onStart: () => void;
     onStageSelect: () => void;
@@ -12,6 +14,7 @@ interface TitleScreenProps {
 
 const TitleScreen: React.FC<TitleScreenProps> = ({
     userData,
+    globalStatus,
     onContinue,
     onStart,
     onStageSelect,
@@ -66,7 +69,7 @@ const TitleScreen: React.FC<TitleScreenProps> = ({
                     </div>
 
                     {/* タイトルロゴ部分 */}
-                    <div className="relative mb-2 w-full text-center">
+                    <div className="relative mb-2 w-full text-center flex flex-col items-center">
                         <h1 className="text-[12vw] sm:text-6xl md:text-7xl font-black italic tracking-tighter uppercase text-transparent bg-clip-text bg-gradient-to-br from-white to-stone-400 drop-shadow-lg leading-tight">
                             HEXPRESS
                         </h1>
@@ -79,6 +82,12 @@ const TitleScreen: React.FC<TitleScreenProps> = ({
                         <div className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]"></div>
                         <div className="h-px bg-gradient-to-l from-transparent via-amber-500 to-amber-500 flex-1"></div>
                     </div>
+
+                    {globalStatus && (
+                        <div className="mt-8 w-full flex justify-center">
+                            <CrownSvg status={globalStatus} size={48} />
+                        </div>
+                    )}
                 </div>
 
                 <div className="flex flex-col gap-4 w-full mt-auto mb-8">
