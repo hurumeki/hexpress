@@ -22,9 +22,10 @@ interface GameScreenProps {
     bestMoves: number | null;
     onClear: (m: number) => void;
     onExit: () => void;
+    onNext?: () => void;
 }
 
-const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onExit }) => {
+const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onExit, onNext }) => {
     const { t } = useLang();
     const [board, setBoard] = useState<Piece[]>(() =>
         Object.entries(level.initialBoard).map(([key, p]) => {
@@ -411,7 +412,12 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                                     {moves <= level.excellentMoves ? 'EXCELLENT!' : moves <= level.goodMoves ? 'GOOD!' : 'CLEARED'}
                                 </span>
                             </div>
-                            <button onClick={onExit} className="px-12 py-4 bg-amber-500 text-black font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic shadow-lg shadow-amber-500/20">{t('backToSelect')}</button>
+                            <div className="flex flex-col md:flex-row gap-4 w-full max-w-md px-4">
+                                <button onClick={onExit} className="flex-1 py-4 bg-stone-800 text-stone-300 font-bold text-lg rounded-2xl active:scale-95 transition-all uppercase italic border border-stone-700 hover:bg-stone-700">{t('backToSelect')}</button>
+                                {onNext && (
+                                    <button onClick={onNext} className="flex-[1.5] py-4 bg-amber-500 text-black font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic shadow-lg shadow-amber-500/40 hover:brightness-110">{t('nextStage')}</button>
+                                )}
+                            </div>
                         </div>
                     )}
                 </div>
