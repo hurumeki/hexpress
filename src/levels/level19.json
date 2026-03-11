@@ -1,0 +1,134 @@
+{
+    "id": 19,
+    "name": "Practice",
+    "excellentMoves": 5,
+    "goodMoves": 10,
+    "layout": [
+        {
+            "q": 0,
+            "r": 0,
+            "target": {
+                "pattern": "circle"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": -1,
+            "r": 1,
+            "target": {
+                "pattern": "diamond"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": -1,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": -1,
+            "target": {
+                "pattern": "square"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        }
+    ],
+    "defaultRails": [],
+    "initialBoard": {
+        "1,0": {
+            "id": "p_1_0_1773140304562",
+            "pattern": "circle"
+        },
+        "0,0": {
+            "id": "p_0_0_1773141333456",
+            "pattern": "diamond"
+        },
+        "-1,0": {
+            "id": "p_-1_0_1773141335710",
+            "pattern": "square"
+        }
+    },
+    "initialHand": [
+        {
+            "id": "h_none_0_1773140314508",
+            "pattern": "none"
+        },
+        {
+            "id": "h_none_1_1773140436504",
+            "pattern": "none"
+        }
+    ]
+}

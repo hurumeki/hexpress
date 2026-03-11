@@ -1,0 +1,162 @@
+{
+    "id": 18,
+    "name": "M",
+    "excellentMoves": 11,
+    "goodMoves": 16,
+    "layout": [
+        {
+            "q": -1,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": -1,
+            "target": null,
+            "rails": [
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": -2,
+            "target": {
+                "pattern": "diamond"
+            },
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 2,
+            "r": -2,
+            "target": {
+                "pattern": "circle"
+            },
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": -1,
+            "r": 1,
+            "target": null,
+            "rails": [
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": -1,
+            "r": 2,
+            "target": null,
+            "rails": [
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 3,
+            "r": -2,
+            "target": null,
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": 0,
+            "target": {
+                "pattern": "square"
+            },
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        }
+    ],
+    "defaultRails": [],
+    "initialBoard": {
+        "-1,1": {
+            "id": "p_-1_1_1773059846856",
+            "pattern": "circle"
+        },
+        "0,0": {
+            "id": "p_0_0_1773060104052",
+            "pattern": "square"
+        },
+        "1,-1": {
+            "id": "p_1_-1_1773060105790",
+            "pattern": "diamond"
+        }
+    },
+    "initialHand": [
+        {
+            "id": "h_none_0_1773027528097",
+            "pattern": "none"
+        },
+        {
+            "id": "h_none_3_1773032916693",
+            "pattern": "none"
+        },
+        {
+            "id": "h_none_2_1773044906750",
+            "pattern": "none"
+        },
+        {
+            "id": "h_none_3_1773060134800",
+            "pattern": "none"
+        },
+        {
+            "id": "h_none_4_1773060142641",
+            "pattern": "none"
+        }
+    ]
+}

@@ -1,0 +1,134 @@
+{
+    "id": 14,
+    "name": "passing each other",
+    "excellentMoves": 6,
+    "goodMoves": 11,
+    "layout": [
+        {
+            "q": -1,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": -1,
+            "r": -2,
+            "target": null,
+            "rails": [
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": -1,
+            "r": -1,
+            "target": {
+                "pattern": "square"
+            },
+            "rails": [
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": 1,
+            "target": {
+                "pattern": "circle"
+            },
+            "rails": [
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": 3,
+            "target": null,
+            "rails": [
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": 2,
+            "target": null,
+            "rails": [
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        }
+    ],
+    "defaultRails": [],
+    "initialBoard": {
+        "-1,0": {
+            "id": "p_-1_0_1773029428058",
+            "pattern": "none"
+        },
+        "-1,-2": {
+            "id": "p_-1_-2_1773029443789",
+            "pattern": "none"
+        },
+        "-1,-1": {
+            "id": "p_-1_-1_1773029467563",
+            "pattern": "circle"
+        },
+        "0,0": {
+            "id": "p_0_0_1773029775661",
+            "pattern": "none"
+        },
+        "0,1": {
+            "id": "p_0_1_1773029779211",
+            "pattern": "square"
+        },
+        "0,3": {
+            "id": "p_0_3_1773029845372",
+            "pattern": "none"
+        },
+        "0,2": {
+            "id": "p_0_2_1773029924142",
+            "pattern": "none"
+        }
+    },
+    "initialHand": [
+        {
+            "id": "h_none_0_1773027528097",
+            "pattern": "none"
+        }
+    ]
+}

@@ -1,0 +1,145 @@
+{
+    "id": 15,
+    "name": "Ring",
+    "excellentMoves": 5,
+    "goodMoves": 9,
+    "layout": [
+        {
+            "q": 1,
+            "r": -1,
+            "target": {
+                "pattern": "square"
+            },
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": -1,
+            "r": 1,
+            "target": {
+                "pattern": "dot"
+            },
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": -1,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": 1,
+            "target": {
+                "pattern": "lines"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": 0,
+            "target": {
+                "pattern": "diamond"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": -1,
+            "target": {
+                "pattern": "circle"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        }
+    ],
+    "defaultRails": [],
+    "initialBoard": {
+        "0,1": {
+            "id": "p_0_1_1773032313081",
+            "pattern": "circle"
+        },
+        "-1,1": {
+            "id": "p_-1_1_1773032314149",
+            "pattern": "square"
+        },
+        "-1,0": {
+            "id": "p_-1_0_1773032315427",
+            "pattern": "diamond"
+        },
+        "0,-1": {
+            "id": "p_0_-1_1773032316888",
+            "pattern": "lines"
+        },
+        "1,-1": {
+            "id": "p_1_-1_1773032318217",
+            "pattern": "dot"
+        },
+        "1,0": {
+            "id": "p_1_0_1773032320287",
+            "pattern": "none"
+        }
+    },
+    "initialHand": [
+        {
+            "id": "h_none_0_1773027528097",
+            "pattern": "none"
+        }
+    ]
+}

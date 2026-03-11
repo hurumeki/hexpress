@@ -1,0 +1,78 @@
+{
+    "id": 1,
+    "name": "Tutorial 2",
+    "isTutorial": true,
+    "excellentMoves": 2,
+    "goodMoves": 2,
+    "layout": [
+        {
+            "q": 0,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": -1,
+            "target": null,
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": -1,
+            "target": {
+                "pattern": "circle"
+            },
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        }
+    ],
+    "defaultRails": [
+        {
+            "from": 0,
+            "to": 3
+        },
+        {
+            "from": 1,
+            "to": 4
+        },
+        {
+            "from": 2,
+            "to": 5
+        }
+    ],
+    "initialBoard": {
+        "0,0": {
+            "id": "p1",
+            "pattern": "circle"
+        }
+    },
+    "initialHand": [
+        {
+            "id": "h1",
+            "pattern": "none"
+        },
+        {
+            "id": "h2",
+            "pattern": "none"
+        }
+    ]
+}

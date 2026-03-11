@@ -1,0 +1,88 @@
+{
+    "id": 3,
+    "name": "Rotate Triangle",
+    "excellentMoves": 2,
+    "goodMoves": 5,
+    "layout": [
+        {
+            "q": 1,
+            "r": -1,
+            "target": {
+                "pattern": "circle"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": 0,
+            "target": {
+                "pattern": "square"
+            },
+            "rails": [
+                {
+                    "from": 4,
+                    "to": 1
+                },
+                {
+                    "from": 0,
+                    "to": 3
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": 0,
+            "target": {
+                "pattern": "diamond"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        }
+    ],
+    "defaultRails": [],
+    "initialBoard": {
+        "0,0": {
+            "id": "p_0_0_1772707228151",
+            "pattern": "diamond"
+        },
+        "1,-1": {
+            "id": "p_1_-1_1772707523296",
+            "pattern": "square"
+        },
+        "1,0": {
+            "id": "p_1_0_1772707555346",
+            "pattern": "circle"
+        }
+    },
+    "initialHand": [
+        {
+            "id": "h_none_0_1772706969075",
+            "pattern": "none"
+        }
+    ]
+}

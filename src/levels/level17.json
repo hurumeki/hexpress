@@ -1,0 +1,146 @@
+{
+    "id": 17,
+    "name": "Frog",
+    "excellentMoves": 5,
+    "goodMoves": 9,
+    "layout": [
+        {
+            "q": 0,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": -1,
+            "r": 1,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": 1,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": 1,
+            "target": null,
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": -1,
+            "target": {
+                "pattern": "circle"
+            },
+            "rails": [
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 2,
+            "r": -1,
+            "target": {
+                "pattern": "square"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                }
+            ]
+        }
+    ],
+    "defaultRails": [],
+    "initialBoard": {
+        "0,-1": {
+            "id": "p_0_-1_1773045116481",
+            "pattern": "square"
+        },
+        "2,-1": {
+            "id": "p_2_-1_1773045119345",
+            "pattern": "circle"
+        },
+        "-1,1": {
+            "id": "p_-1_1_1773045124973",
+            "pattern": "none"
+        },
+        "1,1": {
+            "id": "p_1_1_1773045128814",
+            "pattern": "none"
+        }
+    },
+    "initialHand": [
+        {
+            "id": "h_none_0_1773027528097",
+            "pattern": "none"
+        },
+        {
+            "id": "h_none_3_1773032916693",
+            "pattern": "none"
+        },
+        {
+            "id": "h_none_2_1773044906750",
+            "pattern": "none"
+        }
+    ]
+}

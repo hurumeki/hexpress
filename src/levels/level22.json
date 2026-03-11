@@ -1,0 +1,234 @@
+{
+    "id": 22,
+    "name": "Diamond 2",
+    "excellentMoves": 4,
+    "goodMoves": 8,
+    "layout": [
+        {
+            "q": 0,
+            "r": 0,
+            "target": {
+                "pattern": "dot"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": -1,
+            "target": {
+                "pattern": "circle"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": -1,
+            "target": {
+                "pattern": "diamond"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": 1,
+            "target": {
+                "pattern": "square"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": -1,
+            "r": 1,
+            "target": {
+                "pattern": "lines"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": -2,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": -1,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": -1,
+            "r": 2,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        }
+    ],
+    "defaultRails": [],
+    "initialBoard": {
+        "0,0": {
+            "id": "p_0_0_1773151791189",
+            "pattern": "dot"
+        },
+        "-1,0": {
+            "id": "p_-1_0_1773151699333",
+            "pattern": "circle"
+        },
+        "1,0": {
+            "id": "p_1_0_1773151704692",
+            "pattern": "square"
+        },
+        "1,-2": {
+            "id": "p_1_-2_1773151703773",
+            "pattern": "diamond"
+        },
+        "-1,2": {
+            "id": "p_-1_2_1773151707058",
+            "pattern": "lines"
+        },
+        "0,-1": {
+            "id": "p_0_-1_1773151711877",
+            "pattern": "none"
+        },
+        "1,-1": {
+            "id": "p_1_-1_1773151712074",
+            "pattern": "none"
+        },
+        "0,1": {
+            "id": "p_0_1_1773151712315",
+            "pattern": "none"
+        },
+        "-1,1": {
+            "id": "p_-1_1_1773151712517",
+            "pattern": "none"
+        }
+    },
+    "initialHand": [
+        {
+            "id": "h_none_0_1773150698456",
+            "pattern": "none"
+        }
+    ]
+}
