@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import type { Level, Tile, Rail } from '../types';
-import { DIRS, PATTERNS, RAILS_3WAY } from '../constants';
+import { DIRS, PATTERNS, RAILS_3WAY, LEVELS } from '../constants';
 import { hexToPixel, getHexCorner, getEdgeInfo, getBoardBoundingBox } from '../utils';
 import PieceSvg from '../components/PieceSvg';
 import GameScreen from '../screens/GameScreen';
@@ -101,6 +101,18 @@ function StageEditor() {
         if (jsonSourceRef.current === 'ui') setJsonText(JSON.stringify(levelData, null, 2));
         jsonSourceRef.current = 'ui';
     }, [levelData]);
+
+    const handleLoadLevel = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const id = Number(e.target.value);
+        const selected = LEVELS.find(l => l.id === id);
+        if (selected) {
+            jsonSourceRef.current = 'json'; // JSONとして扱うことで useEffect による JSON 同期を誘発
+            setLevelData(selected);
+            setSolverResult(null);
+            setSelectedTile(null);
+            setHighlightedSlot(null);
+        }
+    };
 
     const handleJsonChange = (text: string) => {
         setJsonText(text);
@@ -254,7 +266,19 @@ function StageEditor() {
         <div className="min-h-screen bg-stone-900 text-white p-4 select-none">
             {/* ヘッダー */}
             <div className="flex items-center justify-between mb-4">
-                <h1 className="text-2xl font-black italic uppercase tracking-tighter text-amber-400">Stage Editor</h1>
+                <div className="flex items-center gap-4">
+                    <h1 className="text-2xl font-black italic uppercase tracking-tighter text-amber-400">Stage Editor</h1>
+                    <select
+                        onChange={handleLoadLevel}
+                        value={levelData.id}
+                        className="bg-stone-800 border border-stone-600 rounded-lg px-3 py-1.5 text-xs font-bold text-stone-300 focus:outline-none focus:border-amber-500"
+                    >
+                        <option value="-1">-- ステージ読み込み --</option>
+                        {LEVELS.map(l => (
+                            <option key={l.id} value={l.id}>Stage {l.id}: {l.name}</option>
+                        ))}
+                    </select>
+                </div>
                 <button
                     onClick={() => { setPlayKey(k => k + 1); setEditMode('PLAY'); }}
                     className="flex items-center gap-2 px-5 py-2.5 bg-amber-500 text-black font-black rounded-xl active:scale-95 transition-transform uppercase italic"
