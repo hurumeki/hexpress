@@ -1,8 +1,8 @@
 {
     "id": 19,
     "name": "Practice",
-    "excellentMoves": 5,
-    "goodMoves": 10,
+    "excellentMoves": 3,
+    "goodMoves": 6,
     "layout": [
         {
             "q": 0,

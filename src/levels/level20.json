@@ -1,8 +1,8 @@
 {
     "id": 20,
     "name": "Bone",
-    "excellentMoves": 5,
-    "goodMoves": 10,
+    "excellentMoves": 9,
+    "goodMoves": 12,
     "layout": [
         {
             "q": 0,
