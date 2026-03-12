@@ -4,7 +4,7 @@ import { DIRS, PATTERNS, RAILS_3WAY } from '../constants';
 import { hexToPixel, getHexCorner, getEdgeInfo, getBoardBoundingBox } from '../utils';
 import PieceSvg from '../components/PieceSvg';
 import GameScreen from '../screens/GameScreen';
-import { solve } from './solver';
+import { solve, type SolveResult } from './solver';
 
 // --- 型・定数 ---
 type EditMode = 'BOARD' | 'GOAL' | 'PIECES' | 'RAILS' | 'HAND' | 'PLAY';
@@ -64,7 +64,8 @@ function StageEditor() {
     const [jsonText, setJsonText] = useState(() => JSON.stringify(DEFAULT_LEVEL, null, 2));
     const [jsonError, setJsonError] = useState<string | null>(null);
     const [solving, setSolving] = useState(false);
-    const [solverResult, setSolverResult] = useState<number | null | 'none'>(null);
+    const [solverResult, setSolverResult] = useState<SolveResult | null | 'none'>(null);
+    const [highlightedSlot, setHighlightedSlot] = useState<{ q: number; r: number; edge: number } | null>(null);
     const [selectedTile, setSelectedTile] = useState<{ q: number; r: number } | null>(null);
     const [firstEdge, setFirstEdge] = useState<number | null>(null);
     const [newRailFrom, setNewRailFrom] = useState(0);
@@ -115,7 +116,7 @@ function StageEditor() {
         setSolving(true); setSolverResult(null);
         setTimeout(() => {
             const result = solve(levelData);
-            setSolverResult(result === null ? 'none' : result);
+            setSolverResult(result || 'none');
             setSolving(false);
         }, 0);
     };
@@ -291,6 +292,20 @@ function StageEditor() {
                                 return <polygon key={`g-${i}`} points={hexPoints(x, y)} fill="transparent" stroke="rgba(255,255,255,0.15)" strokeWidth={1.5} strokeDasharray="4 3" />;
                             })}
 
+                            {/* ハイライトされたスロット */}
+                            {highlightedSlot && (
+                                (() => {
+                                    const { x, y } = hexToPixel(highlightedSlot.q, highlightedSlot.r, hexSize);
+                                    const edge = getEdgeInfo(x, y, hexSize, (highlightedSlot.edge + 4) % 6);
+                                    return (
+                                        <g opacity="0.8">
+                                            <circle cx={edge.x} cy={edge.y} r="12" fill="none" stroke="#f59e0b" strokeWidth="3" strokeDasharray="2 2" />
+                                            <circle cx={edge.x} cy={edge.y} r="4" fill="#f59e0b" />
+                                        </g>
+                                    );
+                                })()
+                            )}
+
                             {/* タイル */}
                             {layout.map((tile: Tile, i: number) => {
                                 const { x, y } = hexToPixel(tile.q, tile.r, hexSize);
@@ -437,14 +452,30 @@ function StageEditor() {
                             </button>
                             {solverResult !== null && (
                                 <div className={`mt-2 text-center text-sm font-bold rounded-lg py-2 ${solverResult === 'none' ? 'bg-red-900/30 text-red-300 border border-red-800' : 'bg-emerald-900/30 text-emerald-300 border border-emerald-800'}`}>
-                                    {solverResult === 'none' ? '解なし（21手以上 or 探索限界）' : `最小手数: ${solverResult} 手`}
+                                    {solverResult === 'none' ? '解なし（21手以上 or 探索限界）' : `最小手数: ${solverResult.moves} 手`}
                                 </div>
                             )}
-                            {typeof solverResult === 'number' && (
-                                <button onClick={() => setLevelData(prev => ({ ...prev, excellentMoves: solverResult as number, goodMoves: Math.ceil((solverResult as number) * 1.8) }))}
-                                    className="mt-2 w-full py-2 text-xs font-black uppercase bg-emerald-700/30 border border-emerald-700 rounded-xl hover:bg-emerald-700/50 transition-colors">
-                                    手数設定に反映
-                                </button>
+                            {solverResult && typeof solverResult !== 'string' && (
+                                <>
+                                    <div className="mt-3 flex flex-col gap-1 max-h-48 overflow-y-auto pr-1">
+                                        {solverResult.sequence.map((step, idx) => (
+                                            <div key={idx}
+                                                onMouseEnter={() => setHighlightedSlot({ q: step.slot.targetTileQ, r: step.slot.targetTileR, edge: step.slot.originalEdge })}
+                                                onMouseLeave={() => setHighlightedSlot(null)}
+                                                className="flex items-center gap-3 bg-stone-900/50 border border-stone-700/50 rounded-lg p-2 hover:border-amber-500/50 transition-colors group">
+                                                <span className="w-5 h-5 flex items-center justify-center bg-stone-800 rounded-full text-[10px] text-stone-500 font-bold">{idx + 1}</span>
+                                                <div className="flex-1 flex items-center justify-between">
+                                                    <span className="text-xs font-black uppercase text-amber-500/80">{step.pattern}</span>
+                                                    <span className="text-[10px] text-stone-500 font-bold">@ ({step.slot.targetTileQ}, {step.slot.targetTileR}) [辺 {step.slot.originalEdge}]</span>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <button onClick={() => setLevelData(prev => ({ ...prev, excellentMoves: solverResult.moves, goodMoves: Math.ceil(solverResult.moves * 1.8) }))}
+                                        className="mt-3 w-full py-2 text-xs font-black uppercase bg-emerald-700/30 border border-emerald-700 rounded-xl hover:bg-emerald-700/50 transition-colors">
+                                        手数設定に反映
+                                    </button>
+                                </>
                             )}
                         </div>
                     </div>

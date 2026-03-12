@@ -13,6 +13,16 @@ const stateKey = ({ board, hand }: SState): string => {
     return `${b}|${h}`;
 };
 
+export interface SolutionStep {
+    pattern: string;
+    slot: { targetTileQ: number; targetTileR: number; originalEdge: number };
+}
+
+export interface SolveResult {
+    moves: number;
+    sequence: SolutionStep[];
+}
+
 const isGoal = (board: SState['board'], level: Level): boolean =>
     level.layout.every(tile => {
         if (!tile.target) return true;
@@ -91,8 +101,8 @@ const applyInsert = (
     return { board, hand: newHand };
 };
 
-/** BFS ソルバー。最小手数を返す。21手を超える場合、または探索状態が多すぎる場合は null。 */
-export const solve = (level: Level): number | null => {
+/** BFS ソルバー。最短手順を返す。21手を超える場合、または探索状態が多すぎる場合は null。 */
+export const solve = (level: Level): SolveResult | null => {
     const MAX_MOVES = 20;
     const MAX_STATES = 200_000;
 
@@ -103,26 +113,38 @@ export const solve = (level: Level): number | null => {
     const initialHand = level.initialHand.map(p => p.pattern);
     const initial: SState = { board: initialBoard, hand: initialHand };
 
-    if (isGoal(initial.board, level)) return 0;
+    if (isGoal(initial.board, level)) return { moves: 0, sequence: [] };
 
     const slots = computeSlots(level);
     const visited = new Set<string>([stateKey(initial)]);
-    const queue: { state: SState; moves: number }[] = [{ state: initial, moves: 0 }];
+    const queue: { state: SState; moves: number; sequence: SolutionStep[] }[] = [
+        { state: initial, moves: 0, sequence: [] }
+    ];
 
     while (queue.length > 0) {
         if (visited.size > MAX_STATES) return null;
-        const { state, moves } = queue.shift()!;
+        const { state, moves, sequence } = queue.shift()!;
         if (moves >= MAX_MOVES) continue;
 
         const uniquePatterns = [...new Set(state.hand)];
         for (const pattern of uniquePatterns) {
             for (const slot of slots) {
                 const next = applyInsert(state, level, pattern, slot);
-                if (isGoal(next.board, level)) return moves + 1;
+                if (next === state) continue; // 挿入不可な場合はスキップ
+
+                const step: SolutionStep = { pattern, slot };
+                if (isGoal(next.board, level)) return {
+                    moves: moves + 1,
+                    sequence: [...sequence, step]
+                };
                 const key = stateKey(next);
                 if (!visited.has(key)) {
                     visited.add(key);
-                    queue.push({ state: next, moves: moves + 1 });
+                    queue.push({
+                        state: next,
+                        moves: moves + 1,
+                        sequence: [...sequence, step]
+                    });
                 }
             }
         }
