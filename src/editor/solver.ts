@@ -37,6 +37,8 @@ const computeSlots = (level: Level) => {
     return slots;
 };
 
+let _enteringSeq = 0;
+
 const applyInsert = (
     state: SState,
     level: Level,
@@ -52,7 +54,7 @@ const applyInsert = (
     const entryDir = DIRS[slot.originalEdge];
     const startQ = slot.targetTileQ + entryDir.dq;
     const startR = slot.targetTileR + entryDir.dr;
-    const entering = { q: startQ, r: startR, pattern, id: `s_${startQ}_${startR}_${pattern}` };
+    const entering = { q: startQ, r: startR, pattern, id: `e_${++_enteringSeq}` };
     let board = [...state.board, entering];
 
     const movesMap: Record<string, { q: number; r: number }> = {};
@@ -68,7 +70,7 @@ const applyInsert = (
         const rail = tileRails.find(r => r.from === curEdge || r.to === curEdge);
         if (!rail) break;
         const exitEdge = rail.from === curEdge ? rail.to : rail.from;
-        const targetP = board.find(p => p.q === curQ && p.r === curR && p.id !== pushId);
+        const targetP = board.find(p => p.q === curQ && p.r === curR && p.id !== pushId && p.id !== entering.id);
         if (!targetP) break;
         pushId = targetP.id;
         const dir = DIRS[exitEdge];
