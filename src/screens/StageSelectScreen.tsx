@@ -6,6 +6,7 @@ import { useLang } from '../i18n';
 import HexMedal from '../components/HexMedal';
 import CrownSvg from '../components/CrownSvg';
 import BackButton from '../components/BackButton';
+import { playClickSound } from '../audio';
 
 interface StageSelectScreenProps {
     userData: UserData;
@@ -42,7 +43,7 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, globalS
             <div className="w-full flex flex-col h-full relative">
                 <div className="p-4 md:p-6 bg-stone-900 border-b border-stone-700 flex justify-between items-center shadow-md z-10 shrink-0">
                     <div className="flex items-center gap-3">
-                        <BackButton onClick={onBack} />
+                        <BackButton onClick={() => { playClickSound(); onBack(); }} />
                         <h2 className="text-xl md:text-2xl font-black italic uppercase flex items-center gap-2">
                             {globalStatus && <CrownSvg status={globalStatus} size={24} className="animate-pulse-glow" />}
                             {t('stages')}
@@ -58,7 +59,7 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, globalS
                     {/* Desktop Navigation Arrows */}
                     {page > 0 && (
                         <button
-                            onClick={() => setPage(p => p - 1)}
+                            onClick={() => { playClickSound(); setPage(p => p - 1); }}
                             className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center bg-stone-900/50 hover:bg-stone-900/80 border border-stone-700 rounded-full transition-all text-white/50 hover:text-white"
                             aria-label="Previous page"
                         >
@@ -69,7 +70,7 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, globalS
                     )}
                     {page < totalPages - 1 && (
                         <button
-                            onClick={() => setPage(p => p + 1)}
+                            onClick={() => { playClickSound(); setPage(p => p + 1); }}
                             className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center bg-stone-900/50 hover:bg-stone-900/80 border border-stone-700 rounded-full transition-all text-white/50 hover:text-white"
                             aria-label="Next page"
                         >
@@ -89,7 +90,7 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, globalS
                                 return (
                                     <button
                                         key={level.id}
-                                        onClick={() => onSelect(level.id)}
+                                        onClick={() => { playClickSound(); onSelect(level.id); }}
                                         className={`bg-stone-900 rounded-2xl p-4 border border-stone-700 flex flex-col items-center justify-between hover:border-amber-500 transition-all hover:-translate-y-1 active:scale-95 group/btn ${!isCleared ? 'opacity-90' : 'shadow-[0_0_15px_rgba(0,0,0,0.3)]'}`}
                                     >
                                         <div className="flex justify-between w-full items-start">
@@ -127,7 +128,7 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, globalS
                             {Array.from({ length: totalPages }).map((_, i) => (
                                 <button
                                     key={i}
-                                    onClick={() => setPage(i)}
+                                    onClick={() => { playClickSound(); setPage(i); }}
                                     className={`w-3 h-3 rounded-full transition-all cursor-pointer ${i === page ? 'bg-amber-500 scale-125' : 'bg-stone-600 hover:bg-stone-500'}`}
                                     aria-label={`Go to page ${i + 1}`}
                                 />

@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import { useLang } from '../i18n';
 import type { UserData, GlobalAchievement } from '../types';
 import CrownSvg from '../components/CrownSvg';
+import { playClickSound } from '../audio';
 
 interface TitleScreenProps {
     userData: UserData;
@@ -91,15 +92,15 @@ const TitleScreen: React.FC<TitleScreenProps> = ({
                 </div>
 
                 <div className="flex flex-col gap-4 w-full mt-auto mb-8">
-                    <button onClick={() => hasData ? onContinue() : onStart()}
+                    <button onClick={() => { playClickSound(); hasData ? onContinue() : onStart(); }}
                         className="w-full py-5 bg-amber-500 text-stone-900 font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic shadow-[0_0_20px_rgba(245,158,11,0.3)] hover:shadow-[0_0_30px_rgba(245,158,11,0.5)] animate-pulse-glow">
                         {hasData ? t('continue') : t('start')}
                     </button>
-                    <button onClick={onStageSelect}
+                    <button onClick={() => { playClickSound(); onStageSelect(); }}
                         className="w-full py-5 bg-stone-800 text-stone-200 font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic border border-stone-700 shadow-lg hover:bg-stone-700">
                         {t('stageSelect')}
                     </button>
-                    <button onClick={onSettings}
+                    <button onClick={() => { playClickSound(); onSettings(); }}
                         className="w-full py-5 bg-stone-800 text-stone-200 font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic border border-stone-700 shadow-lg hover:bg-stone-700">
                         {t('settings')}
                     </button>

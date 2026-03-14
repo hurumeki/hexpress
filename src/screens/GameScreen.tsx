@@ -16,6 +16,7 @@ import HexMedal from '../components/HexMedal';
 import BackButton from '../components/BackButton';
 import TutorialOverlay from '../components/TutorialOverlay';
 import { useLang } from '../i18n';
+import { playClickSound, playMoveSound, playClearSound, playInvalidSound } from '../audio';
 
 interface GameScreenProps {
     level: Level;
@@ -56,6 +57,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
             return p && p.color === tile.target.color && p.pattern === tile.target.pattern;
         });
         if (allMatch && moves > 0 && !isClear) {
+            playClearSound();
             setIsClear(true);
             onClear(moves);
         }
@@ -267,6 +269,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                         setBoard(prev => prev.filter(x => x.id !== id));
                     }
                 }
+                playMoveSound();
                 setMoves(m => m + 1);
                 setAnimating(false);
                 setHand(currentHand => {
@@ -283,7 +286,11 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
     };
 
     const undo = () => {
-        if (history.length === 0 || animating) return;
+        if (history.length === 0 || animating) {
+            if (!animating) playInvalidSound();
+            return;
+        }
+        playClickSound();
         const last = history[history.length - 1];
         setBoard(last.board); setHand(last.hand); setMoves(last.moves);
         setHistory(history.slice(0, -1));
@@ -297,7 +304,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
             <div className="w-full flex flex-col h-full">
                 <div className="p-4 md:p-5 bg-stone-900 flex justify-between items-center border-b border-stone-700 text-white shadow-md shrink-0 z-10">
                     <div className="flex items-center gap-2 md:gap-3">
-                        <BackButton onClick={onExit} />
+                        <BackButton onClick={() => { playClickSound(); onExit(); }} />
                         <div className="flex flex-col mt-0.5">
                             <h1 className="text-lg md:text-xl font-black italic tracking-tighter uppercase leading-none">#{level.id + 1}</h1>
                             <span className="text-[10px] text-stone-500 font-bold uppercase tracking-widest">{level.name}</span>
@@ -413,9 +420,9 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                                 </span>
                             </div>
                             <div className="flex flex-col md:flex-row gap-4 w-full max-w-md px-4">
-                                <button onClick={onExit} className="flex-1 py-4 bg-stone-800 text-stone-300 font-bold text-lg rounded-2xl active:scale-95 transition-all uppercase italic border border-stone-700 hover:bg-stone-700">{t('backToSelect')}</button>
+                                <button onClick={() => { playClickSound(); onExit(); }} className="flex-1 py-4 bg-stone-800 text-stone-300 font-bold text-lg rounded-2xl active:scale-95 transition-all uppercase italic border border-stone-700 hover:bg-stone-700">{t('backToSelect')}</button>
                                 {onNext && (
-                                    <button onClick={onNext} className="flex-[1.5] py-4 bg-amber-500 text-black font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic shadow-lg shadow-amber-500/40 hover:brightness-110">{t('nextStage')}</button>
+                                    <button onClick={() => { playClickSound(); onNext(); }} className="flex-[1.5] py-4 bg-amber-500 text-black font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic shadow-lg shadow-amber-500/40 hover:brightness-110">{t('nextStage')}</button>
                                 )}
                             </div>
                         </div>
@@ -442,6 +449,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                                 key={p.id}
                                 onClick={(e) => {
                                     e.stopPropagation();
+                                    playClickSound();
                                     setSelectedIdx(i);
                                 }}
                                 className={`w-14 h-14 md:w-16 md:h-16 rounded-2xl border-2 transition-all flex items-center justify-center shrink-0 ${selectedIdx === i ? 'bg-stone-800 border-amber-500 ring-4 ring-amber-500/20 scale-110 z-10 animate-pulse-ring' : 'bg-stone-800 border-stone-700'} relative`}
