@@ -51,14 +51,7 @@ function SettingsScreen({ userData, setUserData, onBack }: {
                             setUserData(prev => ({ ...prev, soundEnabled: !prev.soundEnabled }));
                         }} />
 
-                    <ToggleRow
-                        label={t('showAds')}
-                        icon={<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polygon points="10 8 16 12 10 16 10 8" /></svg>}
-                        value={userData.adsEnabled}
-                        onToggle={() => {
-                            playClickSound();
-                            setUserData(prev => ({ ...prev, adsEnabled: !prev.adsEnabled }));
-                        }} />
+
 
                     {/* 言語切替 */}
                     <div className="flex justify-between items-center bg-stone-900/40 p-3 rounded-2xl border border-stone-700/50">
@@ -103,7 +96,7 @@ function SettingsScreen({ userData, setUserData, onBack }: {
                     onConfirm={() => {
                         playClickSound();
                         setUserData(prev => ({
-                            soundEnabled: true, adsEnabled: true,
+                            soundEnabled: true,
                             stageProgress: {}, lastActiveLevelId: null, language: prev.language
                         }));
                         setShowClearConfirm(false);
@@ -126,7 +119,6 @@ function App() {
         const parsed: Partial<UserData> = saved ? JSON.parse(saved) : {};
         return {
             soundEnabled: parsed.soundEnabled ?? true,
-            adsEnabled: parsed.adsEnabled ?? true,
             stageProgress: parsed.stageProgress ?? {},
             lastActiveLevelId: parsed.lastActiveLevelId ?? null,
             language: parsed.language ?? DEFAULT_LANG,

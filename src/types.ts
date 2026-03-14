@@ -51,7 +51,6 @@ export interface StageStatus {
 
 export interface UserData {
     soundEnabled: boolean;
-    adsEnabled: boolean;
     stageProgress: Record<number, StageStatus>;
     lastActiveLevelId: number | null;
     language: 'ja' | 'en';

@@ -15,7 +15,6 @@ export const translations = {
 
         // 設定画面
         soundEffects: 'サウンド',
-        showAds: '広告表示',
         language: '言語',
         eraseData: 'データを削除',
         eraseConfirm: 'プレイデータをすべて削除してもよろしいですか？\nこの操作は取り消せません。',
@@ -53,7 +52,6 @@ export const translations = {
 
         // Settings
         soundEffects: 'Sound Effects',
-        showAds: 'Show Ads',
         language: 'Language',
         eraseData: 'Erase Play Data',
         eraseConfirm: 'Erase all play data?\nThis cannot be undone.',
