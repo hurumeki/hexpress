@@ -1,8 +1,8 @@
 {
     "id": 25,
     "name": "X",
-    "excellentMoves": 11,
-    "goodMoves": 15,
+    "excellentMoves": 10,
+    "goodMoves": 18,
     "layout": [
         {
             "q": 0,
