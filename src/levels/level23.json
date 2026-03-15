@@ -230,5 +230,39 @@
             "id": "h_none_0_1773150698456",
             "pattern": "none"
         }
+    ],
+    "solution": [
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": -1,
+                "originalEdge": 5
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": -1,
+                "originalEdge": 5
+            }
+        },
+        {
+            "pattern": "dot",
+            "slot": {
+                "targetTileQ": -1,
+                "targetTileR": 0,
+                "originalEdge": 4
+            }
+        },
+        {
+            "pattern": "square",
+            "slot": {
+                "targetTileQ": -1,
+                "targetTileR": 0,
+                "originalEdge": 4
+            }
+        }
     ]
 }

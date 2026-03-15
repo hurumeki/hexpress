@@ -88,5 +88,23 @@
             "id": "qh2",
             "pattern": "circle"
         }
+    ],
+    "solution": [
+        {
+            "pattern": "circle",
+            "slot": {
+                "targetTileQ": 1,
+                "targetTileR": 0,
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": 0,
+                "originalEdge": 4
+            }
+        }
     ]
 }

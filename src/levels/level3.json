@@ -84,5 +84,23 @@
             "id": "h_none_0_1772706969075",
             "pattern": "none"
         }
+    ],
+    "solution": [
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 1,
+                "targetTileR": -1,
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "diamond",
+            "slot": {
+                "targetTileQ": 1,
+                "targetTileR": 0,
+                "originalEdge": 2
+            }
+        }
     ]
 }

@@ -62,5 +62,23 @@
             "id": "th2",
             "pattern": "none"
         }
+    ],
+    "solution": [
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": 1,
+                "originalEdge": 2
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": 1,
+                "originalEdge": 2
+            }
+        }
     ]
 }

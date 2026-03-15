@@ -130,5 +130,31 @@
             "id": "h_none_1_1773140436504",
             "pattern": "none"
         }
+    ],
+    "solution": [
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": -1,
+                "targetTileR": 0,
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 1,
+                "targetTileR": 0,
+                "originalEdge": 2
+            }
+        },
+        {
+            "pattern": "square",
+            "slot": {
+                "targetTileQ": 1,
+                "targetTileR": -1,
+                "originalEdge": 0
+            }
+        }
     ]
 }

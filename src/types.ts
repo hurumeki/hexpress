@@ -32,6 +32,11 @@ export interface Rail {
     to: number;
 }
 
+export interface SolutionStep {
+    pattern: string;
+    slot: { targetTileQ: number; targetTileR: number; originalEdge: number };
+}
+
 export interface Level {
     id: number;
     name: string;
@@ -42,6 +47,7 @@ export interface Level {
     initialBoard: Record<string, PieceTemplate>;
     initialHand: PieceTemplate[];
     isTutorial?: boolean;
+    solution?: SolutionStep[] | null;
 }
 
 export interface StageStatus {

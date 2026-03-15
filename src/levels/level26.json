@@ -1,0 +1,295 @@
+{
+  "id": 26,
+  "name": "Mouse",
+  "excellentMoves": 9,
+  "goodMoves": 17,
+  "layout": [
+    {
+      "q": 1,
+      "r": -1,
+      "target": {
+        "pattern": "circle"
+      },
+      "rails": [
+        {
+          "from": 0,
+          "to": 3
+        },
+        {
+          "from": 2,
+          "to": 5
+        }
+      ]
+    },
+    {
+      "q": 2,
+      "r": -1,
+      "target": {
+        "pattern": "square"
+      },
+      "rails": [
+        {
+          "from": 0,
+          "to": 3
+        },
+        {
+          "from": 5,
+          "to": 2
+        }
+      ]
+    },
+    {
+      "q": 1,
+      "r": 1,
+      "target": {
+        "pattern": "diamond"
+      },
+      "rails": [
+        {
+          "from": 0,
+          "to": 3
+        },
+        {
+          "from": 2,
+          "to": 5
+        }
+      ]
+    },
+    {
+      "q": 0,
+      "r": 1,
+      "target": {
+        "pattern": "lines"
+      },
+      "rails": [
+        {
+          "from": 0,
+          "to": 3
+        },
+        {
+          "from": 2,
+          "to": 5
+        }
+      ]
+    },
+    {
+      "q": 1,
+      "r": 0,
+      "target": null,
+      "rails": [
+        {
+          "from": 0,
+          "to": 3
+        },
+        {
+          "from": 2,
+          "to": 5
+        }
+      ]
+    },
+    {
+      "q": -1,
+      "r": 2,
+      "target": null,
+      "rails": [
+        {
+          "from": 0,
+          "to": 3
+        }
+      ]
+    },
+    {
+      "q": 1,
+      "r": 2,
+      "target": null,
+      "rails": [
+        {
+          "from": 2,
+          "to": 5
+        }
+      ]
+    },
+    {
+      "q": 1,
+      "r": -2,
+      "target": null,
+      "rails": [
+        {
+          "from": 2,
+          "to": 5
+        }
+      ]
+    },
+    {
+      "q": 3,
+      "r": -2,
+      "target": null,
+      "rails": [
+        {
+          "from": 0,
+          "to": 3
+        },
+        {
+          "from": 2,
+          "to": 5
+        }
+      ]
+    },
+    {
+      "q": 0,
+      "r": 0,
+      "target": null,
+      "rails": [
+        {
+          "from": 0,
+          "to": 3
+        },
+        {
+          "from": 2,
+          "to": 5
+        }
+      ]
+    },
+    {
+      "q": 2,
+      "r": 0,
+      "target": null,
+      "rails": [
+        {
+          "from": 0,
+          "to": 3
+        },
+        {
+          "from": 2,
+          "to": 5
+        }
+      ]
+    },
+    {
+      "q": 0,
+      "r": 2,
+      "target": null,
+      "rails": [
+        {
+          "from": 0,
+          "to": 3
+        },
+        {
+          "from": 2,
+          "to": 5
+        }
+      ]
+    }
+  ],
+  "defaultRails": [],
+  "initialBoard": {
+    "1,1": {
+      "id": "p_1_1_1773549817496",
+      "pattern": "circle"
+    },
+    "0,1": {
+      "id": "p_0_1_1773549823035",
+      "pattern": "square"
+    },
+    "1,-1": {
+      "id": "p_1_-1_1773549828567",
+      "pattern": "diamond"
+    },
+    "2,-1": {
+      "id": "p_2_-1_1773549830666",
+      "pattern": "lines"
+    }
+  },
+  "initialHand": [
+    {
+      "id": "h_none_0_1773536349070",
+      "pattern": "none"
+    },
+    {
+      "id": "h_none_1_1773549729862",
+      "pattern": "none"
+    },
+    {
+      "id": "h_none_2_1773549730075",
+      "pattern": "none"
+    },
+    {
+      "id": "h_none_3_1773549730220",
+      "pattern": "none"
+    }
+  ],
+  "solution": [
+    {
+      "pattern": "none",
+      "slot": {
+        "targetTileQ": 1,
+        "targetTileR": -1,
+        "originalEdge": 0
+      }
+    },
+    {
+      "pattern": "none",
+      "slot": {
+        "targetTileQ": 1,
+        "targetTileR": -1,
+        "originalEdge": 0
+      }
+    },
+    {
+      "pattern": "none",
+      "slot": {
+        "targetTileQ": 2,
+        "targetTileR": -1,
+        "originalEdge": 5
+      }
+    },
+    {
+      "pattern": "none",
+      "slot": {
+        "targetTileQ": 0,
+        "targetTileR": 0,
+        "originalEdge": 5
+      }
+    },
+    {
+      "pattern": "diamond",
+      "slot": {
+        "targetTileQ": 2,
+        "targetTileR": 0,
+        "originalEdge": 0
+      }
+    },
+    {
+      "pattern": "square",
+      "slot": {
+        "targetTileQ": 2,
+        "targetTileR": 0,
+        "originalEdge": 0
+      }
+    },
+    {
+      "pattern": "circle",
+      "slot": {
+        "targetTileQ": 1,
+        "targetTileR": -1,
+        "originalEdge": 0
+      }
+    },
+    {
+      "pattern": "none",
+      "slot": {
+        "targetTileQ": 2,
+        "targetTileR": 0,
+        "originalEdge": 2
+      }
+    },
+    {
+      "pattern": "none",
+      "slot": {
+        "targetTileQ": 0,
+        "targetTileR": 2,
+        "originalEdge": 2
+      }
+    }
+  ]
+}

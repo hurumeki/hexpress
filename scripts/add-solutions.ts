@@ -1,11 +1,53 @@
-import type { Level, SolutionStep } from '../types';
-import { DIRS } from '../constants';
+/**
+ * add-solutions.ts
+ * 全レベルJSON（src/levels/level*.json）にソルバーを実行し、
+ * solutionフィールド（最短手順配列 or null）を追記して上書き保存するスクリプト。
+ *
+ * 使い方: npx tsx scripts/add-solutions.ts
+ */
 
-// --- Solver State ---
+import * as fs from 'fs';
+import * as path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// --- 型定義（solver.tsと同等） ---
+interface Rail { from: number; to: number; }
+interface Tile { q: number; r: number; target: { pattern: string } | null; rails?: Rail[]; }
+interface PieceTemplate { id: string; pattern: string; }
+interface SolutionStep {
+    pattern: string;
+    slot: { targetTileQ: number; targetTileR: number; originalEdge: number };
+}
+interface LevelJson {
+    id: number;
+    name: string;
+    excellentMoves: number;
+    goodMoves: number;
+    layout: Tile[];
+    defaultRails: Rail[];
+    initialBoard: Record<string, PieceTemplate>;
+    initialHand: PieceTemplate[];
+    isTutorial?: boolean;
+    solution?: SolutionStep[] | null;
+}
+
+// --- ソルバー内部型 ---
 interface SState {
     board: { q: number; r: number; pattern: string; id: string }[];
-    hand: string[]; // patterns only
+    hand: string[];
 }
+
+const DIRS = [
+    { dq: 1, dr: -1 },
+    { dq: 1, dr: 0 },
+    { dq: 0, dr: 1 },
+    { dq: -1, dr: 1 },
+    { dq: -1, dr: 0 },
+    { dq: 0, dr: -1 },
+];
 
 const stateKey = ({ board, hand }: SState): string => {
     const b = board.map(p => `${p.q},${p.r},${p.pattern}`).sort().join(';');
@@ -13,21 +55,14 @@ const stateKey = ({ board, hand }: SState): string => {
     return `${b}|${h}`;
 };
 
-export type { SolutionStep };
-
-export interface SolveResult {
-    moves: number;
-    sequence: SolutionStep[];
-}
-
-const isGoal = (board: SState['board'], level: Level): boolean =>
+const isGoal = (board: SState['board'], level: LevelJson): boolean =>
     level.layout.every(tile => {
         if (!tile.target) return true;
         const p = board.find(p => p.q === tile.q && p.r === tile.r);
         return p?.pattern === tile.target!.pattern;
     });
 
-const computeSlots = (level: Level) => {
+const computeSlots = (level: LevelJson) => {
     const slots: { targetTileQ: number; targetTileR: number; originalEdge: number }[] = [];
     level.layout.forEach(tile => {
         const tileRails = tile.rails ?? level.defaultRails ?? [];
@@ -44,11 +79,11 @@ const computeSlots = (level: Level) => {
     return slots;
 };
 
-let _enteringSeq = 0;
+let _seq = 0;
 
 const applyInsert = (
     state: SState,
-    level: Level,
+    level: LevelJson,
     pattern: string,
     slot: { targetTileQ: number; targetTileR: number; originalEdge: number }
 ): SState => {
@@ -61,7 +96,7 @@ const applyInsert = (
     const entryDir = DIRS[slot.originalEdge];
     const startQ = slot.targetTileQ + entryDir.dq;
     const startR = slot.targetTileR + entryDir.dr;
-    const entering = { q: startQ, r: startR, pattern, id: `e_${++_enteringSeq}` };
+    const entering = { q: startQ, r: startR, pattern, id: `e_${++_seq}` };
     let board = [...state.board, entering];
 
     const movesMap: Record<string, { q: number; r: number }> = {};
@@ -98,10 +133,10 @@ const applyInsert = (
     return { board, hand: newHand };
 };
 
-/** BFS ソルバー。最短手順を返す。21手を超える場合、または探索状態が多すぎる場合は null。 */
-export const solve = (level: Level): SolveResult | null => {
-    const MAX_MOVES = 20;
-    const MAX_STATES = 200_000;
+/** BFSソルバー。最短手順を返す。見つからなければ null。 */
+const solve = (level: LevelJson): SolutionStep[] | null => {
+    const MAX_MOVES = 25;
+    const MAX_STATES = 500_000;
 
     const initialBoard = Object.entries(level.initialBoard).map(([key, p]) => {
         const [q, r] = key.split(',').map(Number);
@@ -110,7 +145,7 @@ export const solve = (level: Level): SolveResult | null => {
     const initialHand = level.initialHand.map(p => p.pattern);
     const initial: SState = { board: initialBoard, hand: initialHand };
 
-    if (isGoal(initial.board, level)) return { moves: 0, sequence: [] };
+    if (isGoal(initial.board, level)) return [];
 
     const slots = computeSlots(level);
     const visited = new Set<string>([stateKey(initial)]);
@@ -127,21 +162,15 @@ export const solve = (level: Level): SolveResult | null => {
         for (const pattern of uniquePatterns) {
             for (const slot of slots) {
                 const next = applyInsert(state, level, pattern, slot);
-                if (next === state) continue; // 挿入不可な場合はスキップ
+                if (next === state) continue;
 
                 const step: SolutionStep = { pattern, slot };
-                if (isGoal(next.board, level)) return {
-                    moves: moves + 1,
-                    sequence: [...sequence, step]
-                };
+                if (isGoal(next.board, level)) return [...sequence, step];
+
                 const key = stateKey(next);
                 if (!visited.has(key)) {
                     visited.add(key);
-                    queue.push({
-                        state: next,
-                        moves: moves + 1,
-                        sequence: [...sequence, step]
-                    });
+                    queue.push({ state: next, moves: moves + 1, sequence: [...sequence, step] });
                 }
             }
         }
@@ -149,3 +178,38 @@ export const solve = (level: Level): SolveResult | null => {
 
     return null;
 };
+
+// --- メイン処理 ---
+const levelsDir = path.resolve(__dirname, '../src/levels');
+const files = fs.readdirSync(levelsDir)
+    .filter(f => /^level\d+\.json$/.test(f))
+    .sort((a, b) => {
+        const numA = parseInt(a.match(/\d+/)![0]);
+        const numB = parseInt(b.match(/\d+/)![0]);
+        return numA - numB;
+    });
+
+console.log(`Found ${files.length} level files.\n`);
+
+for (const file of files) {
+    const filePath = path.join(levelsDir, file);
+    const level: LevelJson = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+
+    process.stdout.write(`[${file}] Solving... `);
+    _seq = 0; // シーケンス番号リセット
+    const start = Date.now();
+    const solution = solve(level);
+    const elapsed = Date.now() - start;
+
+    level.solution = solution;
+
+    fs.writeFileSync(filePath, JSON.stringify(level, null, 4));
+
+    if (solution === null) {
+        console.log(`No solution found (${elapsed}ms)`);
+    } else {
+        console.log(`${solution.length} moves (${elapsed}ms)`);
+    }
+}
+
+console.log('\nDone.');

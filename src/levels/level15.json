@@ -141,5 +141,47 @@
             "id": "h_none_0_1773027528097",
             "pattern": "none"
         }
+    ],
+    "solution": [
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": -1,
+                "targetTileR": 0,
+                "originalEdge": 3
+            }
+        },
+        {
+            "pattern": "lines",
+            "slot": {
+                "targetTileQ": -1,
+                "targetTileR": 1,
+                "originalEdge": 4
+            }
+        },
+        {
+            "pattern": "circle",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": -1,
+                "originalEdge": 4
+            }
+        },
+        {
+            "pattern": "dot",
+            "slot": {
+                "targetTileQ": -1,
+                "targetTileR": 1,
+                "originalEdge": 4
+            }
+        },
+        {
+            "pattern": "square",
+            "slot": {
+                "targetTileQ": 1,
+                "targetTileR": -1,
+                "originalEdge": 5
+            }
+        }
     ]
 }

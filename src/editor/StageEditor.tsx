@@ -495,7 +495,7 @@ function StageEditor() {
                                             </div>
                                         ))}
                                     </div>
-                                    <button onClick={() => setLevelData(prev => ({ ...prev, excellentMoves: solverResult.moves, goodMoves: Math.ceil(solverResult.moves * 1.8) }))}
+                                    <button onClick={() => setLevelData(prev => ({ ...prev, excellentMoves: solverResult.moves, goodMoves: Math.ceil(solverResult.moves * 1.8), solution: solverResult.sequence }))}
                                         className="mt-3 w-full py-2 text-xs font-black uppercase bg-emerald-700/30 border border-emerald-700 rounded-xl hover:bg-emerald-700/50 transition-colors">
                                         手数設定に反映
                                     </button>

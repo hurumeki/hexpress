@@ -158,5 +158,47 @@
             "id": "hn",
             "pattern": "none"
         }
+    ],
+    "solution": [
+        {
+            "pattern": "lines",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": -1,
+                "originalEdge": 3
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": -1,
+                "originalEdge": 4
+            }
+        },
+        {
+            "pattern": "circle",
+            "slot": {
+                "targetTileQ": 1,
+                "targetTileR": 0,
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "diamond",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": -1,
+                "originalEdge": 4
+            }
+        },
+        {
+            "pattern": "lines",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": 0,
+                "originalEdge": 0
+            }
+        }
     ]
 }

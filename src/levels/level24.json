@@ -435,5 +435,63 @@
             "id": "h_none_0_1773150698456",
             "pattern": "none"
         }
+    ],
+    "solution": [
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": -1,
+                "originalEdge": 1
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": -2,
+                "originalEdge": 5
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": -2,
+                "originalEdge": 5
+            }
+        },
+        {
+            "pattern": "square",
+            "slot": {
+                "targetTileQ": 3,
+                "targetTileR": -2,
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": -2,
+                "originalEdge": 5
+            }
+        },
+        {
+            "pattern": "circle",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": -2,
+                "originalEdge": 5
+            }
+        },
+        {
+            "pattern": "diamond",
+            "slot": {
+                "targetTileQ": 1,
+                "targetTileR": 2,
+                "originalEdge": 1
+            }
+        }
     ]
 }
