@@ -284,7 +284,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
         setIsPeek(false);
         setDragState({ active: false, currentHex: null });
     };
-    
+
     const handleRetry = () => {
         playClickSound();
         setBoard(Object.entries(level.initialBoard).map(([key, p]) => {
@@ -382,7 +382,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                                             const c = getHexCorner(x, y, hexSize, j);
                                             return `${c.x},${c.y}`;
                                         }).join(' ')}
-                                        fill="transparent"
+                                        fill="rgba(255, 255, 255, 0.02)"
                                         stroke={isReady ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.15)"}
                                         strokeWidth={1}
                                         strokeDasharray={isReady ? "none" : "3 3"}
