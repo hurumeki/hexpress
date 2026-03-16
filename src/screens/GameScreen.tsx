@@ -300,9 +300,9 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
     const currentMedalColor = getMedalColor(bestMoves, level.excellentMoves, level.goodMoves);
 
     return (
-        <div className="fixed inset-0 bg-stone-800 flex flex-col select-none touch-none overflow-hidden">
+        <div className="fixed inset-0 bg-stone-900 flex flex-col select-none touch-none overflow-hidden">
             <div className="w-full flex flex-col h-full">
-                <div className="p-4 md:p-5 bg-stone-900 flex justify-between items-center border-b border-stone-700 text-white shadow-md shrink-0 z-10">
+                <div className="p-4 md:p-5 bg-stone-950 flex justify-between items-center border-b border-stone-700 text-white shadow-md shrink-0 z-10">
                     <div className="flex items-center gap-2 md:gap-3">
                         <BackButton onClick={() => { playClickSound(); onExit(); }} />
                         <div className="flex flex-col mt-0.5">
@@ -322,7 +322,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                     </div>
                 </div>
 
-                <div className="relative flex-1 bg-stone-800 flex items-center justify-center overflow-hidden min-h-[300px]">
+                <div className="relative flex-1 bg-stone-900 flex items-center justify-center overflow-hidden min-h-[300px]">
                     <svg viewBox={boardBox.viewBox} className="w-full h-full max-w-full max-h-full" onPointerDown={handlePointerDown} onPointerMove={handlePointerMove} onPointerUp={handlePointerUp}>
                         <defs>
                             <radialGradient id="gloss" cx="30%" cy="30%" r="50%">
@@ -340,12 +340,12 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                             const activePath = highlightedPaths.find(hp => hp.path.some(p => p.q === tile.q && p.r === tile.r));
                             return (
                                 <g key={`tile-${i}`}>
-                                    <polygon points={points} fill="#382c22" stroke={activePath ? activePath.color : "#282018"} strokeWidth={activePath ? 3 : 1} />
+                                    <polygon points={points} fill="#4a3a2e" stroke={activePath ? activePath.color : "#5c4d3f"} strokeWidth={activePath ? 3 : 1} />
                                     {(tile.rails ?? level.defaultRails ?? []).map((r, j) => {
                                         const m1 = getEdgeInfo(x, y, hexSize, (r.from + 4) % 6);
                                         const m2 = getEdgeInfo(x, y, hexSize, (r.to + 4) % 6);
                                         return (
-                                            <g key={`rail-${j}`} stroke="#1a120b" strokeWidth="1">
+                                            <g key={`rail-${j}`} stroke="#241b12" strokeWidth="1">
                                                 <line x1={m1.x} y1={m1.y} x2={x} y2={y} />
                                                 <line x1={x} y1={y} x2={m2.x} y2={m2.y} />
                                             </g>
@@ -367,7 +367,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                                             return `${c.x},${c.y}`;
                                         }).join(' ')}
                                         fill="transparent"
-                                        stroke={isReady ? "rgba(255,255,255,0.3)" : "rgba(255,255,255,0.1)"}
+                                        stroke={isReady ? "rgba(255,255,255,0.4)" : "rgba(255,255,255,0.15)"}
                                         strokeWidth={1}
                                         strokeDasharray={isReady ? "none" : "3 3"}
                                     />
@@ -431,11 +431,11 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
 
                 <div className="relative w-full shrink-0 z-10 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
                     {/* Hand Scroller with Fade Hints */}
-                    <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-stone-900 to-transparent z-20 pointer-events-none opacity-60"></div>
-                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-stone-900 to-transparent z-20 pointer-events-none opacity-60"></div>
+                    <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-stone-950 to-transparent z-20 pointer-events-none opacity-60"></div>
+                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-stone-950 to-transparent z-20 pointer-events-none opacity-60"></div>
 
                     <div
-                        className="p-4 md:p-6 bg-stone-900 border-t border-stone-800 flex justify-center gap-3 md:gap-5 cursor-pointer h-28 md:h-32 w-full overflow-x-auto no-scrollbar scroll-smooth"
+                        className="p-4 md:p-6 bg-stone-950 border-t border-stone-800 flex justify-center gap-3 md:gap-5 cursor-pointer h-28 md:h-32 w-full overflow-x-auto no-scrollbar scroll-smooth"
                         onClick={(e) => {
                             if (e.target === e.currentTarget) {
                                 setReadySlot(null);
