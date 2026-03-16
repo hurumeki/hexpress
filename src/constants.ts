@@ -115,7 +115,7 @@ export const LEVELS: Level[] = [
     level25 as Level,
     level26 as Level,
     level27 as Level,
-
+    level28 as Level
 ];
 
 export const STORAGE_KEY = 'hexpress_userdata';
