@@ -339,8 +339,8 @@ function StageEditor() {
 
                                 return (
                                     <g key={`tile-${i}`}>
-                                        <polygon points={hexPoints(x, y)} fill="#382c22"
-                                            stroke={isSelected ? '#f59e0b' : '#282018'}
+                                        <polygon points={hexPoints(x, y)} fill="#4a3a2e"
+                                            stroke={isSelected ? '#f59e0b' : '#5c4d3f'}
                                             strokeWidth={isSelected ? 2.5 : 1} />
 
                                         {/* レール (修正済み: +4)%6 で正しい辺に描画) */}
@@ -348,7 +348,7 @@ function StageEditor() {
                                             const m1 = getEdgeInfo(x, y, hexSize, (r.from + 4) % 6);
                                             const m2 = getEdgeInfo(x, y, hexSize, (r.to + 4) % 6);
                                             return (
-                                                <g key={`rail-${j}`} stroke="#8b6914" strokeWidth="2">
+                                                <g key={`rail-${j}`} stroke="#241b12" strokeWidth="2">
                                                     <line x1={m1.x} y1={m1.y} x2={x} y2={y} />
                                                     <line x1={x} y1={y} x2={m2.x} y2={m2.y} />
                                                 </g>
@@ -362,7 +362,7 @@ function StageEditor() {
 
                                         {tile.target && <PieceSvg piece={{ id: `tgt-${i}`, ...tile.target }} x={x} y={y} size={hexSize} isTarget />}
                                         {piece && (
-                                            <g opacity={['BOARD', 'GOAL', 'RAILS'].includes(editMode) ? 0.3 : 1}>
+                                            <g opacity={editMode === 'GOAL' ? 0 : (['BOARD', 'RAILS'].includes(editMode) ? 0.3 : 1)}>
                                                 <PieceSvg piece={piece} x={x} y={y} size={hexSize} />
                                             </g>
                                         )}
