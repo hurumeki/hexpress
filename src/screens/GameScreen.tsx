@@ -284,6 +284,22 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
         setIsPeek(false);
         setDragState({ active: false, currentHex: null });
     };
+    
+    const handleRetry = () => {
+        playClickSound();
+        setBoard(Object.entries(level.initialBoard).map(([key, p]) => {
+            const [q, r] = key.split(',').map(Number);
+            return { ...p, q, r };
+        }));
+        setHand(level.initialHand);
+        setSelectedIdx(level.initialHand.length > 0 ? 0 : null);
+        setMoves(0);
+        setHistory([]);
+        setIsClear(false);
+        setReadySlot(null);
+        setHighlightedPaths([]);
+        setAnimating(false);
+    };
 
     const undo = () => {
         if (history.length === 0 || animating) {
@@ -421,6 +437,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                             </div>
                             <div className="flex flex-col md:flex-row gap-4 w-full max-w-md px-4">
                                 <button onClick={() => { playClickSound(); onExit(); }} className="flex-1 py-4 bg-stone-800 text-stone-300 font-bold text-lg rounded-2xl active:scale-95 transition-all uppercase italic border border-stone-700 hover:bg-stone-700">{t('backToSelect')}</button>
+                                <button onClick={handleRetry} className="flex-1 py-4 bg-stone-700 text-white font-bold text-lg rounded-2xl active:scale-95 transition-all uppercase italic border border-stone-600 hover:bg-stone-600">{t('retry')}</button>
                                 {onNext && (
                                     <button onClick={() => { playClickSound(); onNext(); }} className="flex-[1.5] py-4 bg-amber-500 text-black font-black text-xl rounded-2xl active:scale-95 transition-transform uppercase italic shadow-lg shadow-amber-500/40 hover:brightness-110">{t('nextStage')}</button>
                                 )}

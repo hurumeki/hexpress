@@ -33,6 +33,7 @@ export const translations = {
         excellent: 'Excellent',
         good: 'Good',
         clear: 'Clear',
+        retry: 'リトライ',
 
         // チュートリアル
         tut1_msg1: '下の手駒をタップして選択し、\n上の盤面の手前のマスを\nタップして挿入しましょう。',
@@ -70,6 +71,7 @@ export const translations = {
         excellent: 'Excellent',
         good: 'Good',
         clear: 'Clear',
+        retry: 'Retry',
 
         // Tutorial
         tut1_msg1: 'Tap the piece below to select it,\nthen tap the bottom slot\non the board to insert it.',
