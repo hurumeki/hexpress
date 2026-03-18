@@ -1,0 +1,164 @@
+{
+    "id": 29,
+    "name": "Practice 2",
+    "excellentMoves": 4,
+    "goodMoves": 8,
+    "layout": [
+        {
+            "q": 0,
+            "r": -1,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": -2,
+            "target": {
+                "pattern": "diamond"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": -2,
+            "r": 0,
+            "target": {
+                "pattern": "circle"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": -1,
+            "r": -1,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": 0,
+            "target": {
+                "pattern": "square"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        }
+    ],
+    "defaultRails": [],
+    "initialBoard": {
+        "-1,-1": {
+            "id": "p_-1_-1_1773665876008",
+            "pattern": "circle"
+        },
+        "-2,0": {
+            "id": "p_-2_0_1773712945706",
+            "pattern": "diamond"
+        },
+        "0,-2": {
+            "id": "p_0_-2_1773712944554",
+            "pattern": "square"
+        }
+    },
+    "initialHand": [
+        {
+            "id": "h_none_0_1773663996917",
+            "pattern": "none"
+        }
+    ],
+    "solution": [
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": -2,
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "diamond",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": -2,
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "circle",
+            "slot": {
+                "targetTileQ": -2,
+                "targetTileR": 0,
+                "originalEdge": 1
+            }
+        },
+        {
+            "pattern": "square",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": 0,
+                "originalEdge": 0
+            }
+        }
+    ]
+}

@@ -1,0 +1,250 @@
+{
+    "id": 31,
+    "name": "three-way",
+    "excellentMoves": 9,
+    "goodMoves": 17,
+    "layout": [
+        {
+            "q": 2,
+            "r": -1,
+            "target": {
+                "pattern": "circle"
+            },
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": 2,
+            "r": 0,
+            "target": {
+                "pattern": "circle"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                }
+            ]
+        },
+        {
+            "q": 4,
+            "r": 0,
+            "target": {
+                "pattern": "square"
+            },
+            "rails": [
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 5,
+            "r": -3,
+            "target": {
+                "pattern": "diamond"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                }
+            ]
+        },
+        {
+            "q": 4,
+            "r": -3,
+            "target": {
+                "pattern": "diamond"
+            },
+            "rails": [
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 5,
+            "r": -1,
+            "target": {
+                "pattern": "square"
+            },
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": 3,
+            "r": -1,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": 4,
+            "r": -2,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 4,
+            "r": -1,
+            "target": null,
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        }
+    ],
+    "defaultRails": [],
+    "initialBoard": {
+        "4,-3": {
+            "id": "p_4_-3_1773661362979",
+            "pattern": "circle"
+        },
+        "5,-3": {
+            "id": "p_5_-3_1773661382626",
+            "pattern": "square"
+        },
+        "5,-1": {
+            "id": "p_5_-1_1773661385014",
+            "pattern": "diamond"
+        },
+        "4,0": {
+            "id": "p_4_0_1773661386843",
+            "pattern": "circle"
+        },
+        "2,-1": {
+            "id": "p_2_-1_1773661406379",
+            "pattern": "diamond"
+        },
+        "2,0": {
+            "id": "p_2_0_1773661408820",
+            "pattern": "square"
+        }
+    },
+    "initialHand": [
+        {
+            "id": "h_none_0_1773661412402",
+            "pattern": "none"
+        },
+        {
+            "id": "h_none_1_1773661412617",
+            "pattern": "none"
+        },
+        {
+            "id": "h_none_2_1773661412851",
+            "pattern": "none"
+        },
+        {
+            "id": "h_none_3_1773661809047",
+            "pattern": "none"
+        }
+    ],
+    "solution": [
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": -1,
+                "originalEdge": 4
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": -1,
+                "originalEdge": 4
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": 0,
+                "originalEdge": 3
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 5,
+                "targetTileR": -1,
+                "originalEdge": 1
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": 0,
+                "originalEdge": 3
+            }
+        },
+        {
+            "pattern": "square",
+            "slot": {
+                "targetTileQ": 4,
+                "targetTileR": 0,
+                "originalEdge": 2
+            }
+        },
+        {
+            "pattern": "circle",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": 0,
+                "originalEdge": 3
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 5,
+                "targetTileR": -1,
+                "originalEdge": 1
+            }
+        },
+        {
+            "pattern": "square",
+            "slot": {
+                "targetTileQ": 5,
+                "targetTileR": -1,
+                "originalEdge": 1
+            }
+        }
+    ]
+}
