@@ -108,7 +108,13 @@ function StageEditor() {
         if (selected) {
             jsonSourceRef.current = 'json'; // JSONとして扱うことで useEffect による JSON 同期を誘発
             setLevelData(selected);
-            setSolverResult(null);
+            if (selected.solution) {
+                setSolverResult({ moves: selected.solution.length, sequence: selected.solution });
+            } else if (selected.solution === null) {
+                setSolverResult('none');
+            } else {
+                setSolverResult(null);
+            }
             setSelectedTile(null);
             setHighlightedSlot(null);
         }
@@ -120,6 +126,15 @@ function StageEditor() {
             const parsed = JSON.parse(text) as Level;
             jsonSourceRef.current = 'json';
             setLevelData(parsed);
+            
+            // JSON読み込み時にsolutionがあればUIに反映
+            if (parsed.solution) {
+                setSolverResult({ moves: parsed.solution.length, sequence: parsed.solution });
+            } else if (parsed.solution === null) {
+                setSolverResult('none');
+            } else {
+                setSolverResult(null);
+            }
             setJsonError(null);
         } catch { setJsonError('JSON が不正です'); }
     };
