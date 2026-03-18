@@ -133,10 +133,51 @@ const applyInsert = (
     return { board, hand: newHand };
 };
 
-/** BFSソルバー。最短手順を返す。見つからなければ null。 */
-const solve = (level: LevelJson): SolutionStep[] | null => {
+class MinHeap<T> {
+    private data: { priority: number; value: T }[] = [];
+    push(priority: number, value: T) {
+        this.data.push({ priority, value });
+        let idx = this.data.length - 1;
+        while (idx > 0) {
+            const pIdx = Math.floor((idx - 1) / 2);
+            if (this.data[pIdx].priority <= this.data[idx].priority) break;
+            [this.data[pIdx], this.data[idx]] = [this.data[idx], this.data[pIdx]];
+            idx = pIdx;
+        }
+    }
+    pop(): T | undefined {
+        if (this.data.length === 0) return undefined;
+        if (this.data.length === 1) return this.data.pop()!.value;
+        const res = this.data[0].value;
+        this.data[0] = this.data.pop()!;
+        let idx = 0;
+        while (true) {
+            const left = 2 * idx + 1;
+            const right = 2 * idx + 2;
+            let smallest = idx;
+            if (left < this.data.length && this.data[left].priority < this.data[smallest].priority) smallest = left;
+            if (right < this.data.length && this.data[right].priority < this.data[smallest].priority) smallest = right;
+            if (smallest === idx) break;
+            [this.data[idx], this.data[smallest]] = [this.data[smallest], this.data[idx]];
+            idx = smallest;
+        }
+        return res;
+    }
+    get size() { return this.data.length; }
+}
+
+const getHeuristic = (board: SState['board'], level: LevelJson): number => {
+    let diff = 0;
+    level.layout.forEach(t => {
+        if (!t.target) return;
+        const p = board.find(p => p.q === t.q && p.r === t.r);
+        if (!p || p.pattern !== t.target.pattern) diff++;
+    });
+    return diff;
+};
+
+const solveWithWeight = (level: LevelJson, weight: number, maxStates: number): SolutionStep[] | null => {
     const MAX_MOVES = 25;
-    const MAX_STATES = 500_000;
 
     const initialBoard = Object.entries(level.initialBoard).map(([key, p]) => {
         const [q, r] = key.split(',').map(Number);
@@ -148,14 +189,22 @@ const solve = (level: LevelJson): SolutionStep[] | null => {
     if (isGoal(initial.board, level)) return [];
 
     const slots = computeSlots(level);
-    const visited = new Set<string>([stateKey(initial)]);
-    const queue: { state: SState; moves: number; sequence: SolutionStep[] }[] = [
-        { state: initial, moves: 0, sequence: [] }
-    ];
+    const visited = new Map<string, number>();
+    visited.set(stateKey(initial), 0);
+    
+    const queue = new MinHeap<{ state: SState; moves: number; sequence: SolutionStep[] }>();
+    queue.push(getHeuristic(initial.board, level) * weight, { state: initial, moves: 0, sequence: [] });
 
-    while (queue.length > 0) {
-        if (visited.size > MAX_STATES) return null;
-        const { state, moves, sequence } = queue.shift()!;
+    let exploredStates = 0;
+
+    while (queue.size > 0) {
+        exploredStates++;
+        if (exploredStates > maxStates) {
+            return null;
+        }
+        const stateNode = queue.pop()!;
+        const { state, moves, sequence } = stateNode;
+
         if (moves >= MAX_MOVES) continue;
 
         const uniquePatterns = [...new Set(state.hand)];
@@ -165,18 +214,40 @@ const solve = (level: LevelJson): SolutionStep[] | null => {
                 if (next === state) continue;
 
                 const step: SolutionStep = { pattern, slot };
-                if (isGoal(next.board, level)) return [...sequence, step];
-
+                
+                // Early goal detection saves expanding the last depth layer. 
+                // Since edge cost is 1, this is optimal for BFS (weight=0).
+                if (isGoal(next.board, level)) {
+                    return [...sequence, step];
+                }
                 const key = stateKey(next);
-                if (!visited.has(key)) {
-                    visited.add(key);
-                    queue.push({ state: next, moves: moves + 1, sequence: [...sequence, step] });
+                const nextMoves = moves + 1;
+                
+                const h = getHeuristic(next.board, level);
+                const priority = nextMoves + h * weight;
+
+                const prevMoves = visited.get(key);
+                if (prevMoves === undefined || nextMoves < prevMoves) {
+                    visited.set(key, nextMoves);
+                    queue.push(priority, { state: next, moves: nextMoves, sequence: [...sequence, step] });
                 }
             }
         }
     }
 
     return null;
+};
+
+/** BFSソルバー。最短手順を返す。状態爆発時は重み付きA*で準最適解を返す。 */
+const solve = (level: LevelJson): SolutionStep[] | null => {
+    // 1. 完全なBFSで最適解を目指す (MAX 40,000 states)
+    let sol = solveWithWeight(level, 0, 40000);
+    if (sol) return sol;
+
+    // 2. 状態爆発した場合は、強い重み付きA*で準最適解を高速に探す (MAX 500,000 states)
+    process.stdout.write('(fallback to A*) ');
+    sol = solveWithWeight(level, 2.0, 500000);
+    return sol;
 };
 
 // --- メイン処理 ---

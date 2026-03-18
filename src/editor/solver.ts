@@ -98,10 +98,51 @@ const applyInsert = (
     return { board, hand: newHand };
 };
 
-/** BFS ソルバー。最短手順を返す。21手を超える場合、または探索状態が多すぎる場合は null。 */
-export const solve = (level: Level): SolveResult | null => {
+class MinHeap<T> {
+    private data: { priority: number; value: T }[] = [];
+    push(priority: number, value: T) {
+        this.data.push({ priority, value });
+        let idx = this.data.length - 1;
+        while (idx > 0) {
+            const pIdx = Math.floor((idx - 1) / 2);
+            if (this.data[pIdx].priority <= this.data[idx].priority) break;
+            [this.data[pIdx], this.data[idx]] = [this.data[idx], this.data[pIdx]];
+            idx = pIdx;
+        }
+    }
+    pop(): T | undefined {
+        if (this.data.length === 0) return undefined;
+        if (this.data.length === 1) return this.data.pop()!.value;
+        const res = this.data[0].value;
+        this.data[0] = this.data.pop()!;
+        let idx = 0;
+        while (true) {
+            const left = 2 * idx + 1;
+            const right = 2 * idx + 2;
+            let smallest = idx;
+            if (left < this.data.length && this.data[left].priority < this.data[smallest].priority) smallest = left;
+            if (right < this.data.length && this.data[right].priority < this.data[smallest].priority) smallest = right;
+            if (smallest === idx) break;
+            [this.data[idx], this.data[smallest]] = [this.data[smallest], this.data[idx]];
+            idx = smallest;
+        }
+        return res;
+    }
+    get size() { return this.data.length; }
+}
+
+const getHeuristic = (board: SState['board'], level: Level): number => {
+    let diff = 0;
+    level.layout.forEach(t => {
+        if (!t.target) return;
+        const p = board.find(p => p.q === t.q && p.r === t.r);
+        if (!p || p.pattern !== t.target.pattern) diff++;
+    });
+    return diff;
+};
+
+const solveWithWeight = (level: Level, weight: number, maxStates: number): SolveResult | null => {
     const MAX_MOVES = 20;
-    const MAX_STATES = 200_000;
 
     const initialBoard = Object.entries(level.initialBoard).map(([key, p]) => {
         const [q, r] = key.split(',').map(Number);
@@ -113,33 +154,45 @@ export const solve = (level: Level): SolveResult | null => {
     if (isGoal(initial.board, level)) return { moves: 0, sequence: [] };
 
     const slots = computeSlots(level);
-    const visited = new Set<string>([stateKey(initial)]);
-    const queue: { state: SState; moves: number; sequence: SolutionStep[] }[] = [
-        { state: initial, moves: 0, sequence: [] }
-    ];
+    const visited = new Map<string, number>();
+    visited.set(stateKey(initial), 0);
+    
+    const queue = new MinHeap<{ state: SState; moves: number; sequence: SolutionStep[] }>();
+    queue.push(getHeuristic(initial.board, level) * weight, { state: initial, moves: 0, sequence: [] });
 
-    while (queue.length > 0) {
-        if (visited.size > MAX_STATES) return null;
-        const { state, moves, sequence } = queue.shift()!;
+    let exploredStates = 0;
+
+    while (queue.size > 0) {
+        exploredStates++;
+        if (exploredStates > maxStates) return null;
+
+        const stateNode = queue.pop()!;
+        const { state, moves, sequence } = stateNode;
         if (moves >= MAX_MOVES) continue;
 
         const uniquePatterns = [...new Set(state.hand)];
         for (const pattern of uniquePatterns) {
             for (const slot of slots) {
                 const next = applyInsert(state, level, pattern, slot);
-                if (next === state) continue; // 挿入不可な場合はスキップ
+                if (next === state) continue;
 
                 const step: SolutionStep = { pattern, slot };
                 if (isGoal(next.board, level)) return {
                     moves: moves + 1,
                     sequence: [...sequence, step]
                 };
+
                 const key = stateKey(next);
-                if (!visited.has(key)) {
-                    visited.add(key);
-                    queue.push({
+                const nextMoves = moves + 1;
+                const h = getHeuristic(next.board, level);
+                const priority = nextMoves + h * weight;
+
+                const prevMoves = visited.get(key);
+                if (prevMoves === undefined || nextMoves < prevMoves) {
+                    visited.set(key, nextMoves);
+                    queue.push(priority, {
                         state: next,
-                        moves: moves + 1,
+                        moves: nextMoves,
                         sequence: [...sequence, step]
                     });
                 }
@@ -148,4 +201,12 @@ export const solve = (level: Level): SolveResult | null => {
     }
 
     return null;
+};
+
+/** メインソルバー。BFSで最適解を探し、無理なら重み付きA*で探す */
+export const solve = (level: Level): SolveResult | null => {
+    let sol = solveWithWeight(level, 0, 40000);
+    if (sol) return sol;
+    sol = solveWithWeight(level, 2.0, 500000);
+    return sol;
 };
