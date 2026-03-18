@@ -135,14 +135,6 @@
         {
             "pattern": "none",
             "slot": {
-                "targetTileQ": -1,
-                "targetTileR": 0,
-                "originalEdge": 2
-            }
-        },
-        {
-            "pattern": "none",
-            "slot": {
                 "targetTileQ": 0,
                 "targetTileR": 3,
                 "originalEdge": 2
@@ -152,12 +144,28 @@
             "pattern": "none",
             "slot": {
                 "targetTileQ": -1,
-                "targetTileR": 0,
-                "originalEdge": 2
+                "targetTileR": -2,
+                "originalEdge": 5
             }
         },
         {
-            "pattern": "circle",
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": -1,
+                "targetTileR": 0,
+                "originalEdge": 4
+            }
+        },
+        {
+            "pattern": "square",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": 0,
+                "originalEdge": 5
+            }
+        },
+        {
+            "pattern": "none",
             "slot": {
                 "targetTileQ": 0,
                 "targetTileR": 0,
@@ -170,14 +178,6 @@
                 "targetTileQ": -1,
                 "targetTileR": 0,
                 "originalEdge": 2
-            }
-        },
-        {
-            "pattern": "none",
-            "slot": {
-                "targetTileQ": 0,
-                "targetTileR": 0,
-                "originalEdge": 5
             }
         }
     ]

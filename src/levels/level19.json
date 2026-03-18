@@ -135,17 +135,17 @@
         {
             "pattern": "none",
             "slot": {
-                "targetTileQ": -1,
+                "targetTileQ": 1,
                 "targetTileR": 0,
-                "originalEdge": 0
+                "originalEdge": 1
             }
         },
         {
             "pattern": "none",
             "slot": {
-                "targetTileQ": 1,
+                "targetTileQ": -1,
                 "targetTileR": 0,
-                "originalEdge": 2
+                "originalEdge": 5
             }
         },
         {

@@ -233,13 +233,21 @@
         {
             "pattern": "none",
             "slot": {
-                "targetTileQ": 0,
+                "targetTileQ": 1,
                 "targetTileR": -1,
-                "originalEdge": 4
+                "originalEdge": 1
             }
         },
         {
-            "pattern": "diamond",
+            "pattern": "circle",
+            "slot": {
+                "targetTileQ": 1,
+                "targetTileR": -2,
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "none",
             "slot": {
                 "targetTileQ": -1,
                 "targetTileR": 2,
@@ -247,19 +255,11 @@
             }
         },
         {
-            "pattern": "none",
-            "slot": {
-                "targetTileQ": 1,
-                "targetTileR": 0,
-                "originalEdge": 0
-            }
-        },
-        {
             "pattern": "diamond",
             "slot": {
                 "targetTileQ": 1,
                 "targetTileR": 0,
-                "originalEdge": 2
+                "originalEdge": 0
             }
         }
     ]

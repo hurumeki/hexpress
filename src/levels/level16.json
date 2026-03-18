@@ -137,9 +137,17 @@
         {
             "pattern": "none",
             "slot": {
-                "targetTileQ": 0,
-                "targetTileR": 0,
-                "originalEdge": 0
+                "targetTileQ": -2,
+                "targetTileR": 2,
+                "originalEdge": 3
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": -2,
+                "targetTileR": 2,
+                "originalEdge": 3
             }
         },
         {
@@ -147,7 +155,7 @@
             "slot": {
                 "targetTileQ": 0,
                 "targetTileR": 0,
-                "originalEdge": 0
+                "originalEdge": 4
             }
         },
         {
@@ -155,27 +163,11 @@
             "slot": {
                 "targetTileQ": 0,
                 "targetTileR": 0,
-                "originalEdge": 0
+                "originalEdge": 4
             }
         },
         {
-            "pattern": "none",
-            "slot": {
-                "targetTileQ": 2,
-                "targetTileR": 0,
-                "originalEdge": 1
-            }
-        },
-        {
-            "pattern": "square",
-            "slot": {
-                "targetTileQ": 2,
-                "targetTileR": 0,
-                "originalEdge": 1
-            }
-        },
-        {
-            "pattern": "none",
+            "pattern": "diamond",
             "slot": {
                 "targetTileQ": 0,
                 "targetTileR": 0,
@@ -196,6 +188,14 @@
                 "targetTileQ": -2,
                 "targetTileR": 2,
                 "originalEdge": 3
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": 0,
+                "originalEdge": 2
             }
         }
     ]

@@ -138,25 +138,25 @@
         {
             "pattern": "none",
             "slot": {
-                "targetTileQ": -1,
+                "targetTileQ": 0,
                 "targetTileR": 1,
-                "originalEdge": 4
+                "originalEdge": 2
             }
         },
         {
             "pattern": "none",
             "slot": {
-                "targetTileQ": 1,
-                "targetTileR": 1,
-                "originalEdge": 0
+                "targetTileQ": 0,
+                "targetTileR": -1,
+                "originalEdge": 1
             }
         },
         {
-            "pattern": "diamond",
+            "pattern": "circle",
             "slot": {
-                "targetTileQ": 0,
-                "targetTileR": 0,
-                "originalEdge": 0
+                "targetTileQ": -1,
+                "targetTileR": 1,
+                "originalEdge": 4
             }
         }
     ]

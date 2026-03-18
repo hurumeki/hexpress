@@ -133,7 +133,15 @@
             "slot": {
                 "targetTileQ": 0,
                 "targetTileR": -2,
-                "originalEdge": 0
+                "originalEdge": 1
+            }
+        },
+        {
+            "pattern": "square",
+            "slot": {
+                "targetTileQ": -2,
+                "targetTileR": 0,
+                "originalEdge": 1
             }
         },
         {
@@ -142,14 +150,6 @@
                 "targetTileQ": 0,
                 "targetTileR": -2,
                 "originalEdge": 0
-            }
-        },
-        {
-            "pattern": "circle",
-            "slot": {
-                "targetTileQ": -2,
-                "targetTileR": 0,
-                "originalEdge": 1
             }
         },
         {

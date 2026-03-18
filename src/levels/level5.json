@@ -190,17 +190,17 @@
         {
             "pattern": "none",
             "slot": {
-                "targetTileQ": 0,
+                "targetTileQ": -1,
                 "targetTileR": -1,
-                "originalEdge": 1
+                "originalEdge": 3
             }
         },
         {
-            "pattern": "diamond",
+            "pattern": "circle",
             "slot": {
-                "targetTileQ": 0,
-                "targetTileR": -2,
-                "originalEdge": 0
+                "targetTileQ": -1,
+                "targetTileR": -1,
+                "originalEdge": 4
             }
         },
         {

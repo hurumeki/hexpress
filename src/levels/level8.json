@@ -161,27 +161,19 @@
     ],
     "solution": [
         {
-            "pattern": "lines",
-            "slot": {
-                "targetTileQ": 0,
-                "targetTileR": 1,
-                "originalEdge": 1
-            }
-        },
-        {
             "pattern": "none",
-            "slot": {
-                "targetTileQ": 1,
-                "targetTileR": -1,
-                "originalEdge": 4
-            }
-        },
-        {
-            "pattern": "circle",
             "slot": {
                 "targetTileQ": 2,
                 "targetTileR": -1,
-                "originalEdge": 2
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "lines",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": -1,
+                "originalEdge": 1
             }
         },
         {
@@ -190,6 +182,14 @@
                 "targetTileQ": 0,
                 "targetTileR": 1,
                 "originalEdge": 1
+            }
+        },
+        {
+            "pattern": "circle",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": -1,
+                "originalEdge": 2
             }
         },
         {

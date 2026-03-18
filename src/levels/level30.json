@@ -323,6 +323,30 @@
         {
             "pattern": "none",
             "slot": {
+                "targetTileQ": 1,
+                "targetTileR": 0,
+                "originalEdge": 1
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": -1,
+                "targetTileR": 0,
+                "originalEdge": 5
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": -1,
+                "targetTileR": 3,
+                "originalEdge": 3
+            }
+        },
+        {
+            "pattern": "square",
+            "slot": {
                 "targetTileQ": 0,
                 "targetTileR": -1,
                 "originalEdge": 0
@@ -331,33 +355,9 @@
         {
             "pattern": "none",
             "slot": {
-                "targetTileQ": 0,
-                "targetTileR": 3,
-                "originalEdge": 1
-            }
-        },
-        {
-            "pattern": "none",
-            "slot": {
-                "targetTileQ": -1,
-                "targetTileR": 3,
-                "originalEdge": 2
-            }
-        },
-        {
-            "pattern": "square",
-            "slot": {
-                "targetTileQ": 1,
-                "targetTileR": 1,
-                "originalEdge": 0
-            }
-        },
-        {
-            "pattern": "none",
-            "slot": {
                 "targetTileQ": -1,
                 "targetTileR": 0,
-                "originalEdge": 4
+                "originalEdge": 5
             }
         },
         {
@@ -365,7 +365,7 @@
             "slot": {
                 "targetTileQ": -1,
                 "targetTileR": 3,
-                "originalEdge": 2
+                "originalEdge": 4
             }
         }
     ]

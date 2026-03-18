@@ -161,14 +161,6 @@
     ],
     "solution": [
         {
-            "pattern": "lines",
-            "slot": {
-                "targetTileQ": -2,
-                "targetTileR": 2,
-                "originalEdge": 1
-            }
-        },
-        {
             "pattern": "none",
             "slot": {
                 "targetTileQ": 0,
@@ -187,9 +179,17 @@
         {
             "pattern": "diamond",
             "slot": {
-                "targetTileQ": -2,
+                "targetTileQ": -3,
                 "targetTileR": 2,
-                "originalEdge": 1
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "lines",
+            "slot": {
+                "targetTileQ": -3,
+                "targetTileR": 2,
+                "originalEdge": 4
             }
         }
     ]

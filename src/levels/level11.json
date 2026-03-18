@@ -183,16 +183,16 @@
             "pattern": "lines",
             "slot": {
                 "targetTileQ": 0,
-                "targetTileR": 0,
-                "originalEdge": 0
+                "targetTileR": 1,
+                "originalEdge": 2
             }
         },
         {
             "pattern": "none",
             "slot": {
                 "targetTileQ": 0,
-                "targetTileR": 0,
-                "originalEdge": 5
+                "targetTileR": 1,
+                "originalEdge": 2
             }
         },
         {
@@ -212,11 +212,11 @@
             }
         },
         {
-            "pattern": "none",
+            "pattern": "lines",
             "slot": {
-                "targetTileQ": 0,
+                "targetTileQ": 1,
                 "targetTileR": 0,
-                "originalEdge": 4
+                "originalEdge": 0
             }
         }
     ]

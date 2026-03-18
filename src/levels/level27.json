@@ -250,33 +250,17 @@
         {
             "pattern": "none",
             "slot": {
-                "targetTileQ": 0,
-                "targetTileR": -1,
-                "originalEdge": 3
+                "targetTileQ": 3,
+                "targetTileR": -2,
+                "originalEdge": 0
             }
         },
         {
             "pattern": "circle",
             "slot": {
-                "targetTileQ": 0,
+                "targetTileQ": 2,
                 "targetTileR": -2,
                 "originalEdge": 5
-            }
-        },
-        {
-            "pattern": "circle",
-            "slot": {
-                "targetTileQ": 0,
-                "targetTileR": -1,
-                "originalEdge": 3
-            }
-        },
-        {
-            "pattern": "circle",
-            "slot": {
-                "targetTileQ": 0,
-                "targetTileR": -2,
-                "originalEdge": 4
             }
         },
         {
@@ -284,7 +268,23 @@
             "slot": {
                 "targetTileQ": 0,
                 "targetTileR": 0,
-                "originalEdge": 3
+                "originalEdge": 4
+            }
+        },
+        {
+            "pattern": "square",
+            "slot": {
+                "targetTileQ": 3,
+                "targetTileR": -2,
+                "originalEdge": 1
+            }
+        },
+        {
+            "pattern": "square",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": -1,
+                "originalEdge": 2
             }
         }
     ]
