@@ -205,7 +205,7 @@ const solveWithWeight = (level: Level, weight: number, maxStates: number): Solve
 
 /** メインソルバー。BFSで最適解を探し、無理なら重み付きA*で探す */
 export const solve = (level: Level): SolveResult | null => {
-    let sol = solveWithWeight(level, 0, 40000);
+    let sol = solveWithWeight(level, 0, 200000);
     if (sol) return sol;
     sol = solveWithWeight(level, 2.0, 500000);
     return sol;

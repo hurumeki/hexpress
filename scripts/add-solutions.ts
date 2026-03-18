@@ -240,8 +240,8 @@ const solveWithWeight = (level: LevelJson, weight: number, maxStates: number): S
 
 /** BFSソルバー。最短手順を返す。状態爆発時は重み付きA*で準最適解を返す。 */
 const solve = (level: LevelJson): SolutionStep[] | null => {
-    // 1. 完全なBFSで最適解を目指す (MAX 40,000 states)
-    let sol = solveWithWeight(level, 0, 40000);
+    // 1. 完全なBFSで最適解を目指す (MAX 200,000 states)
+    let sol = solveWithWeight(level, 0, 200000);
     if (sol) return sol;
 
     // 2. 状態爆発した場合は、強い重み付きA*で準最適解を高速に探す (MAX 500,000 states)
