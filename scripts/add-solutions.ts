@@ -280,14 +280,30 @@ for (const filePath of filePaths) {
     const solution = solve(level);
     const elapsed = Date.now() - start;
 
-    level.solution = solution;
+    let shouldUpdate = true;
+    let skipReason = '';
 
-    fs.writeFileSync(filePath, JSON.stringify(level, null, 4));
+    if (level.solution && solution) {
+        if (solution.length >= level.solution.length) {
+            shouldUpdate = false;
+            skipReason = `[Kept existing: ${level.solution.length} moves]`;
+        }
+    } else if (level.solution && solution === null) {
+        shouldUpdate = false;
+        skipReason = `[Kept existing: ${level.solution.length} moves (new failed)]`;
+    }
+
+    if (shouldUpdate) {
+        level.solution = solution;
+        fs.writeFileSync(filePath, JSON.stringify(level, null, 4));
+    }
+
+    const logSuffix = skipReason ? ` ${skipReason} ` : ' ';
 
     if (solution === null) {
-        console.log(`No solution found (${elapsed}ms)`);
+        console.log(`No solution found${logSuffix}(${elapsed}ms)`);
     } else {
-        console.log(`${solution.length} moves (${elapsed}ms)`);
+        console.log(`${solution.length} moves${logSuffix}(${elapsed}ms)`);
     }
 }
 
