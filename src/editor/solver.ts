@@ -2,7 +2,7 @@ import type { Level, SolutionStep } from '../types';
 import { DIRS } from '../constants';
 
 // --- Solver State ---
-interface SState {
+export interface SState {
     board: { q: number; r: number; pattern: string; id: string }[];
     hand: string[]; // patterns only
 }
@@ -20,7 +20,7 @@ export interface SolveResult {
     sequence: SolutionStep[];
 }
 
-const isGoal = (board: SState['board'], level: Level): boolean =>
+export const isGoal = (board: SState['board'], level: Level): boolean =>
     level.layout.every(tile => {
         if (!tile.target) return true;
         const p = board.find(p => p.q === tile.q && p.r === tile.r);
@@ -46,7 +46,7 @@ const computeSlots = (level: Level) => {
 
 let _enteringSeq = 0;
 
-const applyInsert = (
+export const applyInsert = (
     state: SState,
     level: Level,
     pattern: string,
