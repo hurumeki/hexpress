@@ -3,7 +3,7 @@
  * 全レベルJSON（src/levels/level*.json）にソルバーを実行し、
  * solutionフィールド（最短手順配列 or null）を追記して上書き保存するスクリプト。
  *
- * 使い方: npx tsx scripts/add-solutions.ts
+ * 使い方: npx tsx scripts/add-solutions.ts [filePath...]
  */
 
 import * as fs from 'fs';
@@ -181,21 +181,29 @@ const solve = (level: LevelJson): SolutionStep[] | null => {
 
 // --- メイン処理 ---
 const levelsDir = path.resolve(__dirname, '../src/levels');
-const files = fs.readdirSync(levelsDir)
-    .filter(f => /^level\d+\.json$/.test(f))
-    .sort((a, b) => {
-        const numA = parseInt(a.match(/\d+/)![0]);
-        const numB = parseInt(b.match(/\d+/)![0]);
-        return numA - numB;
-    });
+let filePaths: string[] = [];
 
-console.log(`Found ${files.length} level files.\n`);
+const args = process.argv.slice(2);
+if (args.length > 0) {
+    filePaths = args.map(arg => path.resolve(process.cwd(), arg));
+} else {
+    filePaths = fs.readdirSync(levelsDir)
+        .filter(f => /^level\d+\.json$/.test(f))
+        .sort((a, b) => {
+            const numA = parseInt(a.match(/\d+/)![0]);
+            const numB = parseInt(b.match(/\d+/)![0]);
+            return numA - numB;
+        })
+        .map(f => path.join(levelsDir, f));
+}
 
-for (const file of files) {
-    const filePath = path.join(levelsDir, file);
+console.log(`Found ${filePaths.length} level files.\n`);
+
+for (const filePath of filePaths) {
+    const fileName = path.basename(filePath);
     const level: LevelJson = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-    process.stdout.write(`[${file}] Solving... `);
+    process.stdout.write(`[${fileName}] Solving... `);
     _seq = 0; // シーケンス番号リセット
     const start = Date.now();
     const solution = solve(level);
