@@ -259,13 +259,14 @@ if (args.length > 0) {
     filePaths = args.map(arg => path.resolve(process.cwd(), arg));
 } else {
     filePaths = fs.readdirSync(levelsDir)
-        .filter(f => /^level\d+\.json$/.test(f))
-        .sort((a, b) => {
-            const numA = parseInt(a.match(/\d+/)![0]);
-            const numB = parseInt(b.match(/\d+/)![0]);
-            return numA - numB;
+        .filter(f => f.endsWith('.json'))
+        .map(f => {
+            const filePath = path.join(levelsDir, f);
+            const level: LevelJson = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+            return { filePath, id: level.id };
         })
-        .map(f => path.join(levelsDir, f));
+        .sort((a, b) => a.id - b.id)
+        .map(x => x.filePath);
 }
 
 console.log(`Found ${filePaths.length} level files.\n`);

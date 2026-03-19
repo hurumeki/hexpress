@@ -10,12 +10,14 @@ const __dirname = path.dirname(__filename);
 const levelsDir = path.resolve(__dirname, '../src/levels');
 
 const files = fs.readdirSync(levelsDir)
-    .filter(f => /^level\d+\.json$/.test(f))
-    .sort((a, b) => {
-        const numA = parseInt(a.match(/\d+/)![0]);
-        const numB = parseInt(b.match(/\d+/)![0]);
-        return numA - numB;
-    });
+    .filter(f => f.endsWith('.json'))
+    .map(f => {
+        const filePath = path.join(levelsDir, f);
+        const level: Level = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        return { file: f, id: level.id };
+    })
+    .sort((a, b) => a.id - b.id)
+    .map(x => x.file);
 
 let passed = 0;
 let failed = 0;
