@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import type { ScreenMode, UserData, GlobalAchievement } from './types';
-import { LEVELS, STORAGE_KEY } from './constants';
+import { STORAGE_KEY } from './constants';
+import { LEVELS } from './levels/levels';
 import { DEFAULT_LANG, LangContext, translations, useLang, type Lang } from './i18n';
 import BackButton from './components/BackButton';
 import ConfirmPopup from './components/ConfirmPopup';

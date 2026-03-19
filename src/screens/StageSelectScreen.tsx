@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import type { UserData, GlobalAchievement } from '../types';
-import { LEVELS } from '../constants';
+import { LEVELS } from '../levels/levels';
 import { hexToPixel, getMedalColor, getBoardBoundingBox } from '../utils';
 import { useLang } from '../i18n';
 import HexMedal from '../components/HexMedal';

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import type { Level, Tile, Rail } from '../types';
-import { DIRS, PATTERNS, RAILS_3WAY, LEVELS } from '../constants';
+import { DIRS, PATTERNS, RAILS_3WAY } from '../constants';
+import { LEVELS } from '../levels/levels';
 import { hexToPixel, getHexCorner, getEdgeInfo, getBoardBoundingBox } from '../utils';
 import PieceSvg from '../components/PieceSvg';
 import GameScreen from '../screens/GameScreen';
