@@ -32,6 +32,10 @@ import level29 from './levels/level29.json';
 import level30 from './levels/level30.json';
 import level31 from './levels/level31.json';
 import level32 from './levels/level32.json';
+import level33 from './levels/level33.json';
+import level34 from './levels/level34.json';
+import level35 from './levels/level35.json';
+import level36 from './levels/level36.json';
 
 // --- 定数 ---
 
@@ -123,6 +127,10 @@ export const LEVELS: Level[] = [
     level30 as Level,
     level31 as Level,
     level32 as Level,
+    level33 as Level,
+    level34 as Level,
+    level35 as Level,
+    level36 as Level,
 ];
 
 export const STORAGE_KEY = 'hexpress_userdata';

@@ -1,0 +1,98 @@
+{
+    "id": 36,
+    "name": "Practice 3",
+    "excellentMoves": 3,
+    "goodMoves": 6,
+    "layout": [
+        {
+            "q": 1,
+            "r": 0,
+            "target": {
+                "pattern": "diamond"
+            },
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": 2,
+            "r": 0,
+            "target": {
+                "pattern": "square"
+            },
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": 3,
+            "r": 0,
+            "target": {
+                "pattern": "circle"
+            },
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        }
+    ],
+    "defaultRails": [],
+    "initialBoard": {
+        "2,0": {
+            "id": "p_2_0_1773962732803",
+            "pattern": "diamond"
+        },
+        "1,0": {
+            "id": "p_1_0_1773962675567",
+            "pattern": "circle"
+        },
+        "3,0": {
+            "id": "p_3_0_1773962736810",
+            "pattern": "square"
+        }
+    },
+    "initialHand": [
+        {
+            "id": "h_none_0_1773962685061",
+            "pattern": "none"
+        },
+        {
+            "id": "h_none_1_1773962749143",
+            "pattern": "none"
+        }
+    ],
+    "solution": [
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 3,
+                "targetTileR": 0,
+                "originalEdge": 1
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 1,
+                "targetTileR": 0,
+                "originalEdge": 4
+            }
+        },
+        {
+            "pattern": "circle",
+            "slot": {
+                "targetTileQ": 3,
+                "targetTileR": 0,
+                "originalEdge": 1
+            }
+        }
+    ]
+}

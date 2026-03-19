@@ -1,0 +1,126 @@
+{
+    "id": 35,
+    "name": "Practice",
+    "excellentMoves": 4,
+    "goodMoves": 8,
+    "layout": [
+        {
+            "q": 0,
+            "r": 0,
+            "target": {
+                "pattern": "circle"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 2,
+            "r": 0,
+            "target": {
+                "pattern": "square"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 4,
+            "r": 0,
+            "target": {
+                "pattern": "diamond"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        }
+    ],
+    "defaultRails": [],
+    "initialBoard": {
+        "2,0": {
+            "id": "p_2_0_1773962020339",
+            "pattern": "circle"
+        },
+        "0,0": {
+            "id": "p_0_0_1773962019212",
+            "pattern": "diamond"
+        },
+        "4,0": {
+            "id": "p_4_0_1773962023300",
+            "pattern": "square"
+        }
+    },
+    "initialHand": [
+        {
+            "id": "h_none_0_1773962044016",
+            "pattern": "none"
+        }
+    ],
+    "solution": [
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": 0,
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "circle",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": 0,
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "diamond",
+            "slot": {
+                "targetTileQ": 4,
+                "targetTileR": 0,
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "square",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": 0,
+                "originalEdge": 0
+            }
+        }
+    ]
+}
