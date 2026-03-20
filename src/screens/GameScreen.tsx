@@ -10,6 +10,7 @@ import type {
     PathStep,
 } from '../types';
 import { DIRS, PATH_COLORS } from '../constants';
+import { LEVELS } from '../levels/levels';
 import { hexToPixel, getHexCorner, getEdgeInfo, getMedalColor, getBoardBoundingBox } from '../utils';
 import PieceSvg from '../components/PieceSvg';
 import HexMedal from '../components/HexMedal';
@@ -28,6 +29,7 @@ interface GameScreenProps {
 
 const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onExit, onNext }) => {
     const { t } = useLang();
+    const levelIndex = useMemo(() => LEVELS.findIndex(l => l.id === level.id), [level.id]);
     const [board, setBoard] = useState<Piece[]>(() =>
         Object.entries(level.initialBoard).map(([key, p]) => {
             const [q, r] = key.split(',').map(Number);
@@ -66,13 +68,13 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
     // チュートリアルの進行管理
     useEffect(() => {
         if (!level.isTutorial) return;
-        if (level.id === 1) { // チュートリアル2
+        if (levelIndex === 1) { // チュートリアル2
             if (tutorialStep === 0 && isPeek) {
                 setTutorialStep(1);
             } else if (tutorialStep === 1 && moves === 1) {
                 setTutorialStep(2);
             }
-        } else if (level.id === 2) { // チュートリアル3
+        } else if (levelIndex === 2) { // チュートリアル3
             if (tutorialStep === 0 && selectedIdx === 1) {
                 setTutorialStep(1);
             } else if (tutorialStep === 1 && moves === 1) {
@@ -81,7 +83,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                 if (hand.length > 0) setSelectedIdx(0);
             }
         }
-    }, [level.id, level.isTutorial, tutorialStep, isPeek, moves, selectedIdx, hand.length]);
+    }, [levelIndex, level.isTutorial, tutorialStep, isPeek, moves, selectedIdx, hand.length]);
 
     const calculatePath = (startTileQ: number, startTileR: number, edgeIndex: number): PathStep[] => {
         const path: PathStep[] = [];
@@ -322,7 +324,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                     <div className="flex items-center gap-2 md:gap-3">
                         <BackButton onClick={() => { playClickSound(); onExit(); }} />
                         <div className="flex flex-col mt-0.5">
-                            <h1 className="text-lg md:text-xl font-black italic tracking-tighter uppercase leading-none">#{level.id + 1}</h1>
+                            <h1 className="text-lg md:text-xl font-black italic tracking-tighter uppercase leading-none">#{levelIndex + 1}</h1>
                             <span className="text-[10px] text-stone-500 font-bold uppercase tracking-widest">{level.name}</span>
                         </div>
                     </div>
@@ -481,7 +483,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
             </div>
 
             {/* Tutorial Element */}
-            <TutorialOverlay isVisible={level.isTutorial ?? false} step={tutorialStep} levelId={level.id} />
+            <TutorialOverlay isVisible={level.isTutorial ?? false} step={tutorialStep} levelId={levelIndex} />
         </div>
     );
 };

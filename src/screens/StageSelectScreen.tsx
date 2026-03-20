@@ -13,11 +13,13 @@ interface StageSelectScreenProps {
     globalStatus: GlobalAchievement;
     onSelect: (id: number) => void;
     onBack: () => void;
+    page: number;
+    onPageChange: (page: number) => void;
 }
 
-const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, globalStatus, onSelect, onBack }) => {
+const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, globalStatus, onSelect, onBack, page, onPageChange }) => {
     const { t } = useLang();
-    const [page, setPage] = useState(0);
+    const setPage = onPageChange;
     const stagesPerPage = 12; // 3x4 or 4x3 works better for grid
     const totalPages = Math.ceil(LEVELS.length / stagesPerPage);
 
@@ -31,9 +33,9 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, globalS
         const touchEnd = e.changedTouches[0].clientX;
         const diff = touchStart - touchEnd;
         if (diff > 50 && page < totalPages - 1) {
-            setPage(p => p + 1);
+            setPage(page + 1);
         } else if (diff < -50 && page > 0) {
-            setPage(p => p - 1);
+            setPage(page - 1);
         }
         setTouchStart(null);
     };
@@ -59,7 +61,7 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, globalS
                     {/* Desktop Navigation Arrows */}
                     {page > 0 && (
                         <button
-                            onClick={() => { playClickSound(); setPage(p => p - 1); }}
+                            onClick={() => { playClickSound(); setPage(page - 1); }}
                             className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center bg-stone-900/50 hover:bg-stone-900/80 border border-stone-700 rounded-full transition-all text-white/50 hover:text-white"
                             aria-label="Previous page"
                         >
@@ -70,7 +72,7 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, globalS
                     )}
                     {page < totalPages - 1 && (
                         <button
-                            onClick={() => { playClickSound(); setPage(p => p + 1); }}
+                            onClick={() => { playClickSound(); setPage(page + 1); }}
                             className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 w-12 h-12 items-center justify-center bg-stone-900/50 hover:bg-stone-900/80 border border-stone-700 rounded-full transition-all text-white/50 hover:text-white"
                             aria-label="Next page"
                         >
@@ -82,7 +84,7 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, globalS
 
                     <div className="p-4 md:p-8 max-w-5xl mx-auto w-full px-12 md:px-16">
                         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 auto-rows-fr gap-4 pb-4">
-                            {stages.map((level) => {
+                            {stages.map((level, index) => {
                                 const status = userData.stageProgress[level.id];
                                 const isCleared = !!status?.cleared;
                                 const medalColor = getMedalColor(status?.bestMoves || null, level.excellentMoves, level.goodMoves);
@@ -94,7 +96,7 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, globalS
                                         className={`bg-stone-900 rounded-2xl p-4 border border-stone-700 flex flex-col items-center justify-between hover:border-amber-500 transition-all hover:-translate-y-1 active:scale-95 group/btn ${!isCleared ? 'opacity-90' : 'shadow-[0_0_15px_rgba(0,0,0,0.3)]'}`}
                                     >
                                         <div className="flex justify-between w-full items-start">
-                                            <span className={`text-xl font-black italic transition-colors ${isCleared ? 'text-amber-500/50' : 'text-stone-600'}`}>#{level.id + 1}</span>
+                                            <span className={`text-xl font-black italic transition-colors ${isCleared ? 'text-amber-500/50' : 'text-stone-600'}`}>#{page * stagesPerPage + index + 1}</span>
                                             <HexMedal color={medalColor} size={10} />
                                         </div>
 

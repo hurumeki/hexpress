@@ -197,6 +197,8 @@ function App() {
 
     const selectLevel = (id: number) => { setCurrentLevelId(id); setScreen('GAME'); };
 
+    const [stageSelectPage, setStageSelectPage] = useState(0);
+
     return (
         <LangContext.Provider value={langCtx}>
             {screen === 'TITLE' && (
@@ -215,7 +217,7 @@ function App() {
             )}
 
             {screen === 'STAGE_SELECT' && (
-                <StageSelectScreen userData={userData} globalStatus={currentGlobalStatus} onSelect={selectLevel} onBack={() => setScreen('TITLE')} />
+                <StageSelectScreen userData={userData} globalStatus={currentGlobalStatus} onSelect={selectLevel} onBack={() => setScreen('TITLE')} page={stageSelectPage} onPageChange={setStageSelectPage} />
             )}
 
             {screen === 'GAME' && activeLevel && (
