@@ -23,7 +23,7 @@ import Stage_12 from './Stage_12.json';
 import Stage_6 from './Stage_6.json';
 import Stage_7 from './Stage_7.json';
 import Stage_9 from './Stage_9.json';
-import Three_way from './Three-way.json';
+import Three_way from './Three_way.json';
 import Training_1 from './Training_1.json';
 import Training_2 from './Training_2.json';
 import Training_3 from './Training_3.json';
