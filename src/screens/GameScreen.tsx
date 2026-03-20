@@ -325,7 +325,7 @@ const GameScreen: React.FC<GameScreenProps> = ({ level, bestMoves, onClear, onEx
                         <BackButton onClick={() => { playClickSound(); onExit(); }} />
                         <div className="flex flex-col mt-0.5">
                             <h1 className="text-lg md:text-xl font-black italic tracking-tighter uppercase leading-none">#{levelIndex + 1}</h1>
-                            <span className="text-[10px] text-stone-500 font-bold uppercase tracking-widest">{level.name}</span>
+
                         </div>
                     </div>
                     <div className="flex items-center gap-3 md:gap-4">
