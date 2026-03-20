@@ -182,11 +182,12 @@ function App() {
     const handleContinue = () => {
         const last = userData.lastActiveLevelId;
         if (last === null) {
-            setCurrentLevelId(0);
+            setCurrentLevelId(LEVELS[0].id);
         } else {
             const lastStatus = userData.stageProgress[last];
-            if (lastStatus && lastStatus.cleared && last < LEVELS.length - 1) {
-                setCurrentLevelId(last + 1);
+            const lastIdx = LEVELS.findIndex(l => l.id === last);
+            if (lastStatus && lastStatus.cleared && lastIdx >= 0 && lastIdx < LEVELS.length - 1) {
+                setCurrentLevelId(LEVELS[lastIdx + 1].id);
             } else {
                 setCurrentLevelId(last);
             }
@@ -224,7 +225,7 @@ function App() {
                     bestMoves={userData.stageProgress[activeLevel.id]?.bestMoves || null}
                     onClear={(moves) => updateStageProgress(activeLevel.id, moves)}
                     onExit={() => setScreen('STAGE_SELECT')}
-                    onNext={activeLevel.id < LEVELS.length - 1 ? () => selectLevel(activeLevel.id + 1) : undefined}
+                    onNext={(() => { const idx = LEVELS.findIndex(l => l.id === activeLevel.id); return idx >= 0 && idx < LEVELS.length - 1 ? () => selectLevel(LEVELS[idx + 1].id) : undefined; })()}
                 />
             )}
 
