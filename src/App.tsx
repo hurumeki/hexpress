@@ -206,7 +206,7 @@ function App() {
                     userData={userData}
                     globalStatus={currentGlobalStatus}
                     onContinue={handleContinue}
-                    onStart={() => selectLevel(0)}
+                    onStart={() => selectLevel(LEVELS[0].id)}
                     onStageSelect={() => setScreen('STAGE_SELECT')}
                     onSettings={() => setScreen('SETTINGS')}
                 />
