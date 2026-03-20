@@ -1,0 +1,273 @@
+{
+    "id": 3600,
+    "name": "Donut",
+    "excellentMoves": 9,
+    "goodMoves": 17,
+    "layout": [
+        {
+            "q": -1,
+            "r": 0,
+            "target": {
+                "pattern": "circle"
+            },
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": -2,
+            "r": 2,
+            "target": {
+                "pattern": "diamond"
+            },
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": -1,
+            "r": 2,
+            "target": {
+                "pattern": "lines"
+            },
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": 2,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": -3,
+            "r": 1,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": 1,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": 0,
+            "target": {
+                "pattern": "square"
+            },
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": -3,
+            "r": 2,
+            "target": null,
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": -2,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        }
+    ],
+    "defaultRails": [],
+    "initialBoard": {
+        "-2,0": {
+            "id": "p_-2_0_1773971455247",
+            "pattern": "circle"
+        },
+        "-3,2": {
+            "id": "p_-3_2_1773971456768",
+            "pattern": "diamond"
+        },
+        "1,0": {
+            "id": "p_1_0_1773971460138",
+            "pattern": "square"
+        },
+        "0,2": {
+            "id": "p_0_2_1773971459506",
+            "pattern": "lines"
+        },
+        "-1,0": {
+            "id": "p_-1_0_1773971466735",
+            "pattern": "none"
+        },
+        "0,0": {
+            "id": "p_0_0_1773971467092",
+            "pattern": "none"
+        },
+        "-1,2": {
+            "id": "p_-1_2_1773971467980",
+            "pattern": "none"
+        },
+        "-2,2": {
+            "id": "p_-2_2_1773971468488",
+            "pattern": "none"
+        },
+        "-3,1": {
+            "id": "p_-3_1_1773971469006",
+            "pattern": "none"
+        },
+        "1,1": {
+            "id": "p_1_1_1773971471510",
+            "pattern": "none"
+        }
+    },
+    "initialHand": [
+        {
+            "id": "h_none_0_1773971473601",
+            "pattern": "none"
+        }
+    ],
+    "solution": [
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 1,
+                "targetTileR": 1,
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "lines",
+            "slot": {
+                "targetTileQ": -2,
+                "targetTileR": 0,
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 1,
+                "targetTileR": 1,
+                "originalEdge": 2
+            }
+        },
+        {
+            "pattern": "square",
+            "slot": {
+                "targetTileQ": -2,
+                "targetTileR": 0,
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "circle",
+            "slot": {
+                "targetTileQ": -2,
+                "targetTileR": 0,
+                "originalEdge": 4
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": -2,
+                "targetTileR": 0,
+                "originalEdge": 4
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": -3,
+                "targetTileR": 1,
+                "originalEdge": 5
+            }
+        },
+        {
+            "pattern": "diamond",
+            "slot": {
+                "targetTileQ": -3,
+                "targetTileR": 2,
+                "originalEdge": 4
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": -3,
+                "targetTileR": 2,
+                "originalEdge": 4
+            }
+        }
+    ]
+}

@@ -1,0 +1,312 @@
+{
+    "id": 3800,
+    "name": "Crystal 2",
+    "excellentMoves": 10,
+    "goodMoves": 18,
+    "layout": [
+        {
+            "q": 0,
+            "r": 0,
+            "target": {
+                "pattern": "circle"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                },
+                {
+                    "from": 1,
+                    "to": 4
+                },
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": -1,
+            "target": {
+                "pattern": "square"
+            },
+            "rails": [
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": -2,
+            "target": null,
+            "rails": [
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": -1,
+            "target": {
+                "pattern": "diamond"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                }
+            ]
+        },
+        {
+            "q": 2,
+            "r": -2,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                }
+            ]
+        },
+        {
+            "q": 1,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": 2,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": 1,
+            "target": {
+                "pattern": "dot"
+            },
+            "rails": [
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": 0,
+            "r": 2,
+            "target": null,
+            "rails": [
+                {
+                    "from": 2,
+                    "to": 5
+                }
+            ]
+        },
+        {
+            "q": -1,
+            "r": 1,
+            "target": {
+                "pattern": "lines"
+            },
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                }
+            ]
+        },
+        {
+            "q": -2,
+            "r": 2,
+            "target": null,
+            "rails": [
+                {
+                    "from": 0,
+                    "to": 3
+                }
+            ]
+        },
+        {
+            "q": -1,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        },
+        {
+            "q": -2,
+            "r": 0,
+            "target": null,
+            "rails": [
+                {
+                    "from": 1,
+                    "to": 4
+                }
+            ]
+        }
+    ],
+    "defaultRails": [],
+    "initialBoard": {
+        "-2,0": {
+            "id": "p_-2_0_1773975558666",
+            "pattern": "none"
+        },
+        "0,-2": {
+            "id": "p_0_-2_1773975559078",
+            "pattern": "none"
+        },
+        "2,-2": {
+            "id": "p_2_-2_1773975559440",
+            "pattern": "none"
+        },
+        "2,0": {
+            "id": "p_2_0_1773975559883",
+            "pattern": "none"
+        },
+        "0,2": {
+            "id": "p_0_2_1773975560290",
+            "pattern": "none"
+        },
+        "-2,2": {
+            "id": "p_-2_2_1773975560877",
+            "pattern": "none"
+        },
+        "0,-1": {
+            "id": "p_0_-1_1773975924604",
+            "pattern": "dot"
+        },
+        "-1,1": {
+            "id": "p_-1_1_1773975910908",
+            "pattern": "diamond"
+        },
+        "1,0": {
+            "id": "p_1_0_1773975967438",
+            "pattern": "none"
+        },
+        "0,1": {
+            "id": "p_0_1_1773975987766",
+            "pattern": "lines"
+        },
+        "-1,0": {
+            "id": "p_-1_0_1773976206378",
+            "pattern": "none"
+        },
+        "1,-1": {
+            "id": "p_1_-1_1773976238222",
+            "pattern": "square"
+        },
+        "0,0": {
+            "id": "p_0_0_1773976243053",
+            "pattern": "circle"
+        }
+    },
+    "initialHand": [
+        {
+            "id": "h_none_0_1773975563054",
+            "pattern": "none"
+        }
+    ],
+    "solution": [
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": -2,
+                "targetTileR": 2,
+                "originalEdge": 3
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": -2,
+                "targetTileR": 2,
+                "originalEdge": 3
+            }
+        },
+        {
+            "pattern": "square",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": -2,
+                "originalEdge": 5
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 0,
+                "targetTileR": -2,
+                "originalEdge": 5
+            }
+        },
+        {
+            "pattern": "lines",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": 0,
+                "originalEdge": 1
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": -2,
+                "targetTileR": 2,
+                "originalEdge": 3
+            }
+        },
+        {
+            "pattern": "circle",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": 0,
+                "originalEdge": 1
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": 0,
+                "originalEdge": 1
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": -2,
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 2,
+                "targetTileR": 0,
+                "originalEdge": 1
+            }
+        }
+    ]
+}
