@@ -107,8 +107,10 @@ function StageEditor() {
         const id = Number(e.target.value);
         const selected = LEVELS.find(l => l.id === id);
         if (selected) {
-            jsonSourceRef.current = 'json'; // JSONとして扱うことで useEffect による JSON 同期を誘発
+            jsonSourceRef.current = 'json';
             setLevelData(selected);
+            setJsonText(JSON.stringify(selected, null, 2));
+            setJsonError(null);
             if (selected.solution) {
                 setSolverResult({ moves: selected.solution.length, sequence: selected.solution });
             } else if (selected.solution === null) {
