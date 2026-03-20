@@ -1,8 +1,8 @@
 {
-    "id": 13,
+    "id": 1500,
     "name": "Rotate Triangle 2",
-    "excellentMoves": 3,
-    "goodMoves": 6,
+    "excellentMoves": 5,
+    "goodMoves": 9,
     "layout": [
         {
             "q": -1,
@@ -63,10 +63,6 @@
                 {
                     "from": 0,
                     "to": 3
-                },
-                {
-                    "from": 5,
-                    "to": 2
                 }
             ]
         },
@@ -78,10 +74,6 @@
                 {
                     "from": 1,
                     "to": 4
-                },
-                {
-                    "from": 0,
-                    "to": 3
                 }
             ]
         },
@@ -93,10 +85,6 @@
                 {
                     "from": 2,
                     "to": 5
-                },
-                {
-                    "from": 1,
-                    "to": 4
                 }
             ]
         }
@@ -147,8 +135,24 @@
             "pattern": "none",
             "slot": {
                 "targetTileQ": 0,
+                "targetTileR": 0,
+                "originalEdge": 0
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": 0,
                 "targetTileR": -1,
-                "originalEdge": 1
+                "originalEdge": 5
+            }
+        },
+        {
+            "pattern": "none",
+            "slot": {
+                "targetTileQ": -2,
+                "targetTileR": 2,
+                "originalEdge": 3
             }
         },
         {

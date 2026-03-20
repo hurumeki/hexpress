@@ -1,22 +1,14 @@
 {
-    "id": 29,
-    "name": "Practice 2",
-    "excellentMoves": 4,
-    "goodMoves": 8,
+    "id": 200,
+    "name": "A",
+    "excellentMoves": 3,
+    "goodMoves": 6,
     "layout": [
         {
             "q": 0,
             "r": -1,
             "target": null,
             "rails": [
-                {
-                    "from": 0,
-                    "to": 3
-                },
-                {
-                    "from": 1,
-                    "to": 4
-                },
                 {
                     "from": 2,
                     "to": 5
@@ -35,10 +27,6 @@
                     "to": 3
                 },
                 {
-                    "from": 1,
-                    "to": 4
-                },
-                {
                     "from": 2,
                     "to": 5
                 }
@@ -54,14 +42,6 @@
                 {
                     "from": 0,
                     "to": 3
-                },
-                {
-                    "from": 1,
-                    "to": 4
-                },
-                {
-                    "from": 2,
-                    "to": 5
                 }
             ]
         },
@@ -73,14 +53,6 @@
                 {
                     "from": 0,
                     "to": 3
-                },
-                {
-                    "from": 1,
-                    "to": 4
-                },
-                {
-                    "from": 2,
-                    "to": 5
                 }
             ]
         },
@@ -125,6 +97,10 @@
         {
             "id": "h_none_0_1773663996917",
             "pattern": "none"
+        },
+        {
+            "id": "h_none_1_1773965274227",
+            "pattern": "none"
         }
     ],
     "solution": [
@@ -133,19 +109,11 @@
             "slot": {
                 "targetTileQ": 0,
                 "targetTileR": -2,
-                "originalEdge": 1
+                "originalEdge": 5
             }
         },
         {
-            "pattern": "square",
-            "slot": {
-                "targetTileQ": -2,
-                "targetTileR": 0,
-                "originalEdge": 1
-            }
-        },
-        {
-            "pattern": "diamond",
+            "pattern": "none",
             "slot": {
                 "targetTileQ": 0,
                 "targetTileR": -2,
@@ -153,11 +121,11 @@
             }
         },
         {
-            "pattern": "square",
+            "pattern": "diamond",
             "slot": {
                 "targetTileQ": 0,
-                "targetTileR": 0,
-                "originalEdge": 0
+                "targetTileR": -2,
+                "originalEdge": 5
             }
         }
     ]
