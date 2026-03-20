@@ -113,10 +113,7 @@ const StageSelectScreen: React.FC<StageSelectScreenProps> = ({ userData, globalS
                                                 })}
                                             </svg>
                                         </div>
-
-                                        <span className={`text-[10px] font-bold uppercase tracking-widest mt-2 truncate w-full text-center transition-colors ${isCleared ? 'text-stone-300' : 'text-stone-500'}`}>
-                                            {level.name}
-                                        </span>
+                                        <div className="h-5 mt-2" />
                                     </button>
                                 );
                             })}
