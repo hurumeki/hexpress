@@ -38,8 +38,22 @@ jobs:
           cache: 'npm'
       - name: Install dependencies
         run: npm install
-      - name: Build
-        run: npm run build
+      - name: Build (EN)
+        run: DEFAULT_LANG=en npm run build
+      - name: Move EN build
+        run: mv dist dist-en
+      - name: Build (JA)
+        run: DEFAULT_LANG=ja npm run build
+      - name: Upload EN Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hexpress-en
+          path: dist-en/
+      - name: Upload JA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hexpress-ja
+          path: dist/
       - name: Setup Pages
         uses: actions/configure-pages@v4
       - name: Upload artifact
